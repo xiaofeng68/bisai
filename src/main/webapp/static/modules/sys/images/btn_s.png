@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+     <tr>
+        <td width="100%" height="30" align="left" bgcolor="#f6f6f6"><img src="../admini/images/arrow_082.gif"/> 
+        
+        <span class="mini_font_black">管理提醒-<a href="javascript:history.go(-1)"><span class="baise12">[返回]</span></a>-<a href="javascript:window.location.reload()"><span class="baise12">[刷新]</span></a>&nbsp;&nbsp;</span></td>
+        
+    </tr>
+</table>
+<table width="98%" border="0" cellpadding="0" cellspacing="0" id="news_tab_inc_two">
+  <tr>
+	<td width="10%" height="300">&nbsp;</td>
+	<td width="90%" align="left" valign="top"><span class="line_height">404错误提示
+	<br />
+	 功能正在开发中
+	</span>
+	</td>
+  </tr>
+</table>
+</body>
+</html>

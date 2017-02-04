@@ -1,0 +1,108 @@
+/* =============================================================================
+   CSS Reset
+   ========================================================================== */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+ul{list-style:none;}
+a{ color:#666; text-decoration:none;}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section { display: block; }
+
+
+/* =============================================================================
+   Fix the clear issue
+   ========================================================================== */
+.hide { display: none; }
+
+.clear { clear: both; display: block; font-size: 0; height: 0; line-height: 0; width:100%;}
+
+.clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; } 
+.clearfix { display: inline-block; } /* Hide from IE Mac \*/ 
+.clearfix { display: block; } /* End hide from IE Mac */ 
+
+.clear-fixed { height: 100%; overflow: hidden; }
+
+
+/* =============================================================================
+   Links & Image
+   ========================================================================== */
+a, a:hover, a:focus { text-decoration: none; }
+a:hover, a:active, a:focus { outline: none; }
+a img { border: none; }
+/* Í¸Ã÷¶È */
+.tm {
+	filter:alpha(opacity=50);
+	-moz-opacity:0.5;
+	-khtml-opacity: 0.5;
+	opacity: 0.5;
+}
+
+/* =============================================================================
+   Typography
+   ========================================================================== */
+::-moz-selection { background: #F78118; color: #FFFFFF; text-shadow: none; }
+::selection { background: #F78118; color: #FFFFFF; text-shadow: none; }
+
+body { line-height: 1; }
+
+abbr[title] { border-bottom: 1px dotted; }
+
+b, strong { font-weight: bold; }
+
+em,
+i,
+dfn { font-style: italic; }
+
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #CCCCCC; margin: 1em 0; padding: 0; }
+
+ins { background: #FFFF99; color: #000000; text-decoration: none; }
+
+mark { background: #FFFF00; color: #000000; font-style: italic; font-weight: bold; }
+
+pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+
+blockquote, q { quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after { content: ''; content: none; }
+
+small { font-size: 85%; }
+
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+
+
+/* =============================================================================
+   Button, input, textarea
+   ========================================================================== */
+button, input, select, textarea { font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle; }
+button, input { line-height: normal; *overflow: visible; }
+button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; -webkit-appearance: button; }
+
+
+/* =============================================================================
+   Tables
+   ========================================================================== */
+table { border-collapse: collapse; border-spacing: 0; }
+

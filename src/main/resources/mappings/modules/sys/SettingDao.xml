@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.SettingDao">
+    
+	<select id="findList" resultType="Setting">
+		SELECT 
+			a.*
+		FROM t_setting a
+		ORDER BY a.code DESC
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO t_setting(
+			id, 
+			code, 
+			content,
+			name
+		) VALUES (
+			#{id}, 
+			#{code}, 
+			#{content}, 
+			#{name}
+		)
+	</insert>
+	
+	<update id="update">
+		update t_setting set code=#{code},content=#{content},name=#{name} where id=#{id}
+	</update>
+	
+	<select id="findByCode" parameterType="java.lang.String" resultType="Setting">
+		select * from t_setting where code=#{code}
+	</select>
+</mapper>
