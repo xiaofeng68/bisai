@@ -1,20 +1,18 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.act.dao;
+package com.thinkgem.jeesite.modules.bisai.dao;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
-import com.thinkgem.jeesite.modules.act.entity.Act;
+import com.thinkgem.jeesite.modules.bisai.entity.TAccount;
 
 /**
- * 审批DAO接口
- * @author thinkgem
- * @version 2014-05-16
+ * 用户账号DAO接口
+ * @author 小风
+ * @version 2017-02-05
  */
 @MyBatisDao
-public interface ActDao extends CrudDao<Act> {
-
-	public int updateProcInsIdByBusinessId(Act act);
+public interface TAccountDao extends CrudDao<TAccount> {
 	
 }

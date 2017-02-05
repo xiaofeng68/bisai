@@ -47,7 +47,7 @@ public class RoleController extends BaseController {
 	@Autowired
 	private OfficeService officeService;
 	
-	@ModelAttribute("role")
+	@ModelAttribute
 	public Role get(@RequestParam(required=false) String id) {
 		if (StringUtils.isNotBlank(id)){
 			return systemService.getRole(id);
