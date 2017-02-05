@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.bisai.dao.TAccountDao">
+    
+	<sql id="tAccountColumns">
+		a.id AS "id",
+		a.phone AS "phone",
+		a.password AS "password",
+		a.wxname AS "wxname",
+		a.wxcode AS "wxcode",
+		a.wxphoto AS "wxphoto",
+		a.sex AS "sex",
+		a.area AS "area",
+		a.des AS "des",
+		a.createtime AS "createtime",
+		a.updatetime AS "updatetime",
+		a.state AS "state"
+	</sql>
+	
+	<sql id="tAccountJoins">
+	</sql>
+    
+	<select id="get" resultType="TAccount">
+		SELECT 
+			<include refid="tAccountColumns"/>
+		FROM t_account a
+		<include refid="tAccountJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TAccount">
+		SELECT 
+			<include refid="tAccountColumns"/>
+		FROM t_account a
+		<include refid="tAccountJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TAccount">
+		SELECT 
+			<include refid="tAccountColumns"/>
+		FROM t_account a
+		<include refid="tAccountJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO t_account(
+			id,
+			phone,
+			password,
+			wxname,
+			wxcode,
+			wxphoto,
+			sex,
+			area,
+			des,
+			createtime,
+			updatetime,
+			state
+		) VALUES (
+			#{id},
+			#{phone},
+			#{password},
+			#{wxname},
+			#{wxcode},
+			#{wxphoto},
+			#{sex},
+			#{area},
+			#{des},
+			#{createtime},
+			#{updatetime},
+			#{state}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE t_account SET 	
+			phone = #{phone},
+			password = #{password},
+			wxname = #{wxname},
+			wxcode = #{wxcode},
+			wxphoto = #{wxphoto},
+			sex = #{sex},
+			area = #{area},
+			des = #{des},
+			createtime = #{createtime},
+			updatetime = #{updatetime},
+			state = #{state}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM t_account
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
