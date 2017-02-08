@@ -1,0 +1,26 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+
+.section-focus-pic{height:7.575rem;width:100%;overflow:hidden;position:relative;}
+.section-focus-pic ul li{position:absolute;top:0;left:100%;width:100%;height:7.575rem;}
+.section-focus-pic ul li div{position:absolute;bottom:0;left:0;height:50px;background-color:#000;width:570px;opacity: 0.6;filter: alpha(opacity=60);}
+.section-focus-pic .pages{
+	height: 7.575rem;
+    width: 100%;}
+.section-focus-pic .controler{position:absolute;bottom:0.5rem;left:50%;margin-left:-0.7rem}
+.section-focus-pic .controler b{cursor:pointer;width:0.25rem;height:0.25rem;display:block;overflow:hidden;text-indent:20px;background:#fff; float:left;margin:0 0 0 0.25rem;border-radius: 0.125rem}
+.section-focus-pic .controler b.down{background-position:-161px 1px;background: #44bb95;}
+.section-focus-pic ul .item img{
+	width: 100%;
+	height:7.575rem;
+}
+/*.section-focus-pic .controler2 a{display:block; width:40px;position:absolute;top:120px;height:40px;}
+.section-focus-pic .controler2 a i{cursor:pointer;display:block;width:22px;height:34px; background:url(imgs/star.png) no-repeat;}
+.section-focus-pic .controler2 .prev{left:5px;}
+.section-focus-pic .controler2 .prev i{background-position:-34px -68px;_background:none;_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='imgs/star_05.png');margin-left:5px;}
+.section-focus-pic .controler2 .prev:hover i{left:10px;background-position:-34px -24px;_background:none;_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='imgs/star_03.png');}
+.section-focus-pic .controler2 .next{right:10px;}
+.section-focus-pic .controler2 .next i{background-position:-62px -68px;_background:none;_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='imgs/star_06.png');margin-left:10px;}
+.section-focus-pic .controler2 .next:hover i{right:10px;background-position:-62px -24px;_background:none;_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='imgs/star_04.png');}*/

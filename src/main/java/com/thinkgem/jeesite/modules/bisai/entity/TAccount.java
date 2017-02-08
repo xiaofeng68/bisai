@@ -28,7 +28,7 @@ public class TAccount extends DataEntity<TAccount> {
 	private Date createtime;		// 创建时间
 	private Date updatetime;		// 更新时间
 	private String state;		// 状态
-	
+	private String openId;
 	
 	public TAccount() {
 		super();
@@ -136,5 +136,13 @@ public class TAccount extends DataEntity<TAccount> {
 	public void setState(String state) {
 		this.state = state;
 	}
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
 	
 }

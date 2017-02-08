@@ -27,6 +27,12 @@
 		<include refid="tAccountJoins"/>
 		WHERE a.id = #{id}
 	</select>
+	<select id="getAccountByOpenId" resultType="TAccount">
+		SELECT 
+			<include refid="tAccountColumns"/>
+		FROM t_account a
+		WHERE a.openid = #{openid}
+	</select>
 	
 	<select id="findList" resultType="TAccount">
 		SELECT 
@@ -34,7 +40,24 @@
 		FROM t_account a
 		<include refid="tAccountJoins"/>
 		<where>
-			
+		<if test="phone != null and phone != ''">
+			AND phone LIKE 
+			<if test="dbName == 'oracle'">'%'||#{phone}||'%'</if>
+			<if test="dbName == 'mssql'">'%'+#{phone}+'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{phone}, '%')</if>
+		</if>
+		<if test="wxname != null and wxname != ''">
+			AND wxname LIKE 
+			<if test="dbName == 'oracle'">'%'||#{wxname}||'%'</if>
+			<if test="dbName == 'mssql'">'%'+#{wxname}+'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{wxname}, '%')</if>
+		</if>
+		<if test="wxcode != null and wxcode != ''">
+			AND wxcode LIKE 
+			<if test="dbName == 'oracle'">'%'||#{wxcode}||'%'</if>
+			<if test="dbName == 'mssql'">'%'+#{wxcode}+'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{wxcode}, '%')</if>
+		</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

@@ -14,5 +14,13 @@ import com.thinkgem.jeesite.modules.bisai.entity.TAccount;
  */
 @MyBatisDao
 public interface TAccountDao extends CrudDao<TAccount> {
-	
+    /**   
+     * @Title: getAccountByOpenId   
+     * @Description: 根据openid获取账号
+     * @param openId
+     * @return
+     * @author  author
+     */
+     
+    TAccount getAccountByOpenId(String openId);
 }

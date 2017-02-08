@@ -25,7 +25,28 @@ public class TAccountService extends CrudService<TAccountDao, TAccount> {
 	public TAccount get(String id) {
 		return super.get(id);
 	}
-	
+	/**   
+	 * @Title: getAccountByOpenId   
+	 * @Description: 根据openid获取用户信息
+	 * @param openId
+	 * @return
+	 * @author  author
+	 */
+	 
+	public TAccount getAccountByOpenId(String openId){
+	    return dao.getAccountByOpenId(openId);
+	}
+	/**   
+	 * @Title: getAccountByPhone   
+	 * @Description: 根据手机号获取账号信息
+	 * @param openId
+	 * @return
+	 * @author  author
+	 */
+	 
+	public TAccount getAccountByPhone(String openId){
+        return dao.getAccountByOpenId(openId);
+    }
 	public List<TAccount> findList(TAccount tAccount) {
 		return super.findList(tAccount);
 	}

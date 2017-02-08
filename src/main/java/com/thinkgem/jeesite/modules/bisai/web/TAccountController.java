@@ -34,7 +34,7 @@ public class TAccountController extends BaseController {
 	@Autowired
 	private TAccountService tAccountService;
 	
-	@ModelAttribute
+	@ModelAttribute("tAccount")
 	public TAccount get(@RequestParam(required=false) String id) {
 		TAccount entity = null;
 		if (StringUtils.isNotBlank(id)){
