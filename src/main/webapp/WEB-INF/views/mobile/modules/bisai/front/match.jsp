@@ -48,7 +48,7 @@ function divselect(divselectid,inputselectid) {
 		<div class="match_topll">
 			<span class="fl match_topll_l">
 				<a href="#">
-					<img src="images/r-arrow.png"></a>
+					<img src="${ctxStaticFront}/images/r-arrow.png"></a>
 			</span>
 			<span class="match_topll_c">赛事列表</span>
 			<div class="fr match_topll_r">
@@ -95,14 +95,14 @@ function divselect(divselectid,inputselectid) {
 		</div>
 		<div class="match_fourll">
 			<div class="match_link">
-				<a href="apply.html">申请比赛</a>
+				<a href="${ctx }/${frontPath}apply${urlSuffix}">申请比赛</a>
 			</div>
 			<ul>
 				<li>
 					<a href="#">
 						<div class="clearfix">
 							<div class="fl clearfix suggestll">
-								<img class="img24 fl" src="images/img24.png">
+								<img class="img24 fl" src="${ctxStaticFront}/images/img24.png">
 								<div class="fl suggestlx">
 									<p class="ellipsis">XXX羽毛球比赛</p>
 									<p class="ellipsis">主办单位/会员名</p>
@@ -124,7 +124,7 @@ function divselect(divselectid,inputselectid) {
 					<a href="#">
 						<div class="clearfix">
 							<div class="fl clearfix suggestll">
-								<img class="img24 fl" src="images/img24.png">
+								<img class="img24 fl" src="${ctxStaticFront}/images/img24.png">
 								<div class="fl suggestlx">
 									<p class="ellipsis">XXX羽毛球比赛</p>
 									<p class="ellipsis">主办单位/会员名</p>
@@ -147,7 +147,7 @@ function divselect(divselectid,inputselectid) {
 					<a href="#">
 						<div class="clearfix">
 							<div class="fl clearfix suggestll">
-								<img class="img24 fl" src="images/img24.png">
+								<img class="img24 fl" src="${ctxStaticFront}/images/img24.png">
 								<div class="fl suggestlx">
 									<p class="ellipsis">XXX羽毛球比赛</p>
 									<p class="ellipsis">主办单位/会员名</p>
@@ -170,7 +170,7 @@ function divselect(divselectid,inputselectid) {
 					<a href="#">
 						<div class="clearfix">
 							<div class="fl clearfix suggestll">
-								<img class="img24 fl" src="images/img24.png">
+								<img class="img24 fl" src="${ctxStaticFront}/images/img24.png">
 								<div class="fl suggestlx">
 									<p class="ellipsis">XXX羽毛球比赛</p>
 									<p class="ellipsis">主办单位/会员名</p>

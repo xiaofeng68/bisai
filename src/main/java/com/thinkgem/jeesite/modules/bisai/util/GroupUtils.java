@@ -1,4 +1,4 @@
-package com;
+package com.thinkgem.jeesite.modules.bisai.util;
 
 import java.util.ArrayList;
 import java.util.Collections;

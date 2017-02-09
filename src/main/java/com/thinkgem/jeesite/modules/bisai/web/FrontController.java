@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.thinkgem.jeesite.common.utils.MD5Util;
 import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.modules.bisai.entity.TAccount;
+import com.thinkgem.jeesite.modules.bisai.entity.Account;
 import com.thinkgem.jeesite.modules.bisai.global.GlobalBuss;
-import com.thinkgem.jeesite.modules.bisai.service.TAccountService;
+import com.thinkgem.jeesite.modules.bisai.service.AccountService;
 import com.thinkgem.jeesite.modules.wx.util.WeixinUtil;
 
 import net.sf.json.JSONObject;
@@ -31,7 +31,7 @@ import net.sf.json.JSONObject;
 @RequestMapping(value = "${frontPath}")
 public class FrontController extends BaseController {
     @Autowired
-    private TAccountService tAccountService;
+    private AccountService tAccountService;
     /**
      * 网站首页
      */
@@ -75,15 +75,15 @@ public class FrontController extends BaseController {
         //第二步：通过code换取网页授权access_token
         JSONObject token = WeixinUtil.getUserToken(code);
         String openId = token.getString("openid");
-        TAccount tAccount = tAccountService.getAccountByOpenId(openId);
+        Account tAccount = tAccountService.getAccountByOpenId(openId);
         if(tAccount==null){
             //第四步：拉取用户信息(需scope为 snsapi_userinfo)
             JSONObject account = WeixinUtil.getUserInfo(token.getString("access_token"), openId);
             //保存用户信息
-            tAccount = new TAccount();
+            tAccount = new Account();
             tAccount.setWxname(account.getString("nickname"));
             tAccount.setSex(account.getString("sex"));
-            tAccount.setOpenId(account.getString("openid"));
+            tAccount.setOpenid(account.getString("openid"));
             tAccount.setWxphoto(account.getString("headimgurl"));
             tAccountService.save(tAccount);
             request.getSession().setAttribute("currentAccount", tAccount);
@@ -95,9 +95,9 @@ public class FrontController extends BaseController {
         return "mobile/modules/bisai/front/about";
     }
     @RequestMapping(value = "regist",method=RequestMethod.POST)
-    public String registAccount(HttpServletRequest request,TAccount account){
+    public String registAccount(HttpServletRequest request,Account account){
         //判断手机是否注册
-        TAccount tAccount = tAccountService.getAccountByPhone(account.getPhone());
+        Account tAccount = tAccountService.getAccountByPhone(account.getPhone());
         if(tAccount!=null){//已注册
             return "redirect:mobile/modules/bisai/front/login";
         }else{
@@ -109,9 +109,9 @@ public class FrontController extends BaseController {
         }
     }
     @RequestMapping(value = "login",method=RequestMethod.POST)
-    public String loginAccount(HttpServletRequest request,TAccount account) {
+    public String loginAccount(HttpServletRequest request,Account account) {
         account.setPassword(MD5Util.md5Hex(account.getPassword()));
-        TAccount dbaccount = tAccountService.getAccountByPhone(account.getPhone());
+        Account dbaccount = tAccountService.getAccountByPhone(account.getPhone());
         if(dbaccount==null){//账号不存在
             request.setAttribute(GlobalBuss.ACCOUNTERROR, true);
             return "mobile/modules/bisai/front/login"; 
@@ -126,5 +126,10 @@ public class FrontController extends BaseController {
     @RequestMapping(value = "match${urlSuffix}")
     public String match(HttpServletRequest request) {
         return "mobile/modules/bisai/front/match";
+    }
+    /**赛事申请*/
+    @RequestMapping(value = "apply${urlSuffix}")
+    public String apply(HttpServletRequest request) {
+        return "mobile/modules/bisai/front/apply";
     }
 }

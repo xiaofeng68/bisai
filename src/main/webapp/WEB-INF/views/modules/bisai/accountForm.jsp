@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>用户管理</title>
+	<title>账号管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -27,10 +27,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/bisai/tAccount/">用户列表</a></li>
-		<li class="active"><a href="${ctx}/bisai/tAccount/form?id=${tAccount.id}">用户<shiro:hasPermission name="bisai:tAccount:edit">${not empty tAccount.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="bisai:tAccount:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/bisai/account/">账号列表</a></li>
+		<li class="active"><a href="${ctx}/bisai/account/form?id=${account.id}">账号<shiro:hasPermission name="bisai:account:edit">${not empty account.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="bisai:account:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="tAccount" action="${ctx}/bisai/tAccount/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="account" action="${ctx}/bisai/account/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -43,6 +43,12 @@
 			<label class="control-label">密码：</label>
 			<div class="controls">
 				<form:input path="password" htmlEscape="false" maxlength="20" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">openid：</label>
+			<div class="controls">
+				<form:input path="openid" htmlEscape="false" maxlength="20" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -85,7 +91,7 @@
 			<label class="control-label">创建时间：</label>
 			<div class="controls">
 				<input name="createtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${tAccount.createtime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					value="<fmt:formatDate value="${account.createtime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
 		</div>
@@ -93,7 +99,7 @@
 			<label class="control-label">更新时间：</label>
 			<div class="controls">
 				<input name="updatetime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${tAccount.updatetime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					value="<fmt:formatDate value="${account.updatetime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
 		</div>
@@ -104,7 +110,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="bisai:tAccount:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="bisai:account:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

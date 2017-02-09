@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.bisai.dao.MatchDao">
+    
+	<sql id="matchColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.orgs AS "orgs",
+		a.contractor AS "contractor",
+		a.sponsors AS "sponsors",
+		a.des AS "des",
+		a.starttime AS "starttime",
+		a.endtime AS "endtime",
+		a.regstarttime AS "regstarttime",
+		a.regendtime AS "regendtime",
+		a.createtime AS "createtime",
+		a.updatetime AS "updatetime",
+		a.address AS "address",
+		a.contacts AS "contacts",
+		a.phone AS "phone",
+		a.state AS "state"
+	</sql>
+	
+	<sql id="matchJoins">
+	</sql>
+    
+	<select id="get" resultType="Match">
+		SELECT 
+			<include refid="matchColumns"/>
+		FROM bisai_match a
+		<include refid="matchJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Match">
+		SELECT 
+			<include refid="matchColumns"/>
+		FROM bisai_match a
+		<include refid="matchJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="orgs != null and orgs != ''">
+				AND a.orgs = #{orgs}
+			</if>
+			<if test="contractor != null and contractor != ''">
+				AND a.contractor = #{contractor}
+			</if>
+			<if test="sponsors != null and sponsors != ''">
+				AND a.sponsors = #{sponsors}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Match">
+		SELECT 
+			<include refid="matchColumns"/>
+		FROM bisai_match a
+		<include refid="matchJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bisai_match(
+			id,
+			name,
+			orgs,
+			contractor,
+			sponsors,
+			des,
+			starttime,
+			endtime,
+			regstarttime,
+			regendtime,
+			createtime,
+			updatetime,
+			address,
+			contacts,
+			phone,
+			state
+		) VALUES (
+			#{id},
+			#{name},
+			#{orgs},
+			#{contractor},
+			#{sponsors},
+			#{des},
+			#{starttime},
+			#{endtime},
+			#{regstarttime},
+			#{regendtime},
+			#{createtime},
+			#{updatetime},
+			#{address},
+			#{contacts},
+			#{phone},
+			#{state}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bisai_match SET 	
+			name = #{name},
+			orgs = #{orgs},
+			contractor = #{contractor},
+			sponsors = #{sponsors},
+			des = #{des},
+			starttime = #{starttime},
+			endtime = #{endtime},
+			regstarttime = #{regstarttime},
+			regendtime = #{regendtime},
+			createtime = #{createtime},
+			updatetime = #{updatetime},
+			address = #{address},
+			contacts = #{contacts},
+			phone = #{phone},
+			state = #{state}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM bisai_match
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

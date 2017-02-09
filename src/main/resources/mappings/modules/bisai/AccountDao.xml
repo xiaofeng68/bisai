@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.bisai.dao.TAccountDao">
+<mapper namespace="com.thinkgem.jeesite.modules.bisai.dao.AccountDao">
     
-	<sql id="tAccountColumns">
+	<sql id="accountColumns">
 		a.id AS "id",
 		a.phone AS "phone",
 		a.password AS "password",
+		a.openid AS "openid",
 		a.wxname AS "wxname",
 		a.wxcode AS "wxcode",
 		a.wxphoto AS "wxphoto",
@@ -17,47 +18,33 @@
 		a.state AS "state"
 	</sql>
 	
-	<sql id="tAccountJoins">
+	<sql id="accountJoins">
 	</sql>
     
-	<select id="get" resultType="TAccount">
+	<select id="get" resultType="Account">
 		SELECT 
-			<include refid="tAccountColumns"/>
-		FROM t_account a
-		<include refid="tAccountJoins"/>
+			<include refid="accountColumns"/>
+		FROM bisai_account a
+		<include refid="accountJoins"/>
 		WHERE a.id = #{id}
 	</select>
-	<select id="getAccountByOpenId" resultType="TAccount">
-		SELECT 
-			<include refid="tAccountColumns"/>
-		FROM t_account a
-		WHERE a.openid = #{openid}
-	</select>
 	
-	<select id="findList" resultType="TAccount">
+	<select id="findList" resultType="Account">
 		SELECT 
-			<include refid="tAccountColumns"/>
-		FROM t_account a
-		<include refid="tAccountJoins"/>
+			<include refid="accountColumns"/>
+		FROM bisai_account a
+		<include refid="accountJoins"/>
 		<where>
-		<if test="phone != null and phone != ''">
-			AND phone LIKE 
-			<if test="dbName == 'oracle'">'%'||#{phone}||'%'</if>
-			<if test="dbName == 'mssql'">'%'+#{phone}+'%'</if>
-			<if test="dbName == 'mysql'">CONCAT('%', #{phone}, '%')</if>
-		</if>
-		<if test="wxname != null and wxname != ''">
-			AND wxname LIKE 
-			<if test="dbName == 'oracle'">'%'||#{wxname}||'%'</if>
-			<if test="dbName == 'mssql'">'%'+#{wxname}+'%'</if>
-			<if test="dbName == 'mysql'">CONCAT('%', #{wxname}, '%')</if>
-		</if>
-		<if test="wxcode != null and wxcode != ''">
-			AND wxcode LIKE 
-			<if test="dbName == 'oracle'">'%'||#{wxcode}||'%'</if>
-			<if test="dbName == 'mssql'">'%'+#{wxcode}+'%'</if>
-			<if test="dbName == 'mysql'">CONCAT('%', #{wxcode}, '%')</if>
-		</if>
+			
+			<if test="phone != null and phone != ''">
+				AND a.phone = #{phone}
+			</if>
+			<if test="wxname != null and wxname != ''">
+				AND a.wxname = #{wxname}
+			</if>
+			<if test="wxcode != null and wxcode != ''">
+				AND a.wxcode = #{wxcode}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -68,11 +55,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="TAccount">
+	<select id="findAllList" resultType="Account">
 		SELECT 
-			<include refid="tAccountColumns"/>
-		FROM t_account a
-		<include refid="tAccountJoins"/>
+			<include refid="accountColumns"/>
+		FROM bisai_account a
+		<include refid="accountJoins"/>
 		<where>
 			
 		</where>		
@@ -86,10 +73,11 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO t_account(
+		INSERT INTO bisai_account(
 			id,
 			phone,
 			password,
+			openid,
 			wxname,
 			wxcode,
 			wxphoto,
@@ -103,6 +91,7 @@
 			#{id},
 			#{phone},
 			#{password},
+			#{openid},
 			#{wxname},
 			#{wxcode},
 			#{wxphoto},
@@ -116,9 +105,10 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE t_account SET 	
+		UPDATE bisai_account SET 	
 			phone = #{phone},
 			password = #{password},
+			openid = #{openid},
 			wxname = #{wxname},
 			wxcode = #{wxcode},
 			wxphoto = #{wxphoto},
@@ -132,8 +122,19 @@
 	</update>
 	
 	<update id="delete">
-		DELETE FROM t_account
+		DELETE FROM bisai_account
 		WHERE id = #{id}
 	</update>
-	
+	<select id="getAccountByOpenId" resultType="Account">
+		SELECT 
+			<include refid="accountColumns"/>
+		FROM bisai_account a
+		WHERE a.openid = #{openid}
+	</select>
+	<select id="getAccountByPhone" resultType="Account">
+		SELECT 
+			<include refid="accountColumns"/>
+		FROM bisai_account a
+		WHERE a.phone = #{phone}
+	</select>
 </mapper>

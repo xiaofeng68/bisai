@@ -10,15 +10,16 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
- * 用户账号Entity
+ * 比赛账号Entity
  * @author 小风
- * @version 2017-02-05
+ * @version 2017-02-09
  */
-public class TAccount extends DataEntity<TAccount> {
+public class Account extends DataEntity<Account> {
 	
 	private static final long serialVersionUID = 1L;
 	private String phone;		// 手机号
 	private String password;		// 密码
+	private String openid;		// openid
 	private String wxname;		// 昵称
 	private String wxcode;		// 微信号
 	private String wxphoto;		// 头像
@@ -28,13 +29,12 @@ public class TAccount extends DataEntity<TAccount> {
 	private Date createtime;		// 创建时间
 	private Date updatetime;		// 更新时间
 	private String state;		// 状态
-	private String openId;
 	
-	public TAccount() {
+	public Account() {
 		super();
 	}
 
-	public TAccount(String id){
+	public Account(String id){
 		super(id);
 	}
 
@@ -54,6 +54,15 @@ public class TAccount extends DataEntity<TAccount> {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	@Length(min=0, max=20, message="openid长度必须介于 0 和 20 之间")
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
 	}
 	
 	@Length(min=0, max=20, message="昵称长度必须介于 0 和 20 之间")
@@ -136,13 +145,5 @@ public class TAccount extends DataEntity<TAccount> {
 	public void setState(String state) {
 		this.state = state;
 	}
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
 	
 }
