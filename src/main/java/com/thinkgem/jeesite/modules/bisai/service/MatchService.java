@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.bisai.entity.Match;
 import com.thinkgem.jeesite.modules.bisai.dao.MatchDao;
+import com.thinkgem.jeesite.modules.bisai.entity.Match;
 
 /**
  * 比赛信息Service
@@ -21,7 +21,7 @@ import com.thinkgem.jeesite.modules.bisai.dao.MatchDao;
 @Service
 @Transactional(readOnly = true)
 public class MatchService extends CrudService<MatchDao, Match> {
-
+    
 	public Match get(String id) {
 		return super.get(id);
 	}
@@ -42,6 +42,17 @@ public class MatchService extends CrudService<MatchDao, Match> {
 	@Transactional(readOnly = false)
 	public void delete(Match match) {
 		super.delete(match);
+	}
+	/**   
+	 * @Title: updateMatchState   
+	 * @Description: 更新比赛状态
+	 * @param match
+	 * @author  author
+	 */
+	 
+	@Transactional(readOnly = false)
+	public void updateMatchState(Match match){
+	    dao.updateMatchState(match);
 	}
 	
 }

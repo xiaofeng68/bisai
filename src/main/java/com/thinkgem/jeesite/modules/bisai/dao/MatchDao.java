@@ -14,5 +14,12 @@ import com.thinkgem.jeesite.modules.bisai.entity.Match;
  */
 @MyBatisDao
 public interface MatchDao extends CrudDao<Match> {
-	
+	/**   
+	 * @Title: updateMatchState   
+	 * @Description: 更新比赛状态
+	 * @param match
+	 * @author  author
+	 */
+	 
+	void updateMatchState(Match match);
 }

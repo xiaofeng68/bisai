@@ -16,9 +16,14 @@
 		a.createtime AS "createtime",
 		a.updatetime AS "updatetime",
 		a.address AS "address",
+		a.detailAddress AS "detailAddress",
 		a.contacts AS "contacts",
 		a.phone AS "phone",
-		a.state AS "state"
+		a.state AS "state",
+		a.type AS "type",
+		a.lat AS "lat",
+		a.lng AS "lng",
+		a.counts AS "counts"
 	</sql>
 	
 	<sql id="matchJoins">
@@ -96,9 +101,14 @@
 			createtime,
 			updatetime,
 			address,
+			detailAddress,
 			contacts,
 			phone,
-			state
+			state,
+			type,
+			lat,
+			lng,
+			counts
 		) VALUES (
 			#{id},
 			#{name},
@@ -113,9 +123,14 @@
 			#{createtime},
 			#{updatetime},
 			#{address},
+			#{detailAddress},
 			#{contacts},
 			#{phone},
-			#{state}
+			#{state},
+			#{type},
+			#{lat},
+			#{lng},
+			#{counts}
 		)
 	</insert>
 	
@@ -133,9 +148,14 @@
 			createtime = #{createtime},
 			updatetime = #{updatetime},
 			address = #{address},
+			detailAddress = #{detailAddress},
 			contacts = #{contacts},
 			phone = #{phone},
-			state = #{state}
+			state = #{state},
+			type = #{type},
+			lat = #{lat},
+			lng = #{lng},
+			counts = #{counts}
 		WHERE id = #{id}
 	</update>
 	
@@ -143,5 +163,7 @@
 		DELETE FROM bisai_match
 		WHERE id = #{id}
 	</update>
-	
+	<update id="updateMatchState">
+		update bisai_match set state=#{state} where id = #{id}
+	</update>
 </mapper>

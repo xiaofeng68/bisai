@@ -15,3 +15,4 @@
 <script src="${ctxStaticFront}/js/js-box.js" type="text/javascript"></script>
 <script src="${ctxStaticFront}/js/script.js" type="text/javascript"></script>
 <script src="${ctxStaticFront}/js/yf.js" type="text/javascript"></script>
+<script src="${ctxStatic}/My97DatePicker/WdatePicker.js" type="text/javascript"></script>

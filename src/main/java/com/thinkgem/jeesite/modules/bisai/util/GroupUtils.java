@@ -489,9 +489,10 @@ public class GroupUtils {
 		arrayList.add("10");
 		arrayList.add("11");
 		arrayList.add("12");
-
+		//显示参赛集合
 		System.out.println(findupl(shuzu));
 		System.out.println(findupl(arrayList));
+		System.out.println("比赛分组");
 		System.out.println(fenzu(arrayList,4,"1"));
 		/**===================================================*/
 		List<BiSai> biSais = new ArrayList<BiSai>();

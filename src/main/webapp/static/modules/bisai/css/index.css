@@ -486,7 +486,7 @@
 	border-radius: 0.125rem;
     color: #fff;
     font-size: 0.85rem;
-    margin-left: 30%;
+    /* margin-left: 30%; */
 }
 .match_topll_sec ul{
 	width: 100%;
@@ -494,7 +494,7 @@
 }
 .match_topll_sec ul li{
 	float: left;
-	width: 33.3%;
+	width: 50%;
 	text-align: center;
 	border-right:1px solid #ececec;
 	line-height: 1.5rem;

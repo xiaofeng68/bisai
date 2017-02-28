@@ -1,6 +1,10 @@
 package com.thinkgem.jeesite.modules.bisai.web;
 
 
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -11,12 +15,16 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.MD5Util;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.bisai.entity.Account;
+import com.thinkgem.jeesite.modules.bisai.entity.Match;
 import com.thinkgem.jeesite.modules.bisai.global.GlobalBuss;
 import com.thinkgem.jeesite.modules.bisai.service.AccountService;
+import com.thinkgem.jeesite.modules.bisai.service.MatchService;
 import com.thinkgem.jeesite.modules.wx.util.WeixinUtil;
 
 import net.sf.json.JSONObject;
@@ -31,14 +39,16 @@ import net.sf.json.JSONObject;
 @RequestMapping(value = "${frontPath}")
 public class FrontController extends BaseController {
     @Autowired
-    private AccountService tAccountService;
+    private AccountService accountService;
+    @Autowired
+    private MatchService matchService;
     /**
      * 网站首页
      */
     @RequestMapping
     public String index(Model model) {
         model.addAttribute("isIndex", true);
-        return "mobile/modules/bisai/front/index";
+        return "modules/bisai/front/index";
     }
 
     /**
@@ -50,17 +60,17 @@ public class FrontController extends BaseController {
         // 判断用户是否登陆
         HttpSession session = request.getSession();
         if (session.getAttribute(GlobalBuss.CURRENTACCOUNT) != null) {// 已登陆
-            return "mobile/modules/bisai/front/about";
+            return "modules/bisai/front/about";
         }
         else {// 未登录
-            return "mobile/modules/bisai/front/login";
+            return "modules/bisai/front/login";
         }
     }
 
     /** 注册页面 */
     @RequestMapping(value = "regist${urlSuffix}")
     public String regist(HttpServletRequest request) {
-        return "mobile/modules/bisai/front/register";
+        return "modules/bisai/front/register";
     }
     /**微信用户授权*/
     @RequestMapping(value = "authtest")
@@ -75,7 +85,7 @@ public class FrontController extends BaseController {
         //第二步：通过code换取网页授权access_token
         JSONObject token = WeixinUtil.getUserToken(code);
         String openId = token.getString("openid");
-        Account tAccount = tAccountService.getAccountByOpenId(openId);
+        Account tAccount = accountService.getAccountByOpenId(openId);
         if(tAccount==null){
             //第四步：拉取用户信息(需scope为 snsapi_userinfo)
             JSONObject account = WeixinUtil.getUserInfo(token.getString("access_token"), openId);
@@ -85,21 +95,21 @@ public class FrontController extends BaseController {
             tAccount.setSex(account.getString("sex"));
             tAccount.setOpenid(account.getString("openid"));
             tAccount.setWxphoto(account.getString("headimgurl"));
-            tAccountService.save(tAccount);
+            accountService.save(tAccount);
             request.getSession().setAttribute("currentAccount", tAccount);
         }
         if(tAccount!=null && !StringUtils.isEmpty(tAccount.getPhone())){
-            return "mobile/modules/bisai/front/register";
+            return "modules/bisai/front/register";
         }
         //如果没有手机进行手机注册页面，并关联进行
-        return "mobile/modules/bisai/front/about";
+        return "modules/bisai/front/about";
     }
     @RequestMapping(value = "regist",method=RequestMethod.POST)
     public String registAccount(HttpServletRequest request,Account account){
         //判断手机是否注册
-        Account tAccount = tAccountService.getAccountByPhone(account.getPhone());
+        Account tAccount = accountService.getAccountByPhone(account.getPhone());
         if(tAccount!=null){//已注册
-            return "redirect:mobile/modules/bisai/front/login";
+            return "redirect:modules/bisai/front/login";
         }else{
             account.setPassword(MD5Util.md5Hex(account.getPassword()));
             request.getSession().setAttribute(GlobalBuss.CURRENTACCOUNT, account);
@@ -111,25 +121,50 @@ public class FrontController extends BaseController {
     @RequestMapping(value = "login",method=RequestMethod.POST)
     public String loginAccount(HttpServletRequest request,Account account) {
         account.setPassword(MD5Util.md5Hex(account.getPassword()));
-        Account dbaccount = tAccountService.getAccountByPhone(account.getPhone());
+        Account dbaccount = accountService.getAccountByPhone(account.getPhone());
         if(dbaccount==null){//账号不存在
             request.setAttribute(GlobalBuss.ACCOUNTERROR, true);
-            return "mobile/modules/bisai/front/login"; 
+            return "modules/bisai/front/login"; 
         }else if(!dbaccount.getPassword().equals(account.getPassword())){//密码错误
             request.setAttribute(GlobalBuss.PASSWDERROR, true);
-            return "mobile/modules/bisai/front/login"; 
+            return "modules/bisai/front/login"; 
         }
         request.getSession().setAttribute(GlobalBuss.CURRENTACCOUNT, dbaccount);
-        return "mobile/modules/bisai/front/about"; 
+        return "modules/bisai/front/about"; 
     }
     /**賽事列表*/
     @RequestMapping(value = "match${urlSuffix}")
-    public String match(HttpServletRequest request) {
-        return "mobile/modules/bisai/front/match";
+    public String match(HttpServletRequest request,HttpServletResponse response,Model model) {
+        Page<Match> page = matchService.findPage(new Page<Match>(request, response), new Match()); 
+        model.addAttribute("page", page);
+        return "modules/bisai/front/match";
     }
     /**赛事申请*/
     @RequestMapping(value = "apply${urlSuffix}")
     public String apply(HttpServletRequest request) {
-        return "mobile/modules/bisai/front/apply";
+        return "modules/bisai/front/apply";
     }
+    @RequestMapping(value="apply_s${urlSuffix}",method=RequestMethod.POST)
+    public String apply_s(HttpServletRequest request,Match match,RedirectAttributes redirectAttributes){
+        Date time = new Date();
+        match.setState("0");
+        match.setCreatetime(time);
+        match.setUpdatetime(time);
+        matchService.save(match);
+        addMessage(redirectAttributes, "比赛申请成功，请耐心等待管理员审批。");
+        return "modules/bisai/front/match";
+    }
+    @RequestMapping(value = "activity${urlSuffix}")
+    public String activity(String id,HttpServletRequest request,Model model) {
+        Match match = matchService.get(id);
+        model.addAttribute("match", match);
+        List<String> orgs = Arrays.asList(match.getOrgs().split(","));
+        model.addAttribute("orgs", orgs);
+        List<String> contractors = Arrays.asList(match.getContractor().split(","));
+        model.addAttribute("contractors", contractors);
+        List<String> sponsors = Arrays.asList(match.getSponsors().split(","));
+        model.addAttribute("sponsors", sponsors);
+        return "modules/bisai/front/activity";
+    }
+    
 }

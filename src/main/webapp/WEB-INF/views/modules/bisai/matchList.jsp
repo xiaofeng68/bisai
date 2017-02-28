@@ -51,7 +51,7 @@
 				<th>赞助商</th>
 				<th>报名开始时间</th>
 				<th>报名结束时间</th>
-				<th>0：发起中，1报名中，2：进行中，已关闭</th>
+				<th>状态</th>
 				<shiro:hasPermission name="bisai:match:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -77,12 +77,32 @@
 					<fmt:formatDate value="${match.regendtime}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					${match.state}
+					<c:choose>
+					<c:when test="${match.state==0}">
+						申请中
+					</c:when>
+					<c:when test="${match.state==1}">
+						报名中
+					</c:when>
+					<c:when test="${match.state==2}">
+						进行中
+					</c:when>
+					<c:otherwise>
+						关闭
+					</c:otherwise>
+					</c:choose>
 				</td>
-				<shiro:hasPermission name="bisai:match:edit"><td>
+				<td>
+				<shiro:hasPermission name="bisai:match:edit">
     				<a href="${ctx}/bisai/match/form?id=${match.id}">修改</a>
 					<a href="${ctx}/bisai/match/delete?id=${match.id}" onclick="return confirmx('确认要删除该比赛吗？', this.href)">删除</a>
-				</td></shiro:hasPermission>
+				</shiro:hasPermission>
+				<c:if test="${match.state==0 }">
+				<shiro:hasPermission name="bisai:match:grant">
+    				<a href="${ctx}/bisai/match/grant?id=${match.id}&state=1">通过</a>
+				</shiro:hasPermission>
+				</c:if>
+				</td>
 			</tr>
 		</c:forEach>
 		</tbody>

@@ -29,11 +29,16 @@ public class Match extends DataEntity<Match> {
 	private Date createtime;		// 创建时间
 	private Date updatetime;		// 更新时间
 	private String address;		// 举办地
+	private String detailAddress;
 	private String contacts;		// 联系人
 	private String phone;		// 联系电话
 	private String state;		// 0：发起中，1报名中，2：进行中，已关闭
+	private String type;//类型
+	private Double lat;
+	private Double lng;
+	private Integer counts;
 	
-	public Match() {
+    public Match() {
 		super();
 	}
 
@@ -174,5 +179,44 @@ public class Match extends DataEntity<Match> {
 	public void setState(String state) {
 		this.state = state;
 	}
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+
+    public Integer getCounts() {
+        return counts;
+    }
+
+    public void setCounts(Integer counts) {
+        this.counts = counts;
+    }
+
+    public String getDetailAddress() {
+        return detailAddress;
+    }
+
+    public void setDetailAddress(String detailAddress) {
+        this.detailAddress = detailAddress;
+    }
 	
 }

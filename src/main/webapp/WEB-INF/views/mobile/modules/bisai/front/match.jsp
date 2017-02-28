@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>JeeSite</title>
+	<title>${siteTitle }</title>
 	<meta name="decorator" content="bisai" />
-	<meta name="description" content="JeeSite" />
-	<meta name="keywords" content="JeeSite" />
+	<meta name="description" content="${siteDescription }" />
+	<meta name="keywords" content="${siteKeywords }" />
 	<script type="text/javascript">
 $(function(){
 	$(".div_select").each(function(){
@@ -51,38 +51,14 @@ function divselect(divselectid,inputselectid) {
 					<img src="${ctxStaticFront}/images/r-arrow.png"></a>
 			</span>
 			<span class="match_topll_c">赛事列表</span>
-			<div class="fr match_topll_r">
-				<div id="divselect1" class="div_select" div-select-val="1">
-					<cite>全部赛事</cite>
-					<ul>
-						<li>
-							<a href="javascript:;" selectid="1">全部赛事</a>
-						</li>
-						<li>
-							<a href="javascript:;" selectid="2">取消的赛事</a>
-						</li>
-						<li>
-							<a href="javascript:;" selectid="2">全部赛事</a>
-						</li>
-						<li>
-							<a href="javascript:;" selectid="2">全部赛事</a>
-						</li>
-					</ul>
-				</div>
-				<input name="" type="hidden" value="" id="inputselect1"/>
-			</div>
 		</div>
 		<div class="match_topll_sec">
 			<ul class="clearfix">
 				<li class="active"> <em class="sec_bg2"></em>
-					<span>赛事</span>
+					<span>所有赛事</span>
 				</li>
 				<li> <em class="sec_bg1"></em>
-					<span>俱乐部</span>
-				</li>
-				<li>
-					<em class="sec_bg3"></em>
-					<span>自由</span>
+					<span>我的赛事</span>
 				</li>
 			</ul>
 		</div>
@@ -98,101 +74,80 @@ function divselect(divselectid,inputselectid) {
 				<a href="${ctx }/${frontPath}apply${urlSuffix}">申请比赛</a>
 			</div>
 			<ul>
+			<c:forEach items="${page.list}" var="match">
 				<li>
-					<a href="#">
+					<a href="${ctx }/${frontPath}activity${urlSuffix}?id=${match.id}">
 						<div class="clearfix">
 							<div class="fl clearfix suggestll">
-								<img class="img24 fl" src="${ctxStaticFront}/images/img24.png">
+								<c:choose>
+									<c:when test="${match.state==2 }">
+									<img class="img24 fl" src="${ctxStaticFront}/images/img25-2.png">
+									</c:when>
+									<c:when test="${match.state==-1 }">
+									<img class="img24 fl" src="${ctxStaticFront}/images/img26.png">
+									</c:when>
+									<c:otherwise>
+									<img class="img24 fl" src="${ctxStaticFront}/images/img24.png">
+									</c:otherwise>
+								</c:choose>
 								<div class="fl suggestlx">
-									<p class="ellipsis">XXX羽毛球比赛</p>
-									<p class="ellipsis">主办单位/会员名</p>
+									<p class="ellipsis">${match.name }</p>
+									<p class="ellipsis">${ fn:split(match.orgs, ',')[0] }</p>
 								</div>
 							</div>
-							<div class="fr namell">20km</div>
+							<div class="fr namell"><!-- 20km --></div>
 						</div>
 						<div>
-							<span class="timell">1月12日-1月19日</span>
+							<span class="timell"><fmt:formatDate value="${match.starttime }" pattern="M月d日"/>-<fmt:formatDate value="${match.endtime }" pattern="M月d日"/></span>
 						</div>
-						<div class="suggestlx1">天津某某羽毛球馆</div>
+						<div class="suggestlx1">${match.address }${match.detailAddress }</div>
 						<div class="positionll">
 							<em class="em1"></em>
-							<p>总报名人数：10人</p>
+							<p>人数：${match.counts }人</p>
 						</div>
 					</a>
 				</li>
-				<li>
-					<a href="#">
-						<div class="clearfix">
-							<div class="fl clearfix suggestll">
-								<img class="img24 fl" src="${ctxStaticFront}/images/img24.png">
-								<div class="fl suggestlx">
-									<p class="ellipsis">XXX羽毛球比赛</p>
-									<p class="ellipsis">主办单位/会员名</p>
-								</div>
-							</div>
-							<div class="fr namell">20km</div>
-						</div>
-						<div>
-							<span class="timell">1月12日-1月19日</span>
-
-						</div>
-						<div class="suggestlx1">天津某某羽毛球馆</div>
-						<div class="positionll">
-							<em class="em3"></em>
-							<p>总报名人数：10人</p>
-						</div>
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<div class="clearfix">
-							<div class="fl clearfix suggestll">
-								<img class="img24 fl" src="${ctxStaticFront}/images/img24.png">
-								<div class="fl suggestlx">
-									<p class="ellipsis">XXX羽毛球比赛</p>
-									<p class="ellipsis">主办单位/会员名</p>
-								</div>
-							</div>
-							<div class="fr namell">20km</div>
-						</div>
-						<div>
-							<span class="timell">1月12日-1月19日</span>
-
-						</div>
-						<div class="suggestlx1">天津某某羽毛球馆</div>
-						<div class="positionll">
-							<em class="em4"></em>
-							<p>总报名人数：10人</p>
-						</div>
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<div class="clearfix">
-							<div class="fl clearfix suggestll">
-								<img class="img24 fl" src="${ctxStaticFront}/images/img24.png">
-								<div class="fl suggestlx">
-									<p class="ellipsis">XXX羽毛球比赛</p>
-									<p class="ellipsis">主办单位/会员名</p>
-								</div>
-							</div>
-							<div class="fr namell">20km</div>
-						</div>
-						<div>
-							<span class="timell">1月12日-1月19日</span>
-
-						</div>
-						<div class="suggestlx1">天津某某羽毛球馆</div>
-						<div class="positionll">
-							<em class="em2"></em>
-							<p>总报名人数：10人</p>
-						</div>
-					</a>
-				</li>
+			</c:forEach>
 			</ul>
 		</div>
-		<div class="match_fourll" style="display:none">11111111</div>
-		<div class="match_fourll" style="display:none">2222222222</div>
+		<div class="match_fourll" style="display:none">
+		<ul>
+			<c:forEach items="${page.list}" var="match">
+				<li>
+					<a href="${ctx }/${frontPath}activity${urlSuffix}?id=${match.id}">
+						<div class="clearfix">
+							<div class="fl clearfix suggestll">
+								<c:choose>
+									<c:when test="${match.state==2 }">
+									<img class="img24 fl" src="${ctxStaticFront}/images/img25-2.png">
+									</c:when>
+									<c:when test="${match.state==-1 }">
+									<img class="img24 fl" src="${ctxStaticFront}/images/img26.png">
+									</c:when>
+									<c:otherwise>
+									<img class="img24 fl" src="${ctxStaticFront}/images/img24.png">
+									</c:otherwise>
+								</c:choose>
+								<div class="fl suggestlx">
+									<p class="ellipsis">${match.name }</p>
+									<p class="ellipsis">${match.orgs }</p>
+								</div>
+							</div>
+							<div class="fr namell"></div>
+						</div>
+						<div>
+							<span class="timell"><fmt:formatDate value="${match.starttime }" pattern="M月d日"/>-<fmt:formatDate value="${match.endtime }" pattern="M月d日"/></span>
+						</div>
+						<div class="suggestlx1">${match.address }${match.detailAddress }</div>
+						<div class="positionll">
+							<em class="em1"></em>
+							<p>人数：${match.counts }人</p>
+						</div>
+					</a>
+				</li>
+			</c:forEach>
+			</ul>
+		</div>
 	</section>
 </body>
 </html>

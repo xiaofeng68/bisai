@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.bisai.web;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,8 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.bisai.entity.Match;
 import com.thinkgem.jeesite.modules.bisai.service.MatchService;
 
@@ -79,5 +81,13 @@ public class MatchController extends BaseController {
 		addMessage(redirectAttributes, "删除比赛成功");
 		return "redirect:"+Global.getAdminPath()+"/bisai/match/?repage";
 	}
-
+	@RequiresPermissions("bisai:match:grant")
+    @RequestMapping(value = "grant")
+    public String grant(Match match, RedirectAttributes redirectAttributes) {
+	    match.setUpdatetime(new Date());
+        matchService.updateMatchState(match);
+        addMessage(redirectAttributes, "比赛申请通过");
+        return "redirect:"+Global.getAdminPath()+"/bisai/match/?repage";
+    }
+	
 }
