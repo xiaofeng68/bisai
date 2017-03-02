@@ -29,6 +29,7 @@ public class Account extends DataEntity<Account> {
 	private Date createtime;		// 创建时间
 	private Date updatetime;		// 更新时间
 	private String state;		// 状态
+	private String img;//头像
 	
 	public Account() {
 		super();
@@ -145,5 +146,13 @@ public class Account extends DataEntity<Account> {
 	public void setState(String state) {
 		this.state = state;
 	}
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 	
 }

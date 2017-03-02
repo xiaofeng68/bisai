@@ -3,11 +3,13 @@
  */
 package com.thinkgem.jeesite.modules.bisai.entity;
 
-import org.hibernate.validator.constraints.Length;
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
+import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 
 /**
  * 比赛信息Entity
@@ -37,6 +39,8 @@ public class Match extends DataEntity<Match> {
 	private Double lat;
 	private Double lng;
 	private Integer counts;
+	private Account account;
+	private User user;
 	
     public Match() {
 		super();
@@ -217,6 +221,23 @@ public class Match extends DataEntity<Match> {
 
     public void setDetailAddress(String detailAddress) {
         this.detailAddress = detailAddress;
+    }
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 	
 }

@@ -3,25 +3,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>JeeSite</title>
+	<title>${siteTitle }</title>
+	<meta name="keywords" content="${siteKeywords }">
+    <meta name="description" content="${siteDescription }">
 	<meta name="decorator" content="bisai" />
-	<meta name="description" content="JeeSite" />
-	<meta name="keywords" content="JeeSite" />
 </head>
 <body>
 	<section class="about_sectionll">
 		<div class="about_warpll">
 			<div class="clearfix">
 				<span class="fl warp_lll">
-					<img src="images/img10.png">
+					<img src="${ctxStaticFront}/images/img10.png">
 				</span>
-				<span class="fr warp_rll">签到</span>
+				<span class="fr warp_rll"><a href="${ctx }/${frontPath}/logout">退出</a></span>
 			</div>
 			<div class="warp_headll">
-				<img class="img11" src="images/img11.png">
+				<img class="img11" src="${ctxStaticFront}/images/img11.png">
 				<p>
 					<span class="v-m">上次前年</span>
-					<img class="img12" src="images/img12.png">
+					<img class="img12" src="${ctxStaticFront}/images/img12.png">
 				</p>
 			</div>
 		</div>
@@ -29,25 +29,25 @@
 			<ul class="clearfix">
 				<li>
 					<a href="#">
-						<img src="images/img13.png">
+						<img src="${ctxStaticFront}/images/img13.png">
 						<p>我的相册</p>
 					</a>
 				</li>
 				<li>
 					<a href="#">
-						<img src="images/img14.png">
+						<img src="${ctxStaticFront}/images/img14.png">
 						<p>我的战绩</p>
 					</a>
 				</li>
 				<li>
 					<a href="#">
-						<img src="images/img15.png">
+						<img src="${ctxStaticFront}/images/img15.png">
 						<p>积分管理</p>
 					</a>
 				</li>
 				<li>
 					<a href="#">
-						<img src="images/img16.png">
+						<img src="${ctxStaticFront}/images/img16.png">
 						<p>活动报名</p>
 					</a>
 				</li>
@@ -56,7 +56,7 @@
 		<div class="about_secll">
 			<div class="clearfix titlell">
 				<div class="clearfix fl titlell_l">
-					<img class="fl img17 v-m" src="images/img17.png">
+					<img class="fl img17 v-m" src="${ctxStaticFront}/images/img17.png">
 					<div class="fl">
 						<p>
 							<span>当前等级：</span>
@@ -69,7 +69,7 @@
 				</div>
 				<div class="fr titlell_r tr">
 					<a href="#">
-						<img class="l_arrow" src="images/l-arrow.png">
+						<img class="l_arrow" src="${ctxStaticFront}/images/l-arrow.png">
 					</a>
 				</div>
 			</div>
@@ -96,34 +96,34 @@
 			<ul>
 				<li class="clearfix">
 					<p class="fl">
-						<img class="img18" src="images/img18.png">
+						<img class="img18" src="${ctxStaticFront}/images/img18.png">
 						<span class="v-m">修改资料</span>
 					</p>
 					<span class="fr">
 						<a href="#">
-							<img class="l_arrow" src="images/l-arrow.png">
+							<img class="l_arrow" src="${ctxStaticFront}/images/l-arrow.png">
 						</a>
 					</span>
 				</li>
 				<li class="clearfix">
 					<p class="fl">
-						<img class="img19" src="images/img19.png">
+						<img class="img19" src="${ctxStaticFront}/images/img19.png">
 						<span class="v-m">赛事管理</span>
 					</p>
 					<span class="fr">
 						<a href="#">
-							<img class="l_arrow" src="images/l-arrow.png">
+							<img class="l_arrow" src="${ctxStaticFront}/images/l-arrow.png">
 						</a>
 					</span>
 				</li>
 				<li class="clearfix">
 					<p class="fl">
-						<img class="img20" src="images/img20.png">
+						<img class="img20" src="${ctxStaticFront}/images/img20.png">
 						<span class="v-m">所属俱乐部</span>
 					</p>
 					<span class="fr">
 						<a href="#">
-							<img class="l_arrow" src="images/l-arrow.png">
+							<img class="l_arrow" src="${ctxStaticFront}/images/l-arrow.png">
 						</a>
 					</span>
 				</li>
@@ -133,23 +133,23 @@
 			<ul>
 				<li class="clearfix">
 					<p class="fl">
-						<img class="img21" src="images/img21.png">
+						<img class="img21" src="${ctxStaticFront}/images/img21.png">
 						<span class="v-m">系统消息</span>
 					</p>
 					<span class="fr">
 						<a href="#">
-							<img class="l_arrow" src="images/l-arrow.png">
+							<img class="l_arrow" src="${ctxStaticFront}/images/l-arrow.png">
 						</a>
 					</span>
 				</li>
 				<li class="clearfix">
 					<p class="fl">
-						<img class="img22" src="images/img22.png">
+						<img class="img22" src="${ctxStaticFront}/images/img22.png">
 						<span class="v-m">设置</span>
 					</p>
 					<span class="fr">
 						<a href="#">
-							<img class="l_arrow" src="images/l-arrow.png">
+							<img class="l_arrow" src="${ctxStaticFront}/images/l-arrow.png">
 						</a>
 					</span>
 				</li>

@@ -45,21 +45,19 @@ function divselect(divselectid,inputselectid) {
 </head>
 <body>
 	<section class="match_sectionll">
-		<div class="match_topll">
-			<span class="fl match_topll_l">
-				<a href="#">
-					<img src="${ctxStaticFront}/images/r-arrow.png"></a>
-			</span>
-			<span class="match_topll_c">赛事列表</span>
-		</div>
+		<div class="match_link">
+				<a href="${ctx }/${frontPath}apply${urlSuffix}">申请比赛</a>
+			</div>
 		<div class="match_topll_sec">
 			<ul class="clearfix">
 				<li class="active"> <em class="sec_bg2"></em>
 					<span>所有赛事</span>
 				</li>
+				<c:if test="${CURRENTACCOUNT!=null }">
 				<li> <em class="sec_bg1"></em>
 					<span>我的赛事</span>
 				</li>
+				</c:if>
 			</ul>
 		</div>
 		<div class="match_topll_thir">
@@ -70,9 +68,6 @@ function divselect(divselectid,inputselectid) {
 			</form>
 		</div>
 		<div class="match_fourll">
-			<div class="match_link">
-				<a href="${ctx }/${frontPath}apply${urlSuffix}">申请比赛</a>
-			</div>
 			<ul>
 			<c:forEach items="${page.list}" var="match">
 				<li>
@@ -80,14 +75,11 @@ function divselect(divselectid,inputselectid) {
 						<div class="clearfix">
 							<div class="fl clearfix suggestll">
 								<c:choose>
-									<c:when test="${match.state==2 }">
-									<img class="img24 fl" src="${ctxStaticFront}/images/img25-2.png">
-									</c:when>
-									<c:when test="${match.state==-1 }">
-									<img class="img24 fl" src="${ctxStaticFront}/images/img26.png">
+									<c:when test="${not empty match.account and not empty match.account.img}">
+										<img class="img24 fl" src="${match.account.img }">
 									</c:when>
 									<c:otherwise>
-									<img class="img24 fl" src="${ctxStaticFront}/images/img24.png">
+										<img class="img24 fl" src="${ctxStaticFront}/images/img11.png">
 									</c:otherwise>
 								</c:choose>
 								<div class="fl suggestlx">
@@ -102,7 +94,7 @@ function divselect(divselectid,inputselectid) {
 						</div>
 						<div class="suggestlx1">${match.address }${match.detailAddress }</div>
 						<div class="positionll">
-							<em class="em1"></em>
+							<em class="em${match.state }"></em>
 							<p>人数：${match.counts }人</p>
 						</div>
 					</a>
@@ -110,22 +102,20 @@ function divselect(divselectid,inputselectid) {
 			</c:forEach>
 			</ul>
 		</div>
-		<div class="match_fourll" style="display:none">
+		<c:if test="${CURRENTACCOUNT!=null }">
+		<div class="match_fourll" style="display:none;">
 		<ul>
-			<c:forEach items="${page.list}" var="match">
+			<c:forEach items="${mypage.list}" var="match">
 				<li>
 					<a href="${ctx }/${frontPath}activity${urlSuffix}?id=${match.id}">
 						<div class="clearfix">
 							<div class="fl clearfix suggestll">
 								<c:choose>
-									<c:when test="${match.state==2 }">
-									<img class="img24 fl" src="${ctxStaticFront}/images/img25-2.png">
-									</c:when>
-									<c:when test="${match.state==-1 }">
-									<img class="img24 fl" src="${ctxStaticFront}/images/img26.png">
+									<c:when test="${not empty match.account and not empty match.account.img}">
+										<img class="img24 fl" src="${match.account.img }">
 									</c:when>
 									<c:otherwise>
-									<img class="img24 fl" src="${ctxStaticFront}/images/img24.png">
+										<img class="img24 fl" src="${ctxStaticFront}/images/img11.png">
 									</c:otherwise>
 								</c:choose>
 								<div class="fl suggestlx">
@@ -140,7 +130,7 @@ function divselect(divselectid,inputselectid) {
 						</div>
 						<div class="suggestlx1">${match.address }${match.detailAddress }</div>
 						<div class="positionll">
-							<em class="em1"></em>
+							<em class="em${match.state }"></em>
 							<p>人数：${match.counts }人</p>
 						</div>
 					</a>
@@ -148,6 +138,7 @@ function divselect(divselectid,inputselectid) {
 			</c:forEach>
 			</ul>
 		</div>
+		</c:if>
 	</section>
 </body>
 </html>

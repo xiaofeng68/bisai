@@ -109,13 +109,16 @@ public class FrontController extends BaseController {
         //判断手机是否注册
         Account tAccount = accountService.getAccountByPhone(account.getPhone());
         if(tAccount!=null){//已注册
-            return "redirect:modules/bisai/front/login";
+            request.setAttribute("errorMsg", "当前手机号已被注册！");
+            return "modules/bisai/front/register";
         }else{
             account.setPassword(MD5Util.md5Hex(account.getPassword()));
+            accountService.save(account);
             request.getSession().setAttribute(GlobalBuss.CURRENTACCOUNT, account);
+            return "modules/bisai/front/about";
             //第一步：用户同意授权，获取code
-            String projectPath = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-            return "redirect:"+WeixinUtil.getWxCode(projectPath+"wxoauth");
+            //String projectPath = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+            //return "redirect:"+WeixinUtil.getWxCode(projectPath+"wxoauth");
         }
     }
     @RequestMapping(value = "login",method=RequestMethod.POST)
@@ -132,10 +135,23 @@ public class FrontController extends BaseController {
         request.getSession().setAttribute(GlobalBuss.CURRENTACCOUNT, dbaccount);
         return "modules/bisai/front/about"; 
     }
+    
+    @RequestMapping(value = "logout")
+    public String logout(HttpServletRequest request ,HttpServletResponse response){
+        request.getSession().removeAttribute(GlobalBuss.CURRENTACCOUNT);
+        return "modules/bisai/front/index";
+    }
     /**賽事列表*/
     @RequestMapping(value = "match${urlSuffix}")
     public String match(HttpServletRequest request,HttpServletResponse response,Model model) {
-        Page<Match> page = matchService.findPage(new Page<Match>(request, response), new Match()); 
+        Account account = (Account) request.getSession().getAttribute(GlobalBuss.CURRENTACCOUNT);
+        if(account!=null){//我的赛事
+            Match match = new Match();
+            match.setAccount(account);
+            Page<Match> page = matchService.findPage(new Page<Match>(request, response), match); 
+            model.addAttribute("mypage", page);
+        }
+        Page<Match> page = matchService.findAllMatch(new Page<Match>(request, response)); 
         model.addAttribute("page", page);
         return "modules/bisai/front/match";
     }
@@ -158,6 +174,9 @@ public class FrontController extends BaseController {
     public String activity(String id,HttpServletRequest request,Model model) {
         Match match = matchService.get(id);
         model.addAttribute("match", match);
+        //根据状态进行跳转页面
+        String state = match.getState();
+        if(StringUtils.isEmpty(state)) throw new RuntimeException("状态码错误，请联系管理员");
         List<String> orgs = Arrays.asList(match.getOrgs().split(","));
         model.addAttribute("orgs", orgs);
         List<String> contractors = Arrays.asList(match.getContractor().split(","));

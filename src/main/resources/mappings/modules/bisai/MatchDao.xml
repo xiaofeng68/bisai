@@ -23,10 +23,17 @@
 		a.type AS "type",
 		a.lat AS "lat",
 		a.lng AS "lng",
-		a.counts AS "counts"
+		a.counts AS "counts",
+		a.accountid AS "account.id",
+		u1.phone AS "account.phone",
+		a.userid AS "user.id",
+		u.name AS "user.name",
+		u1.img As "account.img"
 	</sql>
 	
 	<sql id="matchJoins">
+	left join bisai_account u1 on u1.id = a.accountid
+	left join sys_user u on u.id = a.userid
 	</sql>
     
 	<select id="get" resultType="Match">
@@ -58,6 +65,9 @@
 			</if>
 			<if test="sponsors != null and sponsors != ''">
 				AND a.sponsors = #{sponsors}
+			</if>
+			<if test="account != null and account.id!=null and account.id != ''">
+				AND a.accountid = #{account.id}
 			</if>
 		</where>
 		<choose>
@@ -108,6 +118,12 @@
 			type,
 			lat,
 			lng,
+			<if test="account!=null and account.id!=null and account.id!=''">
+			accountid,
+			</if>
+			<if test="user!=null and user.id!=null and user.id!=''">
+			userid,
+			</if>
 			counts
 		) VALUES (
 			#{id},
@@ -130,7 +146,14 @@
 			#{type},
 			#{lat},
 			#{lng},
+			<if test="account!=null and account.id!=null and account.id!=''">
+			#{account.id},
+			</if>
+			<if test="user!=null and user.id!=null and user.id!=''">
+			#{user.id},
+			</if>
 			#{counts}
+			
 		)
 	</insert>
 	
@@ -155,6 +178,12 @@
 			type = #{type},
 			lat = #{lat},
 			lng = #{lng},
+			<if test="account!=null and account.id!=null and account.id!=''">
+			accountid = #{account.id},
+			</if>
+			<if test="user!=null and user.id!=null and user.id!=''">
+			userid = #{user.id},
+			</if>
 			counts = #{counts}
 		WHERE id = #{id}
 	</update>
@@ -166,4 +195,20 @@
 	<update id="updateMatchState">
 		update bisai_match set state=#{state} where id = #{id}
 	</update>
+	<select id="findAllMatch" resultType="Match">
+		SELECT 
+			<include refid="matchColumns"/>
+		FROM bisai_match a
+		<include refid="matchJoins"/>
+		<where>
+			and a.state>0
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
 </mapper>

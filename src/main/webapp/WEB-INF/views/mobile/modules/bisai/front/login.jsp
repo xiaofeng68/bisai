@@ -16,6 +16,7 @@
 	<link rel="stylesheet" type="text/css" href="${ctxStaticFront}/css/lunbo.css" media="all">
 	<script type="text/javascript" src="${ctxStaticFront}/js/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="${ctxStaticFront}/js/pub.js"></script>
+	<script src="${ctxStaticFront}/js/js-box.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		function checkAccount(){
 			if(!validatemobile($("#phone").val())){
@@ -31,17 +32,20 @@
 	</script>
 </head>
 <body>
-	<header>
-		<div class="login_top">
-			登录
-		</div>
+	<header class="grouping_header clearfix">
+		<span class="fl">
+			<a href="${ctx }/${frontPath}">
+				<img src="${ctxStaticFront }/images/r-arrow.png">
+			</a>
+		</span>
+		<span>登录</span>
 	</header>
 	<section>
 		<div class="login_logo">
 			<img src="${ctxStaticFront}/images/logo.png">
 		</div>
 		<div class="login_form">
-			<form action="${ctx}/${frontPath}/login" method="post" onsubmit="return checkAccount()">
+			<form action="${ctx}/${frontPath}login" method="post" onsubmit="return checkAccount()">
 				<div class="background">
 					<div>
 						<input class="tell1" name="phone" id="phone" type="text" placeholder="手机号码">

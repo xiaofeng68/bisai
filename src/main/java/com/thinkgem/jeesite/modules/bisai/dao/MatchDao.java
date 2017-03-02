@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.bisai.dao;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.bisai.entity.Match;
@@ -22,4 +24,7 @@ public interface MatchDao extends CrudDao<Match> {
 	 */
 	 
 	void updateMatchState(Match match);
+	
+	List<Match> findAllMatch(Match match);
+    
 }

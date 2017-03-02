@@ -15,7 +15,8 @@
 		a.des AS "des",
 		a.createtime AS "createtime",
 		a.updatetime AS "updatetime",
-		a.state AS "state"
+		a.state AS "state",
+		a.img AS "img"
 	</sql>
 	
 	<sql id="accountJoins">
@@ -74,7 +75,6 @@
 	
 	<insert id="insert">
 		INSERT INTO bisai_account(
-			id,
 			phone,
 			password,
 			openid,
@@ -86,9 +86,9 @@
 			des,
 			createtime,
 			updatetime,
-			state
+			state,
+			img
 		) VALUES (
-			#{id},
 			#{phone},
 			#{password},
 			#{openid},
@@ -100,7 +100,8 @@
 			#{des},
 			#{createtime},
 			#{updatetime},
-			#{state}
+			#{state},
+			${img}
 		)
 	</insert>
 	
@@ -117,7 +118,8 @@
 			des = #{des},
 			createtime = #{createtime},
 			updatetime = #{updatetime},
-			state = #{state}
+			state = #{state},
+			img = #{img}
 		WHERE id = #{id}
 	</update>
 	
