@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>JeeSite</title>
-	<meta name="description" content="JeeSite" />
-	<meta name="keywords" content="JeeSite" />
+	<title>${siteTitle }</title>
+	<meta name="keywords" content="${siteKeywords }">
+    <meta name="description" content="${siteDescription }">
 	<link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/incstyle.css" media="all">
 	<link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/index.css" media="all">
 	<script type="text/javascript" src="${ctxStaticFront }/js/jquery.min.js"></script>

@@ -8,9 +8,9 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta content="telephone=no" name="format-detection">
-	<title>活动详情</title>
-	<meta name="keywords" content="关键字">
-    <meta name="description" content="">
+	<title>${siteTitle }</title>
+	<meta name="keywords" content="${siteKeywords }">
+    <meta name="description" content="${siteDescription }">
 	<link rel="stylesheet" type="text/css" href="${ctxStaticFront}/css/incstyle.css" media="all">
 	<link rel="stylesheet" type="text/css" href="${ctxStaticFront}/css/index.css" media="all">
 </head>

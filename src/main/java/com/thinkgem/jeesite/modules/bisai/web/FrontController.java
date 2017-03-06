@@ -177,13 +177,22 @@ public class FrontController extends BaseController {
         //根据状态进行跳转页面
         String state = match.getState();
         if(StringUtils.isEmpty(state)) throw new RuntimeException("状态码错误，请联系管理员");
-        List<String> orgs = Arrays.asList(match.getOrgs().split(","));
-        model.addAttribute("orgs", orgs);
-        List<String> contractors = Arrays.asList(match.getContractor().split(","));
-        model.addAttribute("contractors", contractors);
-        List<String> sponsors = Arrays.asList(match.getSponsors().split(","));
-        model.addAttribute("sponsors", sponsors);
-        return "modules/bisai/front/activity";
+        if("0".equals(state)){
+            List<String> orgs = Arrays.asList(match.getOrgs().split(","));
+            model.addAttribute("orgs", orgs);
+            List<String> contractors = Arrays.asList(match.getContractor().split(","));
+            model.addAttribute("contractors", contractors);
+            List<String> sponsors = Arrays.asList(match.getSponsors().split(","));
+            model.addAttribute("sponsors", sponsors);
+            return "modules/bisai/front/apply";
+        }else if("1".equals(state)){
+            return "modules/bisai/front/activity";
+        }else if("2".equals(state)){
+            
+        }else if("-1".equals(state)){
+            
+        }
+        return null;
     }
     
 }

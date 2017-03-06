@@ -2,13 +2,11 @@ function validatemobile(mobile){
        if(mobile.length==0) 
        { 
           alert('请输入手机号码！'); 
-          document.form1.mobile.focus(); 
           return false; 
        }     
        if(mobile.length!=11) 
        { 
            alert('请输入有效的手机号码！'); 
-           document.form1.mobile.focus(); 
            return false; 
        } 
         
@@ -16,7 +14,6 @@ function validatemobile(mobile){
        if(!myreg.test(mobile)) 
        { 
            alert('请输入有效的手机号码！'); 
-           document.form1.mobile.focus(); 
            return false; 
        } 
        return true;

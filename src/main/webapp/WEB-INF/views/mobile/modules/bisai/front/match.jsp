@@ -92,7 +92,7 @@ function divselect(divselectid,inputselectid) {
 						<div>
 							<span class="timell"><fmt:formatDate value="${match.starttime }" pattern="M月d日"/>-<fmt:formatDate value="${match.endtime }" pattern="M月d日"/></span>
 						</div>
-						<div class="suggestlx1">${match.address }${match.detailAddress }</div>
+						<div class="suggestlx1"><label>${match.address }${match.detailAddress }</label></div>
 						<div class="positionll">
 							<em class="em${match.state }"></em>
 							<p>人数：${match.counts }人</p>
@@ -128,7 +128,28 @@ function divselect(divselectid,inputselectid) {
 						<div>
 							<span class="timell"><fmt:formatDate value="${match.starttime }" pattern="M月d日"/>-<fmt:formatDate value="${match.endtime }" pattern="M月d日"/></span>
 						</div>
-						<div class="suggestlx1">${match.address }${match.detailAddress }</div>
+						<div class="suggestlx1">
+						<label>${match.address }${match.detailAddress }</label>
+						<div class="clearfix">
+						<c:choose>
+							<c:when test="${match.state==0 }">
+							<span ><a href="${ctx }/${frontPath}match/editMatch${urlSuffix}?id=${match.id}">编辑</a></span>
+							<span ><a href="${ctx }/${frontPath}match/closeMatch${urlSuffix}?id=${match.id}">关闭</a></span>
+							</c:when>
+							<c:when test="${match.state==1 }">
+							<span ><a href="${ctx }/${frontPath}match/matchBm${urlSuffix}?type=1&id=${match.id}">单项报名</a></span>
+							<span ><a href="${ctx }/${frontPath}match/matchBm${urlSuffix}?type=2&id=${match.id}">团体报名</a></span>
+							</c:when>
+							<c:when test="${match.state==2 }">
+							<span ><a href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=0&id=${match.id}">查看成绩</a></span>
+							<span ><a href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=1&id=${match.id}">成绩录入</a></span>
+							</c:when>
+							<c:when test="${match.state==-1 }">
+							<span ><a href="${ctx }/${frontPath}match/matchRecreate${urlSuffix}?id=${match.id}">再次发起</a></span>
+							</c:when>
+						</c:choose>
+						</div>
+						</div>
 						<div class="positionll">
 							<em class="em${match.state }"></em>
 							<p>人数：${match.counts }人</p>
