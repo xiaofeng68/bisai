@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.bisai.entity.PeopleNote;
+import com.thinkgem.jeesite.modules.bisai.util.PeopleNoteUtils;
 import com.thinkgem.jeesite.modules.bisai.dao.PeopleNoteDao;
 
 /**
@@ -34,11 +35,13 @@ public class PeopleNoteService extends CrudService<PeopleNoteDao, PeopleNote> {
 	@Transactional(readOnly = false)
 	public void save(PeopleNote peopleNote) {
 		super.save(peopleNote);
+		PeopleNoteUtils.clearCache(peopleNote);
 	}
 	
 	@Transactional(readOnly = false)
 	public void delete(PeopleNote peopleNote) {
 		super.delete(peopleNote);
+		PeopleNoteUtils.clearCache(peopleNote);
 	}
 	
 }

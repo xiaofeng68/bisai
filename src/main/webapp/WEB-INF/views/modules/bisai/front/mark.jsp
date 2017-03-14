@@ -8,13 +8,13 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta content="telephone=no" name="format-detection">
-	<title>标题</title>
-	<meta name="keywords" content="关键字">
-    <meta name="description" content="">
-	<link rel="stylesheet" type="text/css" href="css/incstyle.css" media="all">
-	<link rel="stylesheet" type="text/css" href="css/index.css" media="all">
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/divselect.js"></script>
+	<title>${siteTitle }</title>
+	<meta name="keywords" content="${siteKeywords }">
+	<meta name="description" content="${siteDescription }">
+	<link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/incstyle.css" media="all">
+	<link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/index.css" media="all">
+	<script type="text/javascript" src="${ctxStaticFront }/js/jquery.js"></script>
+	<script type="text/javascript" src="${ctxStaticFront }/js/divselect.js"></script>
 	<script type="text/javascript">
 $(function(){
 	$(".div_select").each(function(){
@@ -30,11 +30,11 @@ $(function(){
 <body>
 	<header class="grouping_header clearfix">
 		<span class="fl">
-			<a href="#">
-				<img src="images/r-arrow.png">
+			<a href="javascript:history.go(-1);">
+				<img src="${ctxStaticFront}/images/r-arrow.png">
 			</a>
 		</span>
-		<span>天津某某俱乐部羽毛球比赛</span>
+		<span>${match.name }</span>
 	</header>
 	<section>
 		<form>
@@ -83,7 +83,7 @@ $(function(){
 				<table width="100%">
 					<tr>
 						<td>
-							<img src="images/img31.png">
+							<img src="${ctxStaticFront}/images/img31.png">
 						</td>
 						<td>第一局</td>
 						<td>第二局</td>

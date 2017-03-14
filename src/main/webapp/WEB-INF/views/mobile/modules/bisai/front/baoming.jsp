@@ -32,7 +32,7 @@
 			var orgname = $("#orgname"+typeid).val();
 			var name = $("#name"+typeid).val();
 			var phone = $("#phone"+typeid).val();
-			$.post('${ctx }${frontPath}/match/savePeopleNote${urlSuffix}', {
+			$.post('${ctx }${frontPath}/match/savePeopleNote', {
 				orgname : orgname,
 				name : name,
 				phone:phone,
@@ -40,10 +40,10 @@
 			}, function(result) {
 				if (result.success) {
 					alert("保存成功");
+					addPeopleDiv(result.obj,div);
 				}else{
 					alert(result.msg);
 				}
-				alert('1');
 			}, 'JSON');
 		}
 		function addPeopleDiv(people,div){
@@ -51,11 +51,11 @@
 			'<span class="activity_po">'+
 				'<img src="${ctxStaticFront}/images/img37.png">'+
 			'</span>'+
-			'<span class="list_name">${people.name }</span>';
+			'<span class="list_name">'+people.name+'</span>';
 			if(people.state==1){
 				html+='<span class="list_butt1 fr">恢复</span>';
 			}else{
-				html+='<span class="list_butt1 fr">踢人</span>';
+				html+='<span class="list_butt fr">踢人</span>';
 			}
 			html+='</div>';
 			$("#"+div).append(html);
@@ -129,7 +129,7 @@
 					</c:forEach>
 				</li>
 			</ul>
-			<div class="acti_buttom"><a href="${ctx }${frontPath}/grouping-${match.id}-${type}${urlSuffix}">分组抽签</a></div>
+			<div class="acti_buttom"><a href="${ctx }${frontPath}/match/grouping-${match.id}-${type}${urlSuffix}">分组抽签</a></div>
 		</div>
 	</section>
 </body>

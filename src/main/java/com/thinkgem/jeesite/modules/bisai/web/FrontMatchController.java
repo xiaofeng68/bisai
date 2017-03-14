@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thinkgem.jeesite.common.utils.Json;
@@ -77,7 +76,7 @@ public class FrontMatchController extends BaseController {
         
         return "modules/bisai/front/match";
     }
-    @RequestMapping(value="grouping-${matchid}-${type}${urlSuffix}")
+    @RequestMapping(value="grouping-{matchid}-{type}${urlSuffix}")
     public String grouping(@PathVariable String matchid,@PathVariable String type,HttpServletRequest request ,Model model) {
         //进行分组算法保存数据
         MatchTypeNote matchTypeNote = new MatchTypeNote();
@@ -103,9 +102,11 @@ public class FrontMatchController extends BaseController {
                 
             }
         }
+        //更新赛事状态
+        
         return "modules/bisai/front/grouping";
     }
-    @RequestMapping(value="savePeopleNote${urlSuffix}",method=RequestMethod.POST)
+    @RequestMapping(value="savePeopleNote")
     @ResponseBody
     public Json savePeopleNote(PeopleNote peopleNote,String typeid,HttpServletRequest request ,Model model) {
         Json json = new Json();
