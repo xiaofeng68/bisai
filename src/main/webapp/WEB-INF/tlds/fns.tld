@@ -252,4 +252,20 @@
     <function-signature>java.lang.String getSettingContent(java.lang.String)</function-signature>
     <example>${fns:getSettingContent(code)}</example>  
   </function>
+  <!-- 获取比赛类型记录 -->
+  <function>
+  	<description>获取比赛类型记录标签</description>
+    <name>getMatchTypeNote</name>
+    <function-class>com.thinkgem.jeesite.modules.bisai.util.MatchTypeNoteUtils</function-class>
+    <function-signature>java.util.List getMatchTypeNote(java.lang.String,java.lang.String)</function-signature>
+    <example>${fns:getMatchTypeNote(matchid,type)}</example>  
+  </function>
+  <!-- 获取比赛人员记录 -->
+  <function>
+  	<description>获取比赛类型记录标签</description>
+    <name>getPeopleByType</name>
+    <function-class>com.thinkgem.jeesite.modules.bisai.util.PeopleNoteUtils</function-class>
+    <function-signature>java.util.List getPeopleByType(java.lang.String)</function-signature>
+    <example>${fns:getPeopleByType(typeid)}</example>  
+  </function>
 </taglib>

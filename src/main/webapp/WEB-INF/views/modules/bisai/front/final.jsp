@@ -1,18 +1,15 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/mobile/modules/bisai/front/include/taglib.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta content="telephone=no" name="format-detection">
-	<title>标题</title>
-	<meta name="keywords" content="关键字">
-    <meta name="description" content="">
-	<link rel="stylesheet" type="text/css" href="css/incstyle.css" media="all">
-	<link rel="stylesheet" type="text/css" href="css/index.css" media="all">
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/divselect.js"></script>
+	<title>JeeSite</title>
+	<meta name="description" content="JeeSite" />
+	<meta name="keywords" content="JeeSite" />
+	<link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/incstyle.css" media="all">
+	<link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/index.css" media="all">
+	<script type="text/javascript" src="${ctxStaticFront }/js/jquery.js"></script>
+	<script type="text/javascript" src="${ctxStaticFront }/js/divselect.js"></script>
 	<script type="text/javascript">
 $(function(){
 	$(".div_select").each(function(){
@@ -29,7 +26,7 @@ $(function(){
 	<header class="grouping_header clearfix">
 		<span class="fl">
 			<a href="#">
-				<img src="images/r-arrow.png">
+				<img src="${ctxStaticFront }/images/r-arrow.png">
 			</a>
 		</span>
 		<span>决赛</span>
@@ -67,7 +64,7 @@ $(function(){
 				<table width="100%">
 					<tr>
 						<td>
-							<img src="images/img31.png">
+							<img src="${ctxStaticFront }/images/img31.png">
 						</td>
 						<td>第一局</td>
 						<td>第二局</td>

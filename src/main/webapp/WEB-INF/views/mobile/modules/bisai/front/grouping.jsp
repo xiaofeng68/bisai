@@ -17,7 +17,7 @@
 <body>
 	<header class="grouping_header clearfix">
 		<span class="fl">
-			<a href="#">
+			<a href="javascript:history.go(-1);">
 				<img src="${ctxStaticFront }/images/r-arrow.png">
 			</a>
 		</span>
@@ -102,54 +102,6 @@
 			</tr>
 			</table>
 		</div>
-		<!-- 
-		<div class="grouping_table">
-			<p>第二组</p>
-			<table>
-				<tr>
-					<td>姓名</td>
-					<td>编号</td>
-					<td>性别</td>
-					<td>备注</td>
-				</tr>
-				<tr>
-					<td>杨过</td>
-					<td>110</td>
-					<td>男</td>
-					<td>无</td>
-				</tr>
-				<tr>
-					<td>杨过</td>
-					<td>110</td>
-					<td>男</td>
-					<td>无</td>
-				</tr>
-			</table>
-		</div>
-		<div class="grouping_table">
-			<p>第三组</p>
-			<table>
-				<tr>
-					<td>姓名</td>
-					<td>编号</td>
-					<td>性别</td>
-					<td>备注</td>
-				</tr>
-				<tr>
-					<td>杨过</td>
-					<td>110</td>
-					<td>男</td>
-					<td>无</td>
-				</tr>
-				<tr>
-					<td>杨过</td>
-					<td>110</td>
-					<td>男</td>
-					<td>无</td>
-				</tr>
-			</table>
-		</div>
-		 -->
 	</section>
 </body>
 </html>

@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/mobile/modules/bisai/front/include/taglib.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,17 +8,17 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta content="telephone=no" name="format-detection">
-	<title>标题</title>
-	<meta name="keywords" content="关键字">
-    <meta name="description" content="">
-	<link rel="stylesheet" type="text/css" href="css/incstyle.css" media="all">
-	<link rel="stylesheet" type="text/css" href="css/index.css" media="all">
+	<title>${siteTitle }</title>
+	<meta name="keywords" content="${siteKeywords }">
+    <meta name="description" content="${siteDescription }">
+	<link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/incstyle.css" media="all">
+	<link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/index.css" media="all">
 </head>
 <body>
 	<header class="grouping_header clearfix">
 		<span class="fl">
-			<a href="#">
-				<img src="images/r-arrow.png">
+			<a href="javascript:history.go(-1);">
+				<img src="${ctxStaticFront }/images/r-arrow.png">
 			</a>
 		</span>
 		<span>分组名单</span>
@@ -100,54 +102,6 @@
 			</tr>
 			</table>
 		</div>
-		<!-- 
-		<div class="grouping_table">
-			<p>第二组</p>
-			<table>
-				<tr>
-					<td>姓名</td>
-					<td>编号</td>
-					<td>性别</td>
-					<td>备注</td>
-				</tr>
-				<tr>
-					<td>杨过</td>
-					<td>110</td>
-					<td>男</td>
-					<td>无</td>
-				</tr>
-				<tr>
-					<td>杨过</td>
-					<td>110</td>
-					<td>男</td>
-					<td>无</td>
-				</tr>
-			</table>
-		</div>
-		<div class="grouping_table">
-			<p>第三组</p>
-			<table>
-				<tr>
-					<td>姓名</td>
-					<td>编号</td>
-					<td>性别</td>
-					<td>备注</td>
-				</tr>
-				<tr>
-					<td>杨过</td>
-					<td>110</td>
-					<td>男</td>
-					<td>无</td>
-				</tr>
-				<tr>
-					<td>杨过</td>
-					<td>110</td>
-					<td>男</td>
-					<td>无</td>
-				</tr>
-			</table>
-		</div>
-		 -->
 	</section>
 </body>
 </html>

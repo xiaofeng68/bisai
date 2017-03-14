@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/mobile/modules/bisai/front/include/taglib.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>

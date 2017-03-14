@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.bisai.dao.MatchTypeNoteDao">
+    
+	<sql id="matchTypeNoteColumns">
+		a.id AS "id",
+		a.matchid AS "match.id",
+		a.btype AS "btype",
+		a.type AS "type",
+		a.num AS "num",
+		a.counts AS "counts",
+		u.name AS "match.name"
+	</sql>
+	
+	<sql id="matchTypeNoteJoins">
+	    join bisai_match u on u.id = a.matchid
+	</sql>
+    
+	<select id="get" resultType="MatchTypeNote">
+		SELECT 
+			<include refid="matchTypeNoteColumns"/>
+		FROM bisai_match_type_note a
+		<include refid="matchTypeNoteJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="MatchTypeNote">
+		SELECT 
+			<include refid="matchTypeNoteColumns"/>
+		FROM bisai_match_type_note a
+		<include refid="matchTypeNoteJoins"/>
+		<where>
+			
+			<if test="match!=null and match.id != null and match.id != ''">
+				AND a.matchid = #{match.id}
+			</if>
+			<if test="btype != null and btype != ''">
+				AND a.btype = #{btype}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				order by a.btype ,a.type
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MatchTypeNote">
+		SELECT 
+			<include refid="matchTypeNoteColumns"/>
+		FROM bisai_match_type_note a
+		<include refid="matchTypeNoteJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				order by a.btype ,a.type
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bisai_match_type_note(
+			matchid,
+			btype,
+			type,
+			num,
+			counts
+		) VALUES (
+			#{match.id},
+			#{btype},
+			#{type},
+			#{num},
+			#{counts}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bisai_match_type_note SET 	
+			matchid = #{match.id},
+			btype = #{btype},
+			type = #{type},
+			num = #{num},
+			counts = #{counts}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM bisai_match_type_note
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

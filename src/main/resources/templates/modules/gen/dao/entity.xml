@@ -4,9 +4,6 @@
 	<filePath>src/main/java/${packageName}/${moduleName}/entity/${subModuleName}</filePath>
 	<fileName>${ClassName}.java</fileName>
 	<content><![CDATA[
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>;
 
 <#list table.importList as i>

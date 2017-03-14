@@ -101,7 +101,7 @@
 			#{createtime},
 			#{updatetime},
 			#{state},
-			${img}
+			#{img}
 		)
 	</insert>
 	

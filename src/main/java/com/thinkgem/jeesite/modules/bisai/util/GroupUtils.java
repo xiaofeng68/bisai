@@ -152,16 +152,15 @@ public class GroupUtils {
 	 *            0：随机分组1：按正序分组。
 	 * @return 分组后的集合
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T> Object fenzu(List<T> str, int rz, String pai) {
+	public static <T> List<List<T>> fenzu(List<T> str, int rz, String pai) {
 		if (findupl(str) == "0") {
-			return "0";
+			return null;
 		}
 		if (pai == "0") {
 			Collections.shuffle(str);
 		}
-		ArrayList<ArrayList> xinfen = new ArrayList<ArrayList>();
-		ArrayList<T> linshi = new ArrayList<T>();
+		List<List<T>> xinfen = new ArrayList<List<T>>();
+		List<T> linshi = new ArrayList<T>();
 		int a = str.size();
 		int n = 0;
 		int x = a % rz;
@@ -455,12 +454,12 @@ public class GroupUtils {
 	// -------------------------------方法结束,下面为主函数测试-------------------------------------------------
 	public static void main(String[] args) {
 		List<String[]> list=new ArrayList<String[]>();
-		String[] str=new String[]{"1","2","3","10"};
+		String[] str=new String[]{"1","2","3"};
 		list.add(str);
-		str=new String[]{"4","5","6","11"};
-		list.add(str);
-		str=new String[]{"7","8","9"};
-		list.add(str);
+//		str=new String[]{"4","5","6","11"};
+//		list.add(str);
+//		str=new String[]{"7","8","9"};
+//		list.add(str);
 		List<List<String[]>> JieGuo=BiSaifenzu(list);
 		int num=0;
 		int numm=0;
