@@ -126,30 +126,75 @@
 							<span class="namell fl">比赛类型</span>
 							<input type="hidden" name="type" id="type">
 							<div class="substance fl" style="width:80%;">
-								<div class="label js-check clearfix fl"> 
-									<em class="unchecked fl typecheck"></em>
-									<span class="fl">男单</span>
+								<div style="height: 40px;font-size: 13px;color: #b4b3b3;">
+									<input type="radio" name="game_type" style="-webkit-appearance: button;" onclick="bisai_change(1)" checked="checked" id="dxcRadio"><label for="dxcRadio">单项赛</label>
+									<input type="radio" name="game_type" style="-webkit-appearance: button;margin-left: 50px;" onclick="bisai_change(2)" id="tdcRadio"><label for="tdcRadio">团体赛</label>
 								</div>
-								<div class="label js-check clearfix fl"> 
-									<em class="unchecked fl typecheck"></em>
-									<span class="fl">女单</span>
+								<div id="danxiang">
+									<div class="label js-check clearfix fl">
+										<em class="unchecked fl typecheck"></em>
+										<span class="fl">男单</span>
+									</div>
+									<div class="label js-check clearfix fl">
+										<em class="unchecked fl typecheck"></em>
+										<span class="fl">女单</span>
+									</div>
+									<div class="label js-check clearfix fl">
+										<em class="unchecked fl typecheck"></em>
+										<span class="fl">男双</span>
+									</div>
+									<div class="label js-check clearfix fl">
+										<em class="unchecked fl typecheck"></em>
+										<span class="fl">女双</span>
+									</div>
+									<div class="label js-check clearfix fl">
+										<em class="unchecked fl typecheck"></em>
+										<span class="fl">混双</span>
+									</div>
 								</div>
-								<div class="label js-check clearfix fl"> 
-									<em class="unchecked fl typecheck"></em>
-									<span class="fl">男双</span>
-								</div>
-								<div class="label js-check clearfix fl"> 
-									<em class="unchecked fl typecheck"></em>
-									<span class="fl">女双</span>
-								</div>
-								<div class="label js-check clearfix fl"> 
-									<em class="unchecked fl typecheck"></em>
-									<span class="fl">混双</span>
+								<div id="tuanti" style="font-size: 13px;color: #b4b3b3;display: none;">
+									<div class="label js-check clearfix">比赛总场次：<select style="width: 80px;"><option>3</option><option>5</option><option>7</option><option>9</option></select></div>
+									<div class="label js-check clearfix" style="margin-top: 20px;">
+										<em class="unchecked fl typecheck"></em>
+										<span class="fl">男单</span>
+										<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
+									</div>
+									<div class="label js-check clearfix" style="margin-top: 10px;">
+										<em class="unchecked fl typecheck"></em>
+										<span class="fl">男双</span>
+										<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
+									</div>
+									<div class="label js-check clearfix" style="margin-top: 10px;">
+										<em class="unchecked fl typecheck"></em>
+										<span class="fl">女单</span>
+										<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
+									</div>
+									<div class="label js-check clearfix" style="margin-top: 10px;">
+										<em class="unchecked fl typecheck"></em>
+										<span class="fl">女双</span>
+										<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
+									</div>
+									<div class="label js-check clearfix" style="margin-top: 10px;">
+										<em class="unchecked fl typecheck"></em>
+										<span class="fl">混双</span>
+										<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
+									</div>
 								</div>
 							</div>
 						</div>
 					</li>
-					
+					<script>
+						function bisai_change(val) {
+							if(val==1){
+							    document.getElementById("danxiang").style.display='inherit';
+                                document.getElementById("tuanti").style.display='none';
+							}
+							if(val==2){
+                                document.getElementById("danxiang").style.display='none';
+                                document.getElementById("tuanti").style.display='inherit';
+							}
+                        }
+					</script>
 					<li style="margin-top:0.3rem;">
 						<span class="namell v-t">比赛说明</span>
 						<textarea name="des" placeholder="请输入比赛说明"></textarea>

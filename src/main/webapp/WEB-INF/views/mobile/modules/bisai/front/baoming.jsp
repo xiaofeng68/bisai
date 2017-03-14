@@ -109,7 +109,14 @@
 									<c:forEach var="people" items="${fns:getPeopleByType(typeNode.id) }">
 									<div class="second_list_con clearfix">
 										<span class="activity_po">
-											<img src="${ctxStaticFront}/images/img37.png">
+											<c:choose>
+											<c:when test="${people.state==1 }">
+												<img src="${ctxStaticFront}/images/img37-1.png">
+											</c:when>
+											<c:otherwise>
+												<img src="${ctxStaticFront}/images/img37.png">
+											</c:otherwise>
+										</c:choose>
 										</span>
 										<span class="list_name">${people.name }</span>
 										<c:choose>

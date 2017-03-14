@@ -158,14 +158,25 @@ public class FrontController extends BaseController {
     /**赛事申请*/
     @RequestMapping(value = "apply${urlSuffix}")
     public String apply(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute(GlobalBuss.CURRENTACCOUNT) == null) {//请先登陆
+            return "modules/bisai/front/login";
+        }
         return "modules/bisai/front/apply";
     }
     @RequestMapping(value="apply_s${urlSuffix}",method=RequestMethod.POST)
     public String apply_s(HttpServletRequest request,Match match,RedirectAttributes redirectAttributes){
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute(GlobalBuss.CURRENTACCOUNT);
+        if (account == null) {//请先登陆
+            addMessage(redirectAttributes, "比赛申请成功，请耐心等待管理员审批。");
+             return "modules/bisai/front/login";
+        }
         Date time = new Date();
         match.setState("0");
         match.setCreatetime(time);
         match.setUpdatetime(time);
+        match.setAccount(account);
         matchService.save(match);
         addMessage(redirectAttributes, "比赛申请成功，请耐心等待管理员审批。");
         return "modules/bisai/front/match";

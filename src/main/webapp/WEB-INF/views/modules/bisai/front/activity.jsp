@@ -110,6 +110,16 @@
 					
 				</li>
 				<li class="clearfix mtll">
+					<span class="fl li_left f14">比赛时间</span>
+					<span class="fl li_right1 f14">
+					</span>
+				</li>
+				<li class="clearfix mtll">
+					<span class="fl li_left f14">比赛地点</span>
+					<span class="fl li_right1 f14">
+					</span>
+				</li>
+				<li class="clearfix mtll">
 					<span class="fl li_left f14">领队</span>
 					<span class="fl li_right1 f14">
 						${match.contacts }
@@ -125,6 +135,16 @@
 					<span class="fl li_left f14">地址</span>
 					<span class="fl li_right1 f14">
 						${match.address }${match.detailAddress }
+					</span>
+				</li>
+				<li class="clearfix mtll">
+					<span class="fl li_left f14">比赛简介</span>
+					<span class="fl li_right1 f14">
+					</span>
+				</li>
+				<li class="clearfix mtll">
+					<span class="fl li_left f14">奖金奖品</span>
+					<span class="fl li_right1 f14">
 					</span>
 				</li>
 			</ul>

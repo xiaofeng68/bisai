@@ -98,7 +98,6 @@
 	
 	<insert id="insert">
 		INSERT INTO bisai_match(
-			id,
 			name,
 			orgs,
 			contractor,
@@ -126,7 +125,6 @@
 			</if>
 			counts
 		) VALUES (
-			#{id},
 			#{name},
 			#{orgs},
 			#{contractor},
