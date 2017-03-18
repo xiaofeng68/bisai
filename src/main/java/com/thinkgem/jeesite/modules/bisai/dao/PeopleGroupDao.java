@@ -12,4 +12,5 @@ import com.thinkgem.jeesite.modules.bisai.entity.PeopleGroup;
 @MyBatisDao
 public interface PeopleGroupDao extends CrudDao<PeopleGroup> {
     public void deleteByTypeNote(PeopleGroup peopleGroup);
+    public int checkGroupEnd(String matchid);
 }

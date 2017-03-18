@@ -43,4 +43,7 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 	public void deleteByTypeNote(PeopleGroup peopleGroup){
 	    dao.deleteByTypeNote(peopleGroup);
 	}
+	public int checkGroupEnd(String matchid){
+	    return dao.checkGroupEnd(matchid);
+	}
 }

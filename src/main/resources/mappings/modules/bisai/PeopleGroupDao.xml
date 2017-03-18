@@ -104,4 +104,9 @@
 	<delete id="deleteByTypeNote">
 		delete from bisai_people_group where matchid=#{matchid} and btype=#{btype}
 	</delete>
+	<select id="checkGroupEnd" resultType="int">
+		select count(  a.btype) from bisai_match_type_note a where a.matchid=#{matchid}  and a.btype not in(
+		select DISTINCT btype from bisai_people_group b where b.matchid=#{matchid} 
+		)
+	</select>
 </mapper>

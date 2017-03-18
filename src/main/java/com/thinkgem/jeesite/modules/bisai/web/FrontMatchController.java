@@ -102,12 +102,11 @@ public class FrontMatchController extends BaseController {
     }
     @RequestMapping(value="grouping-{matchid}-{type}${urlSuffix}")
     public String grouping(@PathVariable String matchid,@PathVariable String type,HttpServletRequest request ,Model model) {
+        Match match = matchService.get(matchid);
         model.addAttribute("matchid",matchid);
         model.addAttribute("type",type);
         //进行分组算法保存数据
         MatchTypeNote matchTypeNote = new MatchTypeNote();
-        Match match = new Match();
-        match.setId(matchid);
         matchTypeNote.setBtype(type);
         matchTypeNote.setMatch(match);
         List<MatchTypeNote> matchTypeList = matchTypeNoteService.findList(matchTypeNote);
@@ -156,6 +155,11 @@ public class FrontMatchController extends BaseController {
             }
         }
         model.addAttribute("groupMap",groupMap);
+        //校验是否都分组完成，分组完成后修改比赛状态
+        if(peopleGroupService.checkGroupEnd(matchid)>0){
+            match.setState("2");//报名完成进入进行中
+        }
+        
         //更新赛事状态
         return "modules/bisai/front/grouping";
     }
