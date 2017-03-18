@@ -14,5 +14,12 @@ import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
  */
 @MyBatisDao
 public interface MatchTypeNoteDao extends CrudDao<MatchTypeNote> {
-	
+	  /**   
+	 * @Title: deleteByMatch   
+	 * @Description: 根据match删除对应的比赛类型记录
+	 * @param matchid
+	 * @author  author
+	 */
+	 
+	void deleteByMatch(String matchid);
 }

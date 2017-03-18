@@ -148,8 +148,7 @@
 					</span>
 				</li>
 			</ul>
-			<div class="acti_buttom">确定</div>
-			<div class="acti_buttom1">取消</div>
+			<div class="acti_buttom1" onclick="history.go(-1)">返回</div>
 			
 		</div>
 	</section>

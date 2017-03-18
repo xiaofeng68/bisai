@@ -34,6 +34,6 @@ public class MatchTypeNoteUtils {
 		return list;
 	}
 	public static void clearCache(MatchTypeNote note){
-        CacheUtils.remove(CACHE_SETTING_MAP+":mt:"+note.getMatch().getId()+note.getBtype());
+        CacheUtils.remove(CACHE_SETTING_MAP+":mt:"+note.getMatch().getId()+":"+note.getBtype());
     }
 }

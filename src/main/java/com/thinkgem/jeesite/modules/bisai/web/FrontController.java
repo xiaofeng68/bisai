@@ -179,7 +179,7 @@ public class FrontController extends BaseController {
         match.setAccount(account);
         matchService.save(match);
         addMessage(redirectAttributes, "比赛申请成功，请耐心等待管理员审批。");
-        return "modules/bisai/front/match";
+        return "redirect:match.html";
     }
     @RequestMapping(value = "activity${urlSuffix}")
     public String activity(String id,HttpServletRequest request,Model model) {

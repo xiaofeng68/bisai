@@ -2,14 +2,18 @@ package com.thinkgem.jeesite.modules.bisai.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.bisai.entity.PeopleNote;
-import com.thinkgem.jeesite.modules.bisai.util.PeopleNoteUtils;
+import com.thinkgem.jeesite.modules.bisai.dao.MatchTypeNoteDao;
 import com.thinkgem.jeesite.modules.bisai.dao.PeopleNoteDao;
+import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
+import com.thinkgem.jeesite.modules.bisai.entity.PeopleNote;
+import com.thinkgem.jeesite.modules.bisai.util.MatchTypeNoteUtils;
+import com.thinkgem.jeesite.modules.bisai.util.PeopleNoteUtils;
 
 /**
  * 参赛人员记录Service
@@ -19,7 +23,8 @@ import com.thinkgem.jeesite.modules.bisai.dao.PeopleNoteDao;
 @Service
 @Transactional(readOnly = true)
 public class PeopleNoteService extends CrudService<PeopleNoteDao, PeopleNote> {
-
+    @Autowired
+    MatchTypeNoteDao matchTypeNoteDao;
 	public PeopleNote get(String id) {
 		return super.get(id);
 	}
@@ -35,6 +40,15 @@ public class PeopleNoteService extends CrudService<PeopleNoteDao, PeopleNote> {
 	@Transactional(readOnly = false)
 	public void save(PeopleNote peopleNote) {
 		super.save(peopleNote);
+		//更新typeNode的数量
+		MatchTypeNote typeNode = matchTypeNoteDao.get(peopleNote.getNote().getId());
+		if("1".equals(peopleNote.getState())){
+		    typeNode.setCounts(typeNode.getCounts()-1);
+		}else{
+		    typeNode.setCounts(typeNode.getCounts()+1);
+		}
+		matchTypeNoteDao.update(typeNode);
+		MatchTypeNoteUtils.clearCache(typeNode);
 		PeopleNoteUtils.clearCache(peopleNote);
 	}
 	

@@ -124,5 +124,26 @@ public class FrontMatchController extends BaseController {
         }
         return json;
     }
+    @RequestMapping(value="updatePeopleNote")
+    @ResponseBody
+    public Json updatePeopleNote(PeopleNote peopleNote,HttpServletRequest request) {
+        Json json = new Json();
+        try{
+            PeopleNote cpeopleNote = peopleNoteService.get(peopleNote.getId());
+            cpeopleNote.setState(peopleNote.getState());
+            peopleNoteService.save(cpeopleNote);
+            json.setObj(peopleNote);
+            json.setSuccess(true);
+        }catch(Exception e){
+            e.printStackTrace();
+            json.setSuccess(false);
+            if("1".equals(peopleNote.getState())){
+                json.setMsg("踢出失败");
+            }else{
+                json.setMsg("恢复失败");
+            }
+        }
+        return json;
+    }
     
 }

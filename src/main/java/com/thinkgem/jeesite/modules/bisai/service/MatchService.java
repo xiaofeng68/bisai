@@ -5,13 +5,19 @@ package com.thinkgem.jeesite.modules.bisai.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.bisai.dao.MatchDao;
+import com.thinkgem.jeesite.modules.bisai.dao.MatchTypeNoteDao;
 import com.thinkgem.jeesite.modules.bisai.entity.Match;
+import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
+import com.thinkgem.jeesite.modules.bisai.util.MatchTypeNoteUtils;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 
 /**
  * 比赛信息Service
@@ -21,6 +27,8 @@ import com.thinkgem.jeesite.modules.bisai.entity.Match;
 @Service
 @Transactional(readOnly = true)
 public class MatchService extends CrudService<MatchDao, Match> {
+    @Autowired
+    MatchTypeNoteDao matchTypeNoteDao;
     
 	public Match get(String id) {
 		return super.get(id);
@@ -42,6 +50,41 @@ public class MatchService extends CrudService<MatchDao, Match> {
 	@Transactional(readOnly = false)
 	public void save(Match match) {
 		super.save(match);
+		//根据type生成对应的类型记录
+		matchTypeNoteDao.deleteByMatch(match.getId());
+		String type = match.getType();
+		String[] typeArr = type.split(";");
+		if(!StringUtils.isEmpty(typeArr[0])){
+		    MatchTypeNote typeNode=null;
+		    String[] type1Arr = typeArr[0].split(",");
+		    for(int i=0,j=type1Arr.length;i<j;i++){
+    		    typeNode = new MatchTypeNote();
+    		    typeNode.setBtype("1");
+    		    typeNode.setMatch(match);
+    		    typeNode.setNum(0);
+    		    typeNode.setCounts(0);
+    		    typeNode.setType(DictUtils.getDictValue(type1Arr[i],"MatchTypeNote_type","0"));
+    		    matchTypeNoteDao.insert(typeNode);
+		    }
+		    if(typeNode!=null)
+		        MatchTypeNoteUtils.clearCache(typeNode);
+		}
+		if(!StringUtils.isEmpty(typeArr[1])){
+		    MatchTypeNote typeNode=null;
+		    String[] type2Arr = typeArr[1].split(",");
+            for(int i=0,j=type2Arr.length;i<j;i++){
+                String[] ctype = type2Arr[i].split(":");
+                typeNode = new MatchTypeNote();
+                typeNode.setBtype("2");
+                typeNode.setMatch(match);
+                typeNode.setNum(Integer.parseInt(ctype[1]));
+                typeNode.setCounts(0);
+                typeNode.setType(DictUtils.getDictValue(ctype[0],"MatchTypeNote_type","0"));
+                matchTypeNoteDao.insert(typeNode);
+            }
+            if(typeNode!=null)
+                MatchTypeNoteUtils.clearCache(typeNode);
+		}
 	}
 	
 	@Transactional(readOnly = false)

@@ -268,4 +268,5 @@
     <function-signature>java.util.List getPeopleByType(java.lang.String)</function-signature>
     <example>${fns:getPeopleByType(typeid)}</example>  
   </function>
+  
 </taglib>

@@ -66,7 +66,18 @@
 				if($(this).hasClass('checked'))
 					typeStr += $(this).next().html()+",";
 			});
-			$("#type").val(typeStr.substring(0,typeStr.lengen-1));
+			if(typeStr)
+				typeStr = typeStr.substring(0,typeStr.length-1);
+			var ttypeStr = "";
+			$(".ttypecheck").each(function(){
+				if($(this).hasClass('checked')){
+					var cc = $(this).parent().find("input").val();//获取场次
+					ttypeStr += $(this).next().html()+":"+cc+",";
+				}
+			});
+			if(ttypeStr)
+				ttypeStr = ttypeStr.substring(0,ttypeStr.length-1);
+			$("#type").val(typeStr+";"+ttypeStr);
 			return true;
 		}
 	</script>
@@ -164,55 +175,53 @@
 									<input type="radio" name="game_type" style="-webkit-appearance: button;" onclick="bisai_change(1)" checked="checked" id="dxcRadio"><label for="dxcRadio">单项赛</label>
 									<input type="radio" name="game_type" style="-webkit-appearance: button;margin-left: 50px;" onclick="bisai_change(2)" id="tdcRadio"><label for="tdcRadio">团体赛</label>
 								</div>
+								<c:set var="btypes" value='${fn:split(match.type,";") }'></c:set>
 								<div id="danxiang">
+									<c:forEach var="type" items="${fns:getDictList('MatchTypeNote_type')}">
 									<div class="label js-check clearfix fl">
-										<em class="unchecked fl typecheck"></em>
-										<span class="fl">男单</span>
+										<c:set var="hasType" value="false"></c:set>
+										<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,1) }">
+											<c:if test="${typeNode.type==type.value }">
+												<c:set var="hasType" value="true"></c:set>
+											</c:if>
+										</c:forEach>
+										<c:choose>
+											<c:when test='${hasType }'>
+												<em class="checked fl typecheck"></em>
+											</c:when>
+											<c:otherwise>
+												<em class="unchecked fl typecheck"></em>
+											</c:otherwise>
+										</c:choose>
+										<span class="fl">${type.label }</span>
 									</div>
-									<div class="label js-check clearfix fl">
-										<em class="unchecked fl typecheck"></em>
-										<span class="fl">女单</span>
-									</div>
-									<div class="label js-check clearfix fl">
-										<em class="unchecked fl typecheck"></em>
-										<span class="fl">男双</span>
-									</div>
-									<div class="label js-check clearfix fl">
-										<em class="unchecked fl typecheck"></em>
-										<span class="fl">女双</span>
-									</div>
-									<div class="label js-check clearfix fl">
-										<em class="unchecked fl typecheck"></em>
-										<span class="fl">混双</span>
-									</div>
+									</c:forEach>
 								</div>
 								<div id="tuanti" style="font-size: 13px;color: #b4b3b3;display: none;">
 									<div class="label js-check clearfix">比赛总场次：<select style="width: 80px;"><option>3</option><option>5</option><option>7</option><option>9</option></select></div>
+									<c:forEach var="type" items="${fns:getDictList('MatchTypeNote_type')}">
 									<div class="label js-check clearfix" style="margin-top: 20px;">
-										<em class="unchecked fl typecheck"></em>
-										<span class="fl">男单</span>
-										<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
+										<c:set var="hasType" value="false"></c:set>
+										<c:set var="cc" value=""></c:set>
+										<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,2) }">
+											<c:if test="${typeNode.type==type.value }">
+												<c:set var="hasType" value="true"></c:set>
+												<c:set var="cc" value="${typeNode.num }"></c:set>
+											</c:if>
+										</c:forEach>
+										<c:choose>
+											<c:when test='${hasType }'>
+												<em class="checked fl ttypecheck"></em>
+											</c:when>
+											<c:otherwise>
+												<em class="unchecked fl ttypecheck"></em>
+											</c:otherwise>
+										</c:choose>
+										<span class="fl">${type.label }</span>
+										<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" value="${cc }" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
 									</div>
-									<div class="label js-check clearfix" style="margin-top: 10px;">
-										<em class="unchecked fl typecheck"></em>
-										<span class="fl">男双</span>
-										<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
-									</div>
-									<div class="label js-check clearfix" style="margin-top: 10px;">
-										<em class="unchecked fl typecheck"></em>
-										<span class="fl">女单</span>
-										<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
-									</div>
-									<div class="label js-check clearfix" style="margin-top: 10px;">
-										<em class="unchecked fl typecheck"></em>
-										<span class="fl">女双</span>
-										<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
-									</div>
-									<div class="label js-check clearfix" style="margin-top: 10px;">
-										<em class="unchecked fl typecheck"></em>
-										<span class="fl">混双</span>
-										<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
-									</div>
+									</c:forEach>
+									
 								</div>
 							</div>
 						</div>

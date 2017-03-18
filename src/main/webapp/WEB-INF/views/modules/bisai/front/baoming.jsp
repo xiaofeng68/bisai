@@ -32,6 +32,7 @@
 			var orgname = $("#orgname"+typeid).val();
 			var name = $("#name"+typeid).val();
 			var phone = $("#phone"+typeid).val();
+			var num = parseInt($("#num"+typeid).html());
 			$.post('${ctx }${frontPath}/match/savePeopleNote', {
 				orgname : orgname,
 				name : name,
@@ -41,6 +42,11 @@
 				if (result.success) {
 					alert("保存成功");
 					addPeopleDiv(result.obj,div);
+					//清空文本框
+					$("#orgname"+typeid).val("");
+					$("#name"+typeid).val('');
+					$("#phone"+typeid).val('');
+					$("#num"+typeid).html(++num);
 				}else{
 					alert(result.msg);
 				}
@@ -49,16 +55,28 @@
 		function addPeopleDiv(people,div){
 			var html = '<div class="second_list_con clearfix">'+
 			'<span class="activity_po">'+
-				'<img src="${ctxStaticFront}/images/img37.png">'+
+				'<img id="img'+people.id+'" src="${ctxStaticFront}/images/img37.png">'+
 			'</span>'+
 			'<span class="list_name">'+people.name+'</span>';
 			if(people.state==1){
-				html+='<span class="list_butt1 fr">恢复</span>';
+				html+='<span class="list_butt1 fr" onclick="updateState('+people.id+',0)">恢复</span>';
 			}else{
-				html+='<span class="list_butt fr">踢人</span>';
+				html+='<span class="list_butt fr" onclick="updateState('+people.id+',1)">踢人</span>';
 			}
 			html+='</div>';
 			$("#"+div).append(html);
+		}
+		function updateState(id,state){
+			$.post('${ctx }${frontPath}/match/updatePeopleNote', {
+				id : id,
+				state : state
+			}, function(result) {
+				if (result.success) {
+					window.location.reload();
+				}else{
+					alert(result.msg);
+				}
+			}, 'JSON');
 		}
 	</script>
 </head>
@@ -90,41 +108,41 @@
 							<div class="first-meun">
 								<img class="first_img1 v-m" src="${ctxStaticFront}/images/img36-1.png">
 								<span class="v-m">${fns:getDictLabel(typeNode.type, 'MatchTypeNote_type', '')}</span>
-                                <span>（已报名${typeNode.counts }人）</span>
-								<span class="label_but" id="dnandannum1" onclick="changeTab('dnandannum','1')">报名中</span>
-								<span class="label_but" id="dnandannum2" onclick="changeTab('dnandannum','2')">报名列表</span>
+                                <span>（已报名<label id="num${typeNode.id}">${typeNode.counts }</label>人）</span>
+								<span class="label_but" id="dnandannum1" onclick="changeTab('dnandannum${typeNode.id}','1')">报名中</span>
+								<span class="label_but" id="dnandannum2" onclick="changeTab('dnandannum${typeNode.id}','2')">报名列表</span>
 							</div>
-							<div  class="tree-second fr" id="dnandannumDiv1" style="display:none;">
+							<div  class="tree-second fr" id="dnandannum${typeNode.id}Div1" style="display:none;">
 								<div class="label1 js-check clearfix"> 
 									<input type="text" id="orgname${typeNode.id}" placeholder="单位">
 								</div>
 								<div class="label1 js-check clearfix">
 									<input type="text" id="name${typeNode.id}" placeholder="姓名"> 
 									<input type="text" id="phone${typeNode.id}" placeholder="手机号">
-									<span class="fr label_but" onclick="addPeopleNote(${typeNode.id},'dnandannumDiv2')">确定</span>
+									<span class="fr label_but" onclick="addPeopleNote(${typeNode.id},'dnandannum${typeNode.id}Div2')">确定</span>
 								</div>
 							</div>
-							<div  class="tree-second fr" id="dnandannumDiv2" style="display:none;">
+							<div  class="tree-second fr" id="dnandannum${typeNode.id}Div2" style="display:none;">
 								<div class="tree_second_list">
 									<c:forEach var="people" items="${fns:getPeopleByType(typeNode.id) }">
 									<div class="second_list_con clearfix">
 										<span class="activity_po">
 											<c:choose>
 											<c:when test="${people.state==1 }">
-												<img src="${ctxStaticFront}/images/img37-1.png">
+												<img id="img${people.id }" src="${ctxStaticFront}/images/img37-1.png">
 											</c:when>
 											<c:otherwise>
-												<img src="${ctxStaticFront}/images/img37.png">
+												<img id="img${people.id }" src="${ctxStaticFront}/images/img37.png">
 											</c:otherwise>
 										</c:choose>
 										</span>
 										<span class="list_name">${people.name }</span>
 										<c:choose>
 											<c:when test="${people.state==1 }">
-												<span class="list_butt1 fr">恢复</span>
+												<span class="list_butt1 fr" onclick="updateState(${people.id },0)">恢复</span>
 											</c:when>
 											<c:otherwise>
-												<span class="list_butt fr">踢人</span>
+												<span class="list_butt fr" onclick="updateState(${people.id },1)">踢人</span>
 											</c:otherwise>
 										</c:choose>
 									</div>

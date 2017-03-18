@@ -4,7 +4,7 @@
     
 	<sql id="peopleNoteColumns">
 		a.id AS "id",
-		a.noteid AS "noteid",
+		a.noteid AS "note.id",
 		a.name AS "name",
 		a.phone AS "phone",
 		a.orgname AS "orgname",
@@ -12,6 +12,7 @@
 	</sql>
 	
 	<sql id="peopleNoteJoins">
+		left join bisai_match_type_note b on a.noteid = b.id
 	</sql>
     
 	<select id="get" resultType="PeopleNote">
@@ -34,6 +35,9 @@
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="note!=null and note.id!=null and note.id!=''">
+				and a.noteid= #{note.id}
 			</if>
 		</where>
 		<choose>
