@@ -9,6 +9,10 @@
 		a.type AS "type",
 		a.num AS "num",
 		a.counts AS "counts",
+		a.peoples as "peoples",
+		a.saizhi as "saizhi",
+		a.jushu as "jushu",
+		a.zuchuxian as "zuchuxian",
 		u.name AS "match.name"
 	</sql>
 	
@@ -75,13 +79,21 @@
 			btype,
 			type,
 			num,
-			counts
+			counts,
+			peoples,
+			saizhi,
+			jushu,
+			zuchuxian
 		) VALUES (
 			#{match.id},
 			#{btype},
 			#{type},
 			#{num},
-			#{counts}
+			#{counts},
+			#{peoples},
+			#{saizhi},
+			#{jushu},
+			#{zuchuxian}
 		)
 	</insert>
 	
@@ -91,7 +103,11 @@
 			btype = #{btype},
 			type = #{type},
 			num = #{num},
-			counts = #{counts}
+			counts = #{counts},
+			peoples = #{peoples},
+			saizhi = #{saizhi},
+			jushu = #{jushu},
+			zuchuxian = #{zuchuxian}
 		WHERE id = #{id}
 	</update>
 	

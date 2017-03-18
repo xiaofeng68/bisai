@@ -44,6 +44,7 @@ function divselect(divselectid,inputselectid) {
 </script>
 </head>
 <body>
+	<bisai:message content="${message}"/>
 	<section class="match_sectionll">
 		<div class="match_link">
 				<a href="${ctx }/${frontPath}apply${urlSuffix}">申请比赛</a>

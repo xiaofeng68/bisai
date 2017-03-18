@@ -8,6 +8,7 @@
 <%@ taglib prefix="sys" tagdir="/WEB-INF/tags/sys" %>
 <%@ taglib prefix="act" tagdir="/WEB-INF/tags/act" %>
 <%@ taglib prefix="cms" tagdir="/WEB-INF/tags/cms" %>
+<%@ taglib prefix="bisai" tagdir="/WEB-INF/tags/bisai" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}${fns:getFrontPath()}"/>
 <c:set var="ctxStatic" value="${pageContext.request.contextPath}/static"/>
 <c:set var="ctxStaticFront" value="${ctxStatic}/modules/bisai"/>

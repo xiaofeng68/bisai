@@ -32,10 +32,13 @@
 				<div id="divselect1" class="div_select" div-select-val="1">
 					<cite>男单</cite>
 					<ul>
-						<li><a href="javascript:;" selectid="1">混双</a></li>
-						<li><a href="javascript:;" selectid="2">男单</a></li>
-						<li><a href="javascript:;" selectid="2">女单</a></li>
-						<li><a href="javascript:;" selectid="2">男单</a></li>
+						<c:forEach var="typeNode" items="${fns:getMatchTypeNote(matchid,type) }">
+						<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
+						<c:if test="${typeNode.type==dic.value }">
+						<li><a href="javascript:;" selectid="1">${dic.label }</a></li>
+						</c:if>
+						</c:forEach>
+						</c:forEach>
 					</ul>
 				</div>
 				<input name="" type="hidden" value="" id="inputselect1" />
@@ -43,62 +46,25 @@
 		</div>
 	</Div>
 
-
+	<c:forEach var="typeNode" items="${fns:getMatchTypeNote(matchid,type) }">
 	<section>
+		<c:set var="nodeId" value="${typeNode.id }"  />
+		<c:forEach items="${groupMap[nodeId] }" var="group" varStatus="num">
 		<div class="grouping_table">
-			<p>第一组</p>
+			<p>第${num.index+1 }组</p>
 			<table>
 				<tr>
 					<td>对战<br></td>
-
 				</tr>
-				<tr>
-					<td>[210]张三1 vs [211]李四1<br></td>
+				<c:forEach var="chang" items="${group }">
+					<tr>
+					<td>[${chang[0].id }]${chang[0].name } vs [${chang[1].id }]${chang[1].name }<br></td>
 				</tr>
-				<tr>
-					<td>[210]张三1 vs [212]王五1<br></td>
-				</tr>
-				<tr>
-					<td valign="top">[211]李四1 vs [212]王五1</td>
-				</tr>
+				</c:forEach>
 			</table>
 		</div>
-		<div class="grouping_table">
-			<p>第二组</p>
-			<table>
-				<tr>
-					<td>对战<br></td>
-
-				</tr>
-				<tr>
-					<td>[210]张三1 vs [211]李四1<br></td>
-				</tr>
-				<tr>
-					<td>[210]张三1 vs [212]王五1<br></td>
-				</tr>
-				<tr>
-					<td valign="top">[211]李四1 vs [212]王五1</td>
-				</tr>
-			</table>
-		</div>
-		<div class="grouping_table">
-			<p>第三组</p>
-			<table>
-				<tr>
-					<td>对战<br></td>
-
-				</tr>
-				<tr>
-					<td>[210]张三1 vs [211]李四1<br></td>
-				</tr>
-				<tr>
-					<td>[210]张三1 vs [212]王五1<br></td>
-				</tr>
-				<tr>
-					<td valign="top">[211]李四1 vs [212]王五1</td>
-				</tr>
-			</table>
-		</div>
+		</c:forEach>
 	</section>
+	</c:forEach>
 </body>
 </html>

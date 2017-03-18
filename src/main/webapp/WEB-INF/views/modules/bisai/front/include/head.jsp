@@ -12,7 +12,8 @@
 <script src="${ctxStaticFront}/js/jquery-1.8.3.min.js" type="text/javascript"></script>
 <script src="${ctxStaticFront}/js/jquery.min.js" type="text/javascript"></script>
 <script src="${ctxStaticFront}/js/divselect.js" type="text/javascript"></script>
-<script src="${ctxStaticFront}/js/js-box.js" type="text/javascript"></script>
+<link href="${ctxStatic}/jquery-jbox/2.3/Skins/Bootstrap/jbox.min.css" rel="stylesheet" />
+<script src="${ctxStatic}/jquery-jbox/2.3/jquery.jBox-2.3.min.js" type="text/javascript"></script>
 <script src="${ctxStaticFront}/js/script.js" type="text/javascript"></script>
 <script src="${ctxStaticFront}/js/yf.js" type="text/javascript"></script>
 <script src="${ctxStatic}/My97DatePicker/WdatePicker.js" type="text/javascript"></script>

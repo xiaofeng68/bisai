@@ -1,7 +1,10 @@
 package com.thinkgem.jeesite.modules.bisai.web;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,14 +14,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.utils.Json;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.bisai.entity.Match;
 import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
+import com.thinkgem.jeesite.modules.bisai.entity.PeopleGroup;
 import com.thinkgem.jeesite.modules.bisai.entity.PeopleNote;
 import com.thinkgem.jeesite.modules.bisai.service.MatchService;
 import com.thinkgem.jeesite.modules.bisai.service.MatchTypeNoteService;
+import com.thinkgem.jeesite.modules.bisai.service.PeopleGroupService;
 import com.thinkgem.jeesite.modules.bisai.service.PeopleNoteService;
 import com.thinkgem.jeesite.modules.bisai.util.GroupUtils;
 
@@ -32,6 +38,8 @@ public class FrontMatchController extends BaseController {
     private MatchTypeNoteService matchTypeNoteService;
     @Autowired
     private MatchService matchService;
+    @Autowired
+    private PeopleGroupService peopleGroupService;
     
     @RequestMapping(value="editMatch${urlSuffix}")
     public String editMatch(Match match,HttpServletRequest request ,Model model) {
@@ -49,10 +57,19 @@ public class FrontMatchController extends BaseController {
         return "modules/bisai/front/match";
     }
     @RequestMapping(value="matchBm${urlSuffix}")
-    public String matchBm(String type,String id,HttpServletRequest request ,Model model) {
+    public String matchBm(String type,String id,HttpServletRequest request ,Model model,RedirectAttributes redirectAttributes) {
         Match match = matchService.get(id);
         model.addAttribute("match", match);
         model.addAttribute("type", type);
+        //校验是否生成过对一个的分组
+        PeopleGroup peopleGroup = new PeopleGroup();
+        peopleGroup.setMatchid(id);
+        peopleGroup.setBtype(type);
+        List<PeopleGroup> list = peopleGroupService.findList(peopleGroup);
+        if(list!=null&&list.size()>0){
+            addMessage(redirectAttributes, "已分组完成");
+            return "redirect:../match.html";
+        } 
         return "modules/bisai/front/baoming";
     }
     @RequestMapping(value="matchScore${urlSuffix}")
@@ -76,34 +93,70 @@ public class FrontMatchController extends BaseController {
         
         return "modules/bisai/front/match";
     }
+    @RequestMapping(value="term-{matchid}-{type}${urlSuffix}")
+    public String tream(@PathVariable String matchid,@PathVariable String type,HttpServletRequest request ,Model model) {
+        Match match = matchService.get(matchid);
+        model.addAttribute("match", match);
+        model.addAttribute("type",type);
+        return "modules/bisai/front/term";
+    }
     @RequestMapping(value="grouping-{matchid}-{type}${urlSuffix}")
     public String grouping(@PathVariable String matchid,@PathVariable String type,HttpServletRequest request ,Model model) {
+        model.addAttribute("matchid",matchid);
+        model.addAttribute("type",type);
         //进行分组算法保存数据
         MatchTypeNote matchTypeNote = new MatchTypeNote();
         Match match = new Match();
         match.setId(matchid);
+        matchTypeNote.setBtype(type);
         matchTypeNote.setMatch(match);
         List<MatchTypeNote> matchTypeList = matchTypeNoteService.findList(matchTypeNote);
+        // 清除之前的分组
+        PeopleGroup peopleGroup = new PeopleGroup();
+        peopleGroup.setMatchid(matchid);
+        peopleGroup.setBtype(type);
+        peopleGroupService.deleteByTypeNote(peopleGroup);
+        Map<String,Object> groupMap = new HashMap<String,Object>();
         for(MatchTypeNote typeNode : matchTypeList){
-            if(typeNode.getBtype().equals(1)){//单项赛
-                PeopleNote peopleNote = new PeopleNote();
-                peopleNote.setNote(typeNode);
-                List<PeopleNote> peopleList = peopleNoteService.findList(peopleNote);
-                List<List<PeopleNote>> list = GroupUtils.fenzu(peopleList,2,"1");
-                int group=1;
-                for(List<PeopleNote> pl : list){//组
-                    
-                    for(PeopleNote note : pl){
-                        //保存人员参赛记录
-                        
-                    }
+            //跟新分组信息
+            typeNode.setPeoples(Integer.parseInt(request.getParameter("peoples"+typeNode.getType())));
+            typeNode.setSaizhi(Integer.parseInt(request.getParameter("saizhi"+typeNode.getType())));
+            typeNode.setJushu(Integer.parseInt(request.getParameter("jushu"+typeNode.getType())));
+            typeNode.setZuchuxian(Integer.parseInt(request.getParameter("zuchuxian"+typeNode.getType())));
+            matchTypeNoteService.save(typeNode);
+            PeopleNote peopleNote = new PeopleNote();
+            peopleNote.setNote(typeNode);
+            List<List<PeopleNote>> ppeopleList = new ArrayList<List<PeopleNote>>();
+            List<PeopleNote> peopleList = peopleNoteService.findList(peopleNote);
+            ppeopleList.add(peopleList);
+            List<List<PeopleNote[]>> groupList = GroupUtils.BiSaifenzu(ppeopleList);
+            groupMap.put(typeNode.getId(), groupList); //把分组放入缓存
+            for(int group=0,groups=groupList.size();group<groups;group++){//组
+                List<PeopleNote[]> pl = groupList.get(group);
+                for(int cc=0,ccs = pl.size();cc<ccs;cc++){//场
+                    PeopleNote[] note = pl.get(cc);
+                    //保存人员分组记录
+                    PeopleGroup people = new PeopleGroup();
+                    people.setMatchid(matchid);
+                    people.setBtype(type);
+                    people.setType(typeNode.getType());
+                    people.setGroupnum(String.valueOf(1+group));
+                    people.setChang(String.valueOf(1+cc));
+                    people.setPeopleNote(note[0]);
+                    peopleGroupService.save(people);
+                    people = new PeopleGroup();
+                    people.setMatchid(matchid);
+                    people.setBtype(type);
+                    people.setType(typeNode.getType());
+                    people.setGroupnum(String.valueOf(1+group));
+                    people.setChang(String.valueOf(1+cc));
+                    people.setPeopleNote(note[1]);
+                    peopleGroupService.save(people);
                 }
-            }else{//团队赛
-                
             }
         }
+        model.addAttribute("groupMap",groupMap);
         //更新赛事状态
-        
         return "modules/bisai/front/grouping";
     }
     @RequestMapping(value="savePeopleNote")

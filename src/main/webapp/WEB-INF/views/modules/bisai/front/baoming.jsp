@@ -154,7 +154,7 @@
 					</c:forEach>
 				</li>
 			</ul>
-			<div class="acti_buttom"><a href="${ctx }${frontPath}/match/grouping-${match.id}-${type}${urlSuffix}">分组抽签</a></div>
+			<div class="acti_buttom"><a href="${ctx }${frontPath}/match/term-${match.id}-${type}${urlSuffix}">分组抽签</a></div>
 		</div>
 	</section>
 </body>

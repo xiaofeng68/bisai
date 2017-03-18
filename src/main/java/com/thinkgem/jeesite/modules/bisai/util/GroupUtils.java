@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.bisai.entity.PeopleNote;
+
 public class GroupUtils {
 
 	static class BiSai {
@@ -434,15 +436,15 @@ public class GroupUtils {
 	 * @param list
 	 * @return
 	 */
-	public static List<List<String[]>> BiSaifenzu(List<String[]> list) {
-		List<List<String[]>> strs=new ArrayList<List<String[]>>();
-		for (String[] strings : list) {
-			List<String[]> listt=new ArrayList<String[]>();
-			for (int i = 0; i < strings.length; i++) {
-				for (int j = i+1; j < strings.length; j++) {
-					String[] BiSai=new String[2];
-					BiSai[0]=strings[i];
-					BiSai[1]=strings[j];
+	public static List<List<PeopleNote[]>> BiSaifenzu(List<List<PeopleNote>> list) {
+		List<List<PeopleNote[]>> strs=new ArrayList<List<PeopleNote[]>>();
+		for (List<PeopleNote> strings : list) {
+			List<PeopleNote[]> listt=new ArrayList<PeopleNote[]>();
+			for (int i = 0; i < strings.size(); i++) {
+				for (int j = i+1; j < strings.size(); j++) {
+				    PeopleNote[] BiSai=new PeopleNote[2];
+					BiSai[0]=strings.get(i);
+					BiSai[1]=strings.get(j);
 					listt.add(BiSai);
 				}
 			}
@@ -454,13 +456,13 @@ public class GroupUtils {
 	// -------------------------------方法结束,下面为主函数测试-------------------------------------------------
 	public static void main(String[] args) {
 		List<String[]> list=new ArrayList<String[]>();
-		String[] str=new String[]{"1","2","3"};
+		String[] str=new String[]{"53","54","57"};
 		list.add(str);
 //		str=new String[]{"4","5","6","11"};
 //		list.add(str);
 //		str=new String[]{"7","8","9"};
 //		list.add(str);
-		List<List<String[]>> JieGuo=BiSaifenzu(list);
+		List<List<String[]>> JieGuo=null;//BiSaifenzu(list);
 		int num=0;
 		int numm=0;
 		for (List<String[]> listt : JieGuo) {

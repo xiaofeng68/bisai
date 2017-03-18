@@ -1,13 +1,7 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.bisai.entity;
-
-import java.util.Date;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
@@ -23,6 +17,10 @@ public class MatchTypeNote extends DataEntity<MatchTypeNote> {
 	private String type;		// 比赛小类
 	private Integer num;		// 团队赛人数
 	private Integer counts;		// 统计参赛人数
+	private Integer peoples;//人数
+	private Integer saizhi;//赛制:0循环，1淘汰
+	private Integer jushu;//局数
+	private Integer zuchuxian;//组出线
 	
 	public MatchTypeNote() {
 		super();
@@ -73,5 +71,36 @@ public class MatchTypeNote extends DataEntity<MatchTypeNote> {
     public void setMatch(Match match) {
         this.match = match;
     }
-	
+
+    public Integer getPeoples() {
+        return peoples;
+    }
+
+    public void setPeoples(Integer peoples) {
+        this.peoples = peoples;
+    }
+
+    public Integer getSaizhi() {
+        return saizhi;
+    }
+
+    public void setSaizhi(Integer saizhi) {
+        this.saizhi = saizhi;
+    }
+
+    public Integer getJushu() {
+        return jushu;
+    }
+
+    public void setJushu(Integer jushu) {
+        this.jushu = jushu;
+    }
+
+    public Integer getZuchuxian() {
+        return zuchuxian;
+    }
+
+    public void setZuchuxian(Integer zuchuxian) {
+        this.zuchuxian = zuchuxian;
+    }
 }
