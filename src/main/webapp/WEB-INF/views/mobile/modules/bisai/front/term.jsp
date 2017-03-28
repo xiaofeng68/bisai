@@ -42,12 +42,12 @@ $(function(){
 			<form action="${ctx }${frontPath}/match/grouping-${match.id}-${type}${urlSuffix}" method="post">
 				<table>
 					<tr>
-						<td>赛项</td>
-						<td>报名人</td>
-						<td>分组数量</td>
-						<td>赛制</td>
-						<td>局数</td>
-						<td>出线人数</td>
+						<td width="10%">赛项</td>
+						<td width="15%">报名人</td>
+						<td width="20%">分组数量</td>
+						<td width="20%">赛制</td>
+						<td width="15%">局数</td>
+						<td width="20%">出线人数</td>
 					</tr>
 					<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
 					<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">

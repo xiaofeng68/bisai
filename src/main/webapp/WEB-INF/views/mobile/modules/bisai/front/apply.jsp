@@ -186,12 +186,12 @@
 							<span class="namell fl">比赛项目</span>
 							<input type="hidden" name="type" id="type">
 							<div class="substance fl" style="width:80%;">
-								<div style="height: 40px;font-size: 13px;color: #b4b3b3;">
+								<div style="height: 40px;font-size: 0.7rem;color: #b4b3b3;">
 									<input type="radio" name="btype" value="1" style="-webkit-appearance: button;" onclick="bisai_change(1)" checked="checked" id="dxcRadio"><label for="dxcRadio">单项赛</label>
-									<input type="radio" name="btype" value="2" style="-webkit-appearance: button;margin-left: 50px;" onclick="bisai_change(2)" id="tdcRadio"><label for="tdcRadio">团体赛</label>
+									<input type="radio" name="btype" value="2" style="-webkit-appearance: button;margin-left: 90px;" onclick="bisai_change(2)" id="tdcRadio"><label for="tdcRadio">团体赛</label>
 								</div>
 								<c:set var="btypes" value='${fn:split(match.type,";") }'></c:set>
-								<div id="danxiang">
+								<div id="danxiang" style="margin-top: 1rem;">
 									<c:forEach var="type" items="${fns:getDictList('MatchTypeNote_type')}">
 									<div class="label js-check clearfix fl">
 										<c:set var="hasType" value="false"></c:set>
@@ -202,19 +202,19 @@
 										</c:forEach>
 										<c:choose>
 											<c:when test='${hasType }'>
-												<em class="checked fl typecheck"></em>
+												<em class="checked fl typecheck" style="margin-top:-8px;"></em>
 											</c:when>
 											<c:otherwise>
-												<em class="unchecked fl typecheck"></em>
+												<em class="unchecked fl typecheck" style="margin-top:-8px;"></em>
 											</c:otherwise>
 										</c:choose>
 										<span class="fl">${type.label }</span>
 									</div>
 									</c:forEach>
 								</div>
-								<div id="tuanti" style="font-size: 13px;color: #b4b3b3;display: none;">
-									<div class="label js-check clearfix">比赛总场次：
-									<select style="width: 80px;" name="changci" id="changci">
+								<div id="tuanti" style="font-size: 0.7rem;color: #b4b3b3;display: none;">
+									<div class="label js-check clearfix" style="margin-top: 1rem;">比赛总场次：
+									<select style="width: 120px;font-size: 0.7rem;" name="changci" id="changci">
 										<option value="0">请选择</option>
 										<c:forEach var="dic" items="${fns:getDictList('MATCH_CHANGCI')}">
 											<option value="${dic.value}" <c:if test="${match.changci==dic.value }">selected="selected"</c:if>  >${dic.label }</option>
@@ -222,7 +222,7 @@
 									</select>
 									</div>
 									<c:forEach var="type" items="${fns:getDictList('MatchTypeNote_type')}">
-									<div class="label js-check clearfix" style="margin-top: 20px;">
+									<div class="label js-check clearfix" style="margin-top: 1.4rem;">
 										<c:set var="hasType" value="false"></c:set>
 										<c:set var="cc" value=""></c:set>
 										<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,2) }">
@@ -233,14 +233,14 @@
 										</c:forEach>
 										<c:choose>
 											<c:when test='${hasType }'>
-												<em class="checked fl ttypecheck"></em>
+												<em class="checked fl ttypecheck" style="margin-top:-8px;"></em>
 											</c:when>
 											<c:otherwise>
-												<em class="unchecked fl ttypecheck"></em>
+												<em class="unchecked fl ttypecheck" style="margin-top:-8px;"></em>
 											</c:otherwise>
 										</c:choose>
 										<span class="fl">${type.label }</span>
-										<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" value="${cc }" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
+										<span class="fl" style="margin-left: 60px;margin-top: -12px;"><input type="text" value="${cc }" style="font-size:0.7rem;width: 100px;border-style:solid;border-width: 1px;height: 1rem;"></span><span class="fl" style="margin-left: 10px;">场</span>
 									</div>
 									</c:forEach>
 									
@@ -265,7 +265,7 @@
 						<span class="namell fl v-m">比赛地点</span>
 						<span class="fl clearfix apply_address v-m">
 							<img src="${ctxStaticFront }/images/fixed.png">
-							<span class="add_text fl">点击选择</span>
+							<span class="add_text fl" style="margin-top: 6px;">点击选择</span>
 							<input class="apply_input" name="address" value="${match.address }" id="address" type="text" placeholder="请选择">
 							<span class="fr add_butt">重新选择</span>
 						</span>
