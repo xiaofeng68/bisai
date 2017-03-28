@@ -22,4 +22,10 @@ public interface MatchTypeNoteDao extends CrudDao<MatchTypeNote> {
 	 */
 	 
 	void deleteByMatch(String matchid);
+	/**
+	 * 获取比赛参赛人数
+	 * @param matchid
+	 * @return
+	 */
+	int getMatchPeopleCount(String matchid);
 }

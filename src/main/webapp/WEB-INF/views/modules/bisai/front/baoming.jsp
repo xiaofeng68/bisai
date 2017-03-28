@@ -41,33 +41,44 @@
 			}, function(result) {
 				if (result.success) {
 					alert("保存成功");
-					addPeopleDiv(result.obj,div);
-					//清空文本框
-					$("#orgname"+typeid).val("");
-					$("#name"+typeid).val('');
-					$("#phone"+typeid).val('');
-					$("#num"+typeid).html(++num);
+					window.location.reload();
 				}else{
 					alert(result.msg);
 				}
 			}, 'JSON');
 		}
-		function addPeopleDiv(people,div){
-			var html = '<div class="second_list_con clearfix">'+
-			'<span class="activity_po">'+
-				'<img id="img'+people.id+'" src="${ctxStaticFront}/images/img37.png">'+
-			'</span>'+
-			'<span class="list_name">'+people.name+'</span>';
-			if(people.state==1){
-				html+='<span class="list_butt1 fr" onclick="updateState('+people.id+',0)">恢复</span>';
-			}else{
-				html+='<span class="list_butt fr" onclick="updateState('+people.id+',1)">踢人</span>';
-			}
-			html+='</div>';
-			$("#"+div).append(html);
-		}
 		function updateState(id,state){
 			$.post('${ctx }${frontPath}/match/updatePeopleNote', {
+				id : id,
+				state : state
+			}, function(result) {
+				if (result.success) {
+					window.location.reload();
+				}else{
+					alert(result.msg);
+				}
+			}, 'JSON');
+		}
+		function addOrgNote(div){
+			var name = $("#name").val();
+			var user = $("#user").val();
+			var phone = $("#phone").val();
+			$.post('${ctx }${frontPath}/match/saveOrgNote', {
+				name : name,
+				user : user,
+				phone:phone,
+				matchid:'${match.id}'
+			}, function(result) {
+				if (result.success) {
+					alert("保存成功");
+					window.location.reload();
+				}else{
+					alert(result.msg);
+				}
+			}, 'JSON');
+		}
+		function updateOrgState(id,state){
+			$.post('${ctx }${frontPath}/match/updateOrgNote', {
 				id : id,
 				state : state
 			}, function(result) {
@@ -83,11 +94,11 @@
 <body>
 	<header class="grouping_header clearfix">
 		<span class="fl">
-			<a href="javascript:history.go(-1);">
+			<a href="${ctx }/${frontPath}match${urlSuffix}">
 				<img src="${ctxStaticFront}/images/r-arrow.png">
 			</a>
 		</span>
-		<span>单项报名</span>
+		<span>${type==1?"单项报名":"团体报名" }</span>
 	</header>
 	<section>
 		<div class="activity_first">
@@ -100,6 +111,54 @@
 		</div>
 		<div class="activ_list">
 			<ul>
+				<li class="clearfix mtll">
+					<span class="fl li_left f14">参赛单位</span>
+					<div class="li_right2 f13 clearfix">
+						<div class="clearfix li_right1" style="width:100%;margin-bottom:0.4rem;">
+							<div class="first-meun">
+								<span class="label_but" id="dnandannum1" onclick="changeTab('dnandannum','1')">单位维护</span>
+								<span class="label_but" id="dnandannum2" onclick="changeTab('dnandannum','2')">单位列表</span>
+							</div>
+							<div  class="tree-second fr" id="dnandannumDiv1" style="display:none;">
+								<div class="label1 js-check clearfix"> 
+									<input type="text" id="name" placeholder="参赛单位名称">
+								</div>
+								<div class="label1 js-check clearfix">
+									<input type="text" id="user" placeholder="联系人"> 
+									<input type="text" id="phone" placeholder="联系电话">
+									<span class="fr label_but" onclick="addOrgNote('dnandannumDiv2')">确定</span>
+								</div>
+							</div>
+							<div  class="tree-second fr" id="dnandannumDiv2" style="display:none;">
+								<div class="tree_second_list">
+									<c:forEach var="org" items="${fns:getBaomingOrg(match.id) }">
+									<div class="second_list_con clearfix">
+										<span class="activity_po">
+											<c:choose>
+											<c:when test="${org.state==1 }">
+												<img id="img${people.id }" src="${ctxStaticFront}/images/img37-1.png">
+											</c:when>
+											<c:otherwise>
+												<img id="img${people.id }" src="${ctxStaticFront}/images/img37.png">
+											</c:otherwise>
+										</c:choose>
+										</span>
+										<span class="list_name">${org.name }</span>
+										<c:choose>
+											<c:when test="${org.state==1 }">
+												<span class="list_butt1 fr" onclick="updateOrgState(${org.id },0)">恢复</span>
+											</c:when>
+											<c:otherwise>
+												<span class="list_butt fr" onclick="updateOrgState(${org.id },1)">删除</span>
+											</c:otherwise>
+										</c:choose>
+									</div>
+									</c:forEach>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
 				<li class="clearfix">
 					<span class="li_left f14">比赛类型</span>
 					<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
@@ -114,7 +173,15 @@
 							</div>
 							<div  class="tree-second fr" id="dnandannum${typeNode.id}Div1" style="display:none;">
 								<div class="label1 js-check clearfix"> 
-									<input type="text" id="orgname${typeNode.id}" placeholder="单位">
+									<span class="v-m">单位  </span>
+									<select id="orgname${typeNode.id}">
+										<option value=''>请选择</option>
+										<c:forEach var="org" items="${fns:getBaomingOrg(match.id) }">
+										<c:if test="${org.state!=1 }">
+										<option value="${org.id }">${org.name }</option>
+										</c:if>
+										</c:forEach>
+									</select>
 								</div>
 								<div class="label1 js-check clearfix">
 									<input type="text" id="name${typeNode.id}" placeholder="姓名"> 

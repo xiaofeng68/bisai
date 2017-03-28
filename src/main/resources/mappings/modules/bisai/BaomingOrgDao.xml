@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.bisai.dao.PeopleNoteDao">
+<mapper namespace="com.thinkgem.jeesite.modules.bisai.dao.BaomingOrgDao">
     
-	<sql id="peopleNoteColumns">
+	<sql id="baomingOrgColumns">
 		a.id AS "id",
-		a.noteid AS "note.id",
 		a.name AS "name",
+		a.user AS "user",
 		a.phone AS "phone",
-		a.orgname AS "orgname",
-		a.state AS "state"
+		a.matchid AS "match.id",
+		a.state AS "state",
+		u.name as "match.name"
 	</sql>
 	
-	<sql id="peopleNoteJoins">
-		left join bisai_match_type_note b on a.noteid = b.id
+	<sql id="baomingOrgJoins">
+		join bisai_match u on u.id = a.matchid
 	</sql>
     
-	<select id="get" resultType="PeopleNote">
+	<select id="get" resultType="BaomingOrg">
 		SELECT 
-			<include refid="peopleNoteColumns"/>
-		FROM bisai_people_note a
-		<include refid="peopleNoteJoins"/>
+			<include refid="baomingOrgColumns"/>
+		FROM bisai_baoming_org a
+		<include refid="baomingOrgJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="PeopleNote">
+	<select id="findList" resultType="BaomingOrg">
 		SELECT 
-			<include refid="peopleNoteColumns"/>
-		FROM bisai_people_note a
-		<include refid="peopleNoteJoins"/>
+			<include refid="baomingOrgColumns"/>
+		FROM bisai_baoming_org a
+		<include refid="baomingOrgJoins"/>
 		<where>
-			
+			<if test="match!=null and match.id!=null and match.id!=''">
+				and a.matchid=#{match.id}
+			</if>
 			<if test="name != null and name != ''">
 				AND a.name LIKE 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
-			</if>
-			<if test="note!=null and note.id!=null and note.id!=''">
-				and a.noteid= #{note.id}
 			</if>
 		</where>
 		<choose>
@@ -49,11 +49,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="PeopleNote">
+	<select id="findAllList" resultType="BaomingOrg">
 		SELECT 
-			<include refid="peopleNoteColumns"/>
-		FROM bisai_people_note a
-		<include refid="peopleNoteJoins"/>
+			<include refid="baomingOrgColumns"/>
+		FROM bisai_baoming_org a
+		<include refid="baomingOrgJoins"/>
 		<where>
 			
 		</where>		
@@ -67,33 +67,33 @@
 	</select>
 	
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO bisai_people_note(
-			noteid,
+		INSERT INTO bisai_baoming_org(
 			name,
+			user,
 			phone,
-			orgname,
+			matchid,
 			state
 		) VALUES (
-			#{note.id},
 			#{name},
+			#{user},
 			#{phone},
-			#{orgname},
+			#{match.id},
 			#{state}
 		)
 	</insert>
 	
 	<update id="update">
-		UPDATE bisai_people_note SET 	
-			noteid = #{note.id},
+		UPDATE bisai_baoming_org SET 	
 			name = #{name},
+			user = #{user},
 			phone = #{phone},
-			orgname = #{orgname},
+			matchid = #{match.id},
 			state = #{state}
 		WHERE id = #{id}
 	</update>
 	
 	<update id="delete">
-		DELETE FROM bisai_people_note
+		DELETE FROM bisai_baoming_org
 		WHERE id = #{id}
 	</update>
 	

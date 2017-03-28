@@ -19,6 +19,8 @@ public class PeopleGroup extends DataEntity<PeopleGroup> {
 	private String matchid;
 	private String btype;
 	private String type;
+	private String lun;
+	private String jushu;//局数
 	
 	public PeopleGroup() {
 		super();
@@ -86,5 +88,21 @@ public class PeopleGroup extends DataEntity<PeopleGroup> {
     public void setType(String type) {
         this.type = type;
     }
+
+	public String getLun() {
+		return lun;
+	}
+
+	public void setLun(String lun) {
+		this.lun = lun;
+	}
+
+	public String getJushu() {
+		return jushu;
+	}
+
+	public void setJushu(String jushu) {
+		this.jushu = jushu;
+	}
 	
 }

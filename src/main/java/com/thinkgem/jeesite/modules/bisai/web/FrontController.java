@@ -22,9 +22,11 @@ import com.thinkgem.jeesite.common.utils.MD5Util;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.bisai.entity.Account;
 import com.thinkgem.jeesite.modules.bisai.entity.Match;
+import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
 import com.thinkgem.jeesite.modules.bisai.global.GlobalBuss;
 import com.thinkgem.jeesite.modules.bisai.service.AccountService;
 import com.thinkgem.jeesite.modules.bisai.service.MatchService;
+import com.thinkgem.jeesite.modules.bisai.service.MatchTypeNoteService;
 import com.thinkgem.jeesite.modules.wx.util.WeixinUtil;
 
 import net.sf.json.JSONObject;
@@ -42,6 +44,8 @@ public class FrontController extends BaseController {
     private AccountService accountService;
     @Autowired
     private MatchService matchService;
+    @Autowired
+	private MatchTypeNoteService matchTypeNoteService;
     /**
      * 网站首页
      */
@@ -198,12 +202,19 @@ public class FrontController extends BaseController {
             return "modules/bisai/front/apply";
         }else if("1".equals(state)){
             return "modules/bisai/front/activity";
-        }else if("2".equals(state)){
-            
+        }else if("2".equals(state)){//查看成绩
+        	//获取大类
+        	MatchTypeNote matchTypeNode = new MatchTypeNote();
+        	matchTypeNode.setMatch(match);
+        	List<MatchTypeNote> typeList = matchTypeNoteService.findList(matchTypeNode);
+    		model.addAttribute("type", typeList.get(0).getBtype());
+    		model.addAttribute("stype", 0);
+			return "modules/bisai/front/final";
         }else if("-1".equals(state)){
-            
+        	return "modules/bisai/front/apply";
+        }else{//查看排名
+        	return "modules/bisai/front/ranking";
         }
-        return null;
     }
     
 }

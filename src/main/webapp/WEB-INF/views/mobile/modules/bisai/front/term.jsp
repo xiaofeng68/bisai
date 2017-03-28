@@ -31,7 +31,7 @@ $(function(){
 <body>
 	<header class="grouping_header clearfix">
 		<span class="fl">
-			<a href="javascript:history.go(-1)">
+			<a href="${ctx }/${frontPath}match${urlSuffix}">
 				<img src="${ctxStaticFront }/images/r-arrow.png">
 			</a>
 		</span>
@@ -44,10 +44,10 @@ $(function(){
 					<tr>
 						<td>赛项</td>
 						<td>报名人</td>
-						<td>人数</td>
+						<td>分组数量</td>
 						<td>赛制</td>
 						<td>局数</td>
-						<td>组出线</td>
+						<td>出线人数</td>
 					</tr>
 					<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
 					<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
@@ -57,42 +57,41 @@ $(function(){
 						<td>${typeNode.counts }</td>
 						<td>
 							<div id="divselect1${typeNode.type }" class="div_select" div-select-val="1${typeNode.type }">
-								<cite>5</cite>
+								<cite>1</cite>
 								<ul>
 									<li>
-										<a href="javascript:;" selectid="1">2</a>
+										<a href="javascript:;" selectid="1">1</a>
 									</li>
+									<c:if test="${typeNode.counts/2>=4 }">
 									<li>
-										<a href="javascript:;" selectid="2">3</a>
+										<a href="javascript:;" selectid="4">4</a>
 									</li>
+									</c:if>
+									<c:if test="${typeNode.counts/2>=8 }">
 									<li>
-										<a href="javascript:;" selectid="3">4</a>
+										<a href="javascript:;" selectid="8">8</a>
 									</li>
+									</c:if>
+									<c:if test="${typeNode.counts/2>=16 }">
 									<li>
-										<a href="javascript:;" selectid="4">6</a>
+										<a href="javascript:;" selectid="16">16</a>
 									</li>
+									</c:if>
+									<c:if test="${typeNode.counts/2>=32 }">
 									<li>
-										<a href="javascript:;" selectid="5">7</a>
+										<a href="javascript:;" selectid="32">32</a>
 									</li>
-									<li>
-										<a href="javascript:;" selectid="5">8</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="5">9</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="5">10</a>
-									</li>
+									</c:if>
 								</ul>
 							</div>
-							<input name="peoples${typeNode.type }" type="hidden" value="2" id="inputselect1${typeNode.type }"/>	
+							<input name="peoples${typeNode.type }" type="hidden" value="1" id="inputselect1${typeNode.type }"/>	
 						</td>
 						<td>
 							<div id="divselect2${typeNode.type }" class="div_select" div-select-val="2${typeNode.type }">
 								<cite>循环</cite>
 								<ul>
 									<li>
-										<a href="javascript:;" selectid="1">循环</a>
+										<a href="javascript:;" selectid="0">循环</a>
 									</li>
 									<li>
 										<a href="javascript:;" selectid="1">淘汰</a>
@@ -106,46 +105,27 @@ $(function(){
 								<cite>3</cite>
 								<ul>
 									<li>
-										<a href="javascript:;" selectid="1">2</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">4</a>
+										<a href="javascript:;" selectid="3">3</a>
 									</li>
 									<li>
 										<a href="javascript:;" selectid="3">5</a>
 									</li>
-									<li>
-										<a href="javascript:;" selectid="4">6</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="5">7</a>
-									</li>
 								</ul>
 							</div>
-							<input name="jushu${typeNode.type }" type="hidden" value="2" id="inputselect3${typeNode.type }"/>
+							<input name="jushu${typeNode.type }" type="hidden" value="3" id="inputselect3${typeNode.type }"/>
 						</td>
 						<td>
 							<div id="divselect4${typeNode.type }" class="div_select" div-select-val="4${typeNode.type }">
-								<cite>3</cite>
+								<cite>1</cite>
 								<ul>
+									<c:forEach var="num" items="${fns:getChuXianPeople(typeNode.counts )}">
 									<li>
-										<a href="javascript:;" selectid="1">2</a>
+										<a href="javascript:;" selectid="${num }">${num }</a>
 									</li>
-									<li>
-										<a href="javascript:;" selectid="2">4</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="3">5</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="4">6</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="5">7</a>
-									</li>
+									</c:forEach>
 								</ul>
 							</div>
-							<input name="zuchuxian${typeNode.type }" type="hidden" value="2" id="inputselect4${typeNode.type }"/>
+							<input name="zuchuxian${typeNode.type }" type="hidden" value="1" id="inputselect4${typeNode.type }"/>
 						</td>
 					</tr>
 					</c:if>

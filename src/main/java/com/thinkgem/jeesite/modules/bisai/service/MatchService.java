@@ -54,6 +54,7 @@ public class MatchService extends CrudService<MatchDao, Match> {
 		matchTypeNoteDao.deleteByMatch(match.getId());
 		String type = match.getType();
 		String[] typeArr = type.split(";");
+		if(typeArr.length>0)
 		if(!StringUtils.isEmpty(typeArr[0])){
 		    MatchTypeNote typeNode=null;
 		    String[] type1Arr = typeArr[0].split(",");
@@ -69,6 +70,7 @@ public class MatchService extends CrudService<MatchDao, Match> {
 		    if(typeNode!=null)
 		        MatchTypeNoteUtils.clearCache(typeNode);
 		}
+		if(typeArr.length>1)
 		if(!StringUtils.isEmpty(typeArr[1])){
 		    MatchTypeNote typeNode=null;
 		    String[] type2Arr = typeArr[1].split(",");

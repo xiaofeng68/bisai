@@ -11,6 +11,8 @@
 		a.matchid as "matchid",
 		a.btype as "btype",
 		a.type as "type",
+		a.lun as "lun",
+		a.jushu as "jushu",
 		b.name as "peopleNote.name"
 	</sql>
 	
@@ -38,12 +40,22 @@
 			<if test="btype!=null and btype!=''">
 				and a.btype=#{btype}
 			</if>
+			<if test="type!=null and type!=''">
+				and a.type=#{type}
+			</if>
+			<if test="groupnum!=null and groupnum!=''">
+				and a.groupnum=#{groupnum}
+			</if>
+			<if test="lun!=null and lun!=''">
+				and a.lun=#{lun}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
+				order by a.lun,a.groupnum,a.chang
 			</otherwise>
 		</choose>
 	</select>
@@ -65,7 +77,7 @@
 		</choose>
 	</select>
 	
-	<insert id="insert">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO bisai_people_group(
 			groupnum,
 			chang,
@@ -73,7 +85,9 @@
 			score1,
 			matchid,
 			btype,
-			type
+			type,
+			lun,
+			jushu
 		) VALUES (
 			#{groupnum},
 			#{chang},
@@ -81,7 +95,9 @@
 			#{score1},
 			#{matchid},
 			#{btype},
-			#{type}
+			#{type},
+			#{lun},
+			#{jushu}
 		)
 	</insert>
 	
@@ -93,7 +109,9 @@
 			score1 = #{score1}
 			matchid = #{matchid},
 			btype = #{btype},
-			type = #{type}
+			type = #{type},
+			lun = #{lun},
+			jushu = #{jushu},
 		WHERE id = #{id}
 	</update>
 	
@@ -109,4 +127,34 @@
 		select DISTINCT btype from bisai_people_group b where b.matchid=#{matchid} 
 		)
 	</select>
+	<select id="getGroupSelectList" resultType="java.lang.String">
+		select groupnum from bisai_people_group where matchid=#{match.id} and btype=#{btype} and type=#{type} and lun=#{saizhi} group by groupnum 
+	</select>
+	<select id="getLunSelectList" resultType="java.lang.String">
+		select lun from bisai_people_group where matchid=#{match.id} and btype=#{btype} and type=#{type} group by lun 
+	</select>
+	<update id="batchUpdate" parameterType="java.util.List">
+          <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+                update bisai_people_group
+                <set>
+                  score1=${item.score1}
+                </set>
+                where id = ${item.id}
+         </foreach>
+    </update>
+    <select id="countTypeScoreIsNull" resultType="int">
+    	select count(1) from bisai_people_group where matchid=#{matchid} and btype=#{btype} and type=#{type} and score1 is null
+    </select>
+    <select id="countMatchScoreIsNull" resultType="int">
+    	select count(1) from bisai_people_group where matchid=#{matchid} and score1 is null
+    </select>
+    <select id="getMatchGroupnumList" resultType="java.lang.Integer">
+    	select DISTINCT groupnum from bisai_people_group where matchid = matchid and lun = (select max(lun) from bisai_people_group where matchid=#{matchid})
+    </select>
+    <select id="getGroupScoreSort" resultType="PeopleGroup">
+    	select id,matchid,btype,type,groupnum,chang,p1 as "peopleNote.id",lun,sum(score1) score1 from bisai_people_group
+		where matchid=#{matchid} and btype=#{btype} and type=#{type} and lun=#{lun}
+		group by groupnum,chang,p1
+		order by groupnum,chang	
+    </select>
 </mapper>

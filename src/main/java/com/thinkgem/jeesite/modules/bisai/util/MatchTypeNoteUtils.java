@@ -1,9 +1,11 @@
 package com.thinkgem.jeesite.modules.bisai.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.bisai.dao.MatchTypeNoteDao;
 import com.thinkgem.jeesite.modules.bisai.entity.Match;
 import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
@@ -21,6 +23,7 @@ public class MatchTypeNoteUtils {
 	
 	@SuppressWarnings("unchecked")
     public static List<MatchTypeNote> getMatchTypeNote(String matchid,String type){
+		if(StringUtils.isEmpty(matchid)) return new ArrayList<MatchTypeNote>();
 		List<MatchTypeNote> list = (List<MatchTypeNote>) CacheUtils.get(CACHE_SETTING_MAP+":mt:"+matchid+":"+type);
 		if(list==null){
 		    MatchTypeNote note = new MatchTypeNote();
@@ -32,6 +35,9 @@ public class MatchTypeNoteUtils {
 		    CacheUtils.put(CACHE_SETTING_MAP+":mt:"+matchid+":"+type,list);
 		}
 		return list;
+	}
+	public static int getMatchPeople(String matchid){
+		return matchTypeNoteDao.getMatchPeopleCount(matchid);
 	}
 	public static void clearCache(MatchTypeNote note){
         CacheUtils.remove(CACHE_SETTING_MAP+":mt:"+note.getMatch().getId()+":"+note.getBtype());

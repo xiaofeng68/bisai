@@ -260,6 +260,13 @@
     <function-signature>java.util.List getMatchTypeNote(java.lang.String,java.lang.String)</function-signature>
     <example>${fns:getMatchTypeNote(matchid,type)}</example>  
   </function>
+  <function>
+  	<description>获取比赛参赛人数</description>
+    <name>getMatchPeople</name>
+    <function-class>com.thinkgem.jeesite.modules.bisai.util.MatchTypeNoteUtils</function-class>
+    <function-signature>java.util.List getMatchPeople(java.lang.String)</function-signature>
+    <example>${fns:getMatchPeople(matchid)}</example>  
+  </function>
   <!-- 获取比赛人员记录 -->
   <function>
   	<description>获取比赛类型记录标签</description>
@@ -268,5 +275,27 @@
     <function-signature>java.util.List getPeopleByType(java.lang.String)</function-signature>
     <example>${fns:getPeopleByType(typeid)}</example>  
   </function>
-  
+  <function>
+  	<description>获取比赛类型记录标签</description>
+    <name>getChuXianPeople</name>
+    <function-class>com.thinkgem.jeesite.modules.bisai.util.PeopleNoteUtils</function-class>
+    <function-signature>java.util.List getChuXianPeople(java.lang.Integer)</function-signature>
+    <example>${fns:getChuXianPeople(sum)}</example>  
+  </function>
+  <!-- 获取比赛类型记录 -->
+  <function>
+  	<description>获取单位标签</description>
+    <name>getBaomingOrg</name>
+    <function-class>com.thinkgem.jeesite.modules.bisai.util.BaomingOrgUtils</function-class>
+    <function-signature>java.util.List getBaomingOrg(java.lang.String)</function-signature>
+    <example>${fns:getBaomingOrg(matchid)}</example>  
+  </function>
+  <!-- 分组 -->
+  <function>
+  	<description>获取前三名</description>
+    <name>getPeopleSort</name>
+    <function-class>com.thinkgem.jeesite.modules.bisai.util.PeopleGroupUtils</function-class>
+    <function-signature>java.util.List getPeopleSort(java.lang.String,java.lang.String,java.lang.String)</function-signature>
+    <example>${fns:getPeopleSort(matchid,btype,type)}</example>  
+  </function>
 </taglib>

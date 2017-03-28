@@ -43,7 +43,7 @@
 					</span>
 				</li>
 				<li class="clearfix">
-					<span class="fl li_left f14">主办单位</span>
+					<span class="fl li_left f14">主办者</span>
 					<span class="fl li_right f13">
 					<c:forEach items="${orgs }" var="org">
 						<span class="border">${org }</span>

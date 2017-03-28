@@ -138,12 +138,16 @@ function divselect(divselectid,inputselectid) {
 							<span ><a href="${ctx }/${frontPath}match/closeMatch${urlSuffix}?id=${match.id}">关闭</a></span>
 							</c:when>
 							<c:when test="${match.state==1 }">
-							<span ><a href="${ctx }/${frontPath}match/matchBm${urlSuffix}?type=1&id=${match.id}">单项报名</a></span>
-							<span ><a href="${ctx }/${frontPath}match/matchBm${urlSuffix}?type=2&id=${match.id}">团体报名</a></span>
+							<c:if test="${empty match.changci or match.changci=='0'}">
+								<span ><a href="${ctx }/${frontPath}match/matchBm${urlSuffix}?type=1&id=${match.id}">单项报名</a></span>
+							</c:if>
+							<c:if test="${not empty match.changci and match.changci!='0'}">
+								<span ><a href="${ctx }/${frontPath}match/matchBm${urlSuffix}?type=2&id=${match.id}">团体报名</a></span>
+							</c:if>
 							</c:when>
 							<c:when test="${match.state==2 }">
-							<span ><a href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=0&id=${match.id}">查看成绩</a></span>
-							<span ><a href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=1&id=${match.id}">成绩录入</a></span>
+							<span ><a href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=1&stype=0&id=${match.id}">查看成绩</a></span>
+							<span ><a href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=1&stype=1&id=${match.id}">成绩录入</a></span>
 							</c:when>
 							<c:when test="${match.state==-1 }">
 							<span ><a href="${ctx }/${frontPath}match/matchRecreate${urlSuffix}?id=${match.id}">再次发起</a></span>
@@ -153,7 +157,7 @@ function divselect(divselectid,inputselectid) {
 						</div>
 						<div class="positionll">
 							<em class="em${match.state }"></em>
-							<p>人数：${match.counts }人</p>
+							<p>人数：${fns:getMatchPeople(match.id) }人</p>
 						</div>
 					</a>
 				</li>

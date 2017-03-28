@@ -22,8 +22,56 @@
 					}
 				}
 			});
+			// 复选框
+			$(".js-check em").on("click", function() {
+				if ($(this).hasClass("checked")) {
+					$(this).removeClass("checked").addClass("unchecked");
+				} else {
+					$(this).removeClass("unchecked").addClass("checked");
+				}
+			});
 		});
+		function bisai_change(val) {
+			if(val==1){
+			    document.getElementById("danxiang").style.display='inherit';
+                document.getElementById("tuanti").style.display='none';
+                $(".ttypecheck").each(function(){
+    				if($(this).hasClass('checked')){
+    					$(this).removeClass('checked').addClass('unchecked');
+    					$(this).parent().find("input").val("");//获取场次
+    				}
+    			});
+                $("#changci").val(0);
+			}
+			if(val==2){
+                document.getElementById("danxiang").style.display='none';
+                document.getElementById("tuanti").style.display='inherit';
+                $(".typecheck").each(function(){
+    				if($(this).hasClass('checked'))
+    					$(this).removeClass('checked').addClass('unchecked');
+    			});
+			}
+        }
 	</script>
+	<style type="text/css">
+		.label .checked,.label .unchecked{
+			background: url("/static/modules/bisai/images/checked.png") no-repeat;
+			background-size:10px 10px;
+		    border: 0.05rem solid #77cdb2;
+		    border-radius: 0;
+		    cursor: pointer;
+		    display: inline-block;
+		    height: 10px;
+		    vertical-align: middle;
+		    width: 10px;
+		    margin-right: 3px;
+		}
+		.label .unchecked {
+		    background: #fff;
+		    border: 0.05rem solid #929292;
+		    border-radius: 0.025rem;
+		}
+	</style>
 </head>
 <body>
 	<ul class="nav nav-tabs">
@@ -34,19 +82,19 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">比赛名称：</label>
+			<label class="control-label">赛事名称：</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">主办单位：</label>
+			<label class="control-label">主办者：</label>
 			<div class="controls">
 				<form:input path="orgs" htmlEscape="false" maxlength="100" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">承办方：</label>
+			<label class="control-label">承办者：</label>
 			<div class="controls">
 				<form:input path="contractor" htmlEscape="false" maxlength="100" class="input-xlarge "/>
 			</div>
@@ -58,41 +106,90 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">简介：</label>
+			<label class="control-label">比赛项目：</label>
 			<div class="controls">
-				<form:input path="des" htmlEscape="false" class="input-xlarge "/>
+				<form:hidden path="type"/>
+				<div class="substance fl" style="width:80%;">
+					<div style="height: 40px;font-size: 13px;color: #b4b3b3;">
+						<input type="radio" name="btype" value="1" style="-webkit-appearance: button;" onclick="bisai_change(1)" checked="checked" id="dxcRadio"><label for="dxcRadio">单项赛</label>
+						<input type="radio" name="btype" value="2" style="-webkit-appearance: button;margin-left: 50px;" onclick="bisai_change(2)" id="tdcRadio"><label for="tdcRadio">团体赛</label>
+					</div>
+					<c:set var="btypes" value='${fn:split(match.type,";") }'></c:set>
+					<div id="danxiang">
+						<c:forEach var="type" items="${fns:getDictList('MatchTypeNote_type')}">
+						<div class="label js-check clearfix fl">
+							<c:set var="hasType" value="false"></c:set>
+							<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,1) }">
+								<c:if test="${typeNode.type==type.value }">
+									<c:set var="hasType" value="true"></c:set>
+								</c:if>
+							</c:forEach>
+							<c:choose>
+								<c:when test='${hasType }'>
+									<em class="checked fl typecheck"></em>
+								</c:when>
+								<c:otherwise>
+									<em class="unchecked fl typecheck"></em>
+								</c:otherwise>
+							</c:choose>
+							<span class="fl">${type.label }</span>
+						</div>
+						</c:forEach>
+					</div>
+					<div id="tuanti" style="font-size: 13px;color: #b4b3b3;display: none;">
+						<div class="label js-check clearfix">比赛总场次：
+						<select style="width: 80px;" name="changci" id="changci">
+							<option value="0">请选择</option>
+							<c:forEach var="dic" items="${fns:getDictList('MATCH_CHANGCI')}">
+								<option value="${dic.value}" <c:if test="${match.changci==dic.value }">selected="selected"</c:if>  >${dic.label }</option>
+							</c:forEach>
+						</select>
+						</div><br/>
+						<c:forEach var="type" items="${fns:getDictList('MatchTypeNote_type')}">
+						<div class="label js-check clearfix" style="margin-top: 20px;">
+							<c:set var="hasType" value="false"></c:set>
+							<c:set var="cc" value=""></c:set>
+							<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,2) }">
+								<c:if test="${typeNode.type==type.value }">
+									<c:set var="hasType" value="true"></c:set>
+									<c:set var="cc" value="${typeNode.num }"></c:set>
+								</c:if>
+							</c:forEach>
+							<c:choose>
+								<c:when test='${hasType }'>
+									<em class="checked fl ttypecheck"></em>
+								</c:when>
+								<c:otherwise>
+									<em class="unchecked fl ttypecheck"></em>
+								</c:otherwise>
+							</c:choose>
+							<span class="fl">${type.label }</span>
+							<span class="fl" style="margin-left: 40px;margin-top: -4px;"><input type="text" value="${cc }" style="width: 60px;border-style:solid;border-width: 1px;"></span><span class="fl">场</span>
+						</div>
+						<br/>
+						</c:forEach>
+						
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">比赛开始时间：</label>
+			<label class="control-label">比赛时间：</label>
 			<div class="controls">
 				<input name="starttime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${match.starttime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">比赛结束时间：</label>
-			<div class="controls">
+					value="<fmt:formatDate value="${match.starttime}" pattern="yyyy-MM-dd"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>至
 				<input name="endtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${match.endtime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+					value="<fmt:formatDate value="${match.endtime}" pattern="yyyy-MM-dd"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">报名开始时间：</label>
 			<div class="controls">
 				<input name="regstarttime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${match.regstarttime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">报名结束时间：</label>
-			<div class="controls">
-				<input name="regendtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${match.regendtime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+					value="<fmt:formatDate value="${match.regstarttime}" pattern="yyyy-MM-dd"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -112,9 +209,10 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">举办地：</label>
+			<label class="control-label">比赛地点：</label>
 			<div class="controls">
-				<form:input path="address" htmlEscape="false" maxlength="100" class="input-xlarge "/>
+				<form:input path="address" htmlEscape="false"  maxlength="100" class="input-xlarge "/>
+				<form:input path="detailAddress" htmlEscape="false"  maxlength="100" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -130,9 +228,21 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">0：发起中，1报名中，2：进行中，已关闭：</label>
+			<label class="control-label">比赛简介：</label>
 			<div class="controls">
-				<form:input path="state" htmlEscape="false" maxlength="11" class="input-xlarge "/>
+				<form:textarea path="des" htmlEscape="false" rows="4" maxlength="200" class="input-xxlarge"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">奖金奖品：</label>
+			<div class="controls">
+				<form:textarea path="jiangpin" htmlEscape="false" rows="4" maxlength="200" class="input-xxlarge"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">状态</label>
+			<div class="controls">
+				<form:radiobuttons path="state" items="${fns:getDictList('MATCH_STATE')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
 			</div>
 		</div>
 		<div class="form-actions">

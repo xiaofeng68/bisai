@@ -25,13 +25,13 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>比赛名称：</label>
+			<li><label>赛事名称：</label>
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
-			<li><label>主办单位：</label>
+			<li><label>主办者：</label>
 				<form:input path="orgs" htmlEscape="false" maxlength="100" class="input-medium"/>
 			</li>
-			<li><label>承办方：</label>
+			<li><label>承办者：</label>
 				<form:input path="contractor" htmlEscape="false" maxlength="100" class="input-medium"/>
 			</li>
 			<li><label>赞助商：</label>
@@ -45,12 +45,12 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>比赛名称</th>
-				<th>主办单位</th>
-				<th>承办方</th>
+				<th>赛事名称</th>
+				<th>主办者</th>
+				<th>承办者</th>
 				<th>赞助商</th>
 				<th>报名开始时间</th>
-				<th>报名结束时间</th>
+				<th>比赛时间</th>
 				<th>状态</th>
 				<shiro:hasPermission name="bisai:match:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -71,10 +71,10 @@
 					${match.sponsors}
 				</td>
 				<td>
-					<fmt:formatDate value="${match.regstarttime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate value="${match.regstarttime}" pattern="yyyy-MM-dd"/>
 				</td>
 				<td>
-					<fmt:formatDate value="${match.regendtime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate value="${match.starttime}" pattern="yyyy-MM-dd"/>至<fmt:formatDate value="${match.endtime}" pattern="yyyy-MM-dd"/>
 				</td>
 				<td>
 					<c:choose>

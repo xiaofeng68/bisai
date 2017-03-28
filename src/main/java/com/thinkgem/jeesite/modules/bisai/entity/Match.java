@@ -41,6 +41,8 @@ public class Match extends DataEntity<Match> {
 	private Integer counts;
 	private Account account;
 	private User user;
+	private String jiangpin;//奖金奖品
+	private String changci;//总场次
 	
     public Match() {
 		super();
@@ -239,5 +241,21 @@ public class Match extends DataEntity<Match> {
     public void setAccount(Account account) {
         this.account = account;
     }
+
+	public String getJiangpin() {
+		return jiangpin;
+	}
+
+	public void setJiangpin(String jiangpin) {
+		this.jiangpin = jiangpin;
+	}
+
+	public String getChangci() {
+		return changci;
+	}
+
+	public void setChangci(String changci) {
+		this.changci = changci;
+	}
 	
 }

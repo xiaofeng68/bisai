@@ -27,6 +27,8 @@
 		a.accountid AS "account.id",
 		u1.phone AS "account.phone",
 		a.userid AS "user.id",
+		a.jiangpin as "jiangpin",
+		a.changci as "changci",
 		u.name AS "user.name",
 		u1.img As "account.img"
 	</sql>
@@ -96,7 +98,7 @@
 		</choose>
 	</select>
 	
-	<insert id="insert">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO bisai_match(
 			name,
 			orgs,
@@ -123,7 +125,9 @@
 			<if test="user!=null and user.id!=null and user.id!=''">
 			userid,
 			</if>
-			counts
+			counts,
+			jiangpin,
+			changci
 		) VALUES (
 			#{name},
 			#{orgs},
@@ -150,8 +154,9 @@
 			<if test="user!=null and user.id!=null and user.id!=''">
 			#{user.id},
 			</if>
-			#{counts}
-			
+			#{counts},
+			#{jiangpin},
+			#{changci}
 		)
 	</insert>
 	
@@ -182,7 +187,9 @@
 			<if test="user!=null and user.id!=null and user.id!=''">
 			userid = #{user.id},
 			</if>
-			counts = #{counts}
+			counts = #{counts},
+			jiangpin = #{jiangpin},
+			changci = #{changci}
 		WHERE id = #{id}
 	</update>
 	

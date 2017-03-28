@@ -16,507 +16,179 @@
 	<script type="text/javascript" src="${ctxStaticFront }/js/jquery.js"></script>
 	<script type="text/javascript" src="${ctxStaticFront }/js/divselect.js"></script>
 	<script type="text/javascript">
-$(function(){
-	$(".div_select").each(function(){
-		var selid = $(this).attr('div-select-val');
-		var divselectid = "#divselect" + selid;
-		var inputselectid = "#inputselect" + selid;
-		$.divselect(divselectid,inputselectid);
+	var isCheck = false;
+	var lunNum = 0;
+	$(function(){
+		$(".div_select").each(function(){
+			var selid = $(this).attr('div-select-val');
+			var divselectid = "#divselect" + selid;
+			var inputselectid = "#inputselect" + selid;
+			$.divselect(divselectid,inputselectid);
+		});
+	
 	});
-
-});
+	function initSelectList(e){
+		var id = $(e).val();
+		if(id){
+			$.post('${ctx }${frontPath}/match/initZuSelectList', {
+				id : id,
+			}, function(result) {
+				if (result.success) {
+					var lunList = result.obj;
+					lunNum = lunList.length;
+					var optionstring = "";  
+		            for (var j = 0; j < lunList.length; j++) {  
+		                optionstring += "<option value=\"" + lunList[j] + "\" >第" + lunList[j] + "轮</option>";  
+		            }  
+		            $("#groupnumSelect").html("<option value=''>请选择</option> "+optionstring);  
+				}else{
+					alert(result.msg);
+				}
+			}, 'JSON');
+		}else{
+	        $("#groupnumSelect").html("<option value='请选择'>请选择</option> ");
+		}
+	}
+	function changeXiaozu(e){
+		var lun = $(e).val();
+		if(lun){
+			$.post('${ctx }${frontPath}/match/initSelectList', {
+				id : $("#typeSelect").val(),
+				saizhi:lun
+			}, function(result) {
+				if (result.success) {
+					var zuList = result.obj;
+					var optionstring = "";  
+		            for (var j = 0; j < zuList.length; j++) {  
+		                optionstring += "<option value=\"" + zuList[j] + "\" >第" + zuList[j] + "组</option>";  
+		            }  
+		            $("#xiaozuSelect").html("<option value=''>请选择</option> "+optionstring);  
+				}else{
+					 $("#xiaozuSelect").html("<option value='请选择'>请选择</option> ");
+				}
+			}, 'JSON');
+		}else{
+			$("#xiaozuSelect").html("<option value='请选择'>请选择</option> ");
+		}
+	}
+	function refrashTable(){
+		var type = $("#typeSelect").val();
+		var lun = $("#groupnumSelect").val();
+		var xiaozu = $("#xiaozuSelect").val();
+		if(type && lun && xiaozu){
+			$.post('${ctx }${frontPath}/match/initScoreTable', {
+				id : type,
+				lun:lun,
+				groupnum:xiaozu
+			}, function(result) {
+				if (result.success) {
+					 $("#scoreTable").html(result.obj.tableHtml);
+					 if(result.obj.notovered){
+						 $("#saveButton").show();
+					 }else if(lunNum==lun){
+						 $("#nextButton").show();
+					 }
+				}else{
+					alert(result.msg);
+				}
+			}, 'JSON');
+		}
+		if(lun){
+			$("#lun").val(lun);
+		}
+	}
+	function saveScore(){
+		if(!isCheck){
+			var arr = [];
+			$(".textll").each(function (i) {
+		        var id = $(this).attr('id').replace("people_","");
+		        var score = $(this).val()?$(this).val():0;
+		        if(isNaN(parseInt(score))){
+		        	alert('请输入数字得分！');
+		        	return false;
+		        }
+		        arr.push({id:id,score:score});
+		    });
+			$("#scores").val(JSON.stringify(arr));
+			if(arr.length<1){
+				alert('请选择小组！');
+				return false;
+			}
+		}
+		return true;
+	}
+	function save(){
+		isCheck = false;
+		$("#markForm").submit()
+	}
+	function nextGroup(){
+		isCheck = true;
+		$("#scores").val(JSON.stringify([]));
+		$("#markForm").submit()
+	}
+	function overMatch(){
+		$.post('${ctx }${frontPath}/match/overMatch', {
+			id : '${match.id}'
+		}, function(result) {
+			if (result.success) {
+				 $("#overButton").hide();
+			}else{
+				alert(result.msg);
+			}
+		}, 'JSON');
+	}
 </script>
 </head>
 <body>
+	<bisai:message content="${message}"/>
 	<header class="grouping_header clearfix">
 		<span class="fl">
-			<a href="javascript:history.go(-1);">
+			<a href="${ctx }/${frontPath}match${urlSuffix}">
 				<img src="${ctxStaticFront}/images/r-arrow.png">
 			</a>
 		</span>
 		<span>${match.name }</span>
 	</header>
 	<section>
-		<form>
-			<div class="sheet_table">
-				<div class="clearfix sheet_table_title">
-					<span class="fl sheet_table_title_l">
-						第一轮
-					</span>
-					<div class="fr clearfix sheet_table_title_r">
-						<div class="fl sheet_table_title_r_l">
-							<div id="divselect1" class="div_select" div-select-val="1">
-								<cite>混双</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">混双</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">男单</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">女单</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">男单</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect1"/>					
-						</div>
-						<div class="fl sheet_table_title_r_l">
-							<div id="divselect2" class="div_select" div-select-val="2">
-								<cite>第一组</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">第二组</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">第三组</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect2"/>					
-						</div>
-					</div>
-				</div>
-				<table width="100%">
-					<tr>
-						<td>
-							<img src="${ctxStaticFront}/images/img31.png">
-						</td>
-						<td>第一局</td>
-						<td>第二局</td>
-						<td>第三局</td>
-						<td>第四局</td>
-						<td>第五局</td>
-					</tr>
-					<tr>
-						<td>
-							<p>姑　姑</p>
-						</td>
-						<td>
-							<div id="divselect3" class="div_select" div-select-val="3">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect3"/>
-						</td>
-						<td>
-							<div id="divselect4" class="div_select" div-select-val="4">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect4"/>
-						</td>
-						<td>
-							<div id="divselect5" class="div_select" div-select-val="5">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect5"/>
-						</td>
-						<td>
-							<div id="divselect6" class="div_select" div-select-val="6">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect6"/>
-						</td>
-						<td>
-							<div id="divselect7" class="div_select" div-select-val="7">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect7"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>令狐冲</p>
-						</td>
-						<td>
-							<div id="divselect8" class="div_select" div-select-val="8">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect8"/>
-						</td>
-						<td>
-							<div id="divselect9" class="div_select" div-select-val="9">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect9"/>
-						</td>
-						<td>
-							<div id="divselect10" class="div_select" div-select-val="10">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect10"/>
-						</td>
-						<td>
-							<div id="divselect11" class="div_select" div-select-val="11">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect11"/>
-						</td>
-						<td>
-							<div id="divselect12" class="div_select" div-select-val="12">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect12"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>令狐冲</p>
-						</td>
-						<td>
-							<div id="divselect13" class="div_select" div-select-val="13">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect13"/>
-						</td>
-						<td>
-							<div id="divselect14" class="div_select" div-select-val="14">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect14"/>
-						</td>
-						<td>
-							<div id="divselect15" class="div_select" div-select-val="15">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect15"/>
-						</td>
-						<td>
-							<div id="divselect16" class="div_select" div-select-val="16">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect16"/>
-						</td>
-						<td>
-							<div id="divselect17" class="div_select" div-select-val="17">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect17"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>令狐冲</p>
-						</td>
-						<td>
-							<div id="divselect18" class="div_select" div-select-val="18">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect18"/>
-						</td>
-						<td>
-							<div id="divselect19" class="div_select" div-select-val="19">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect19"/>
-						</td>
-						<td>
-							<div id="divselect20" class="div_select" div-select-val="20">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect20"/>
-						</td>
-						<td>
-							<div id="divselect21" class="div_select" div-select-val="21">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect21"/>
-						</td>
-						<td>
-							<div id="divselect22" class="div_select" div-select-val="22">
-								<cite>10</cite>
-								<ul>
-									<li>
-										<a href="javascript:;" selectid="1">11</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">12</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">13</a>
-									</li>
-									<li>
-										<a href="javascript:;" selectid="2">14</a>
-									</li>
-								</ul>
-							</div>
-							<input name="" type="hidden" value="" id="inputselect22"/>
-						</td>
-					</tr>
-				</table>
+		<div class="sheet_table">
+			<div class="clearfix sheet_table_title">
+				<select name="typeSelect" id="typeSelect" onchange="initSelectList(this)" >
+					<option>请选择</option>
+					<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
+						<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
+							<c:if test="${typeNode.type==dic.value }">
+								<option value="${typeNode.id }">${dic.label }</option>
+							</c:if>
+						</c:forEach>
+					</c:forEach>
+				</select>
+				<!-- 根据前面选择的类型进行查询 -->
+				<select name="groupnumSelect" id="groupnumSelect" onchange="changeXiaozu(this)">
+					<option value="">请选择</option>
+				</select>
+				<select name="xiaozuSelect" id="xiaozuSelect" onchange="refrashTable()">
+					<option value="">请选择</option>
+				</select>
 			</div>
-			<div class="sheet_submit">
-				<input type="submit" value="保存">
+			<div id="scoreTable">
 			</div>
-		</form>
+		</div>
 	</section>
+	<form id="markForm" action="${ctx }${frontPath}/match/saveScoreTable" method="post" onsubmit="return saveScore();">
+		<input type="hidden" name="scores" id="scores">
+		<input type="hidden" name="type" value="${type }" id="type">
+		<input type="hidden" name="stype" value="${stype }" id="stype">
+		<input type="hidden" name="id" value="${match.id }" id="id">
+		<input type="hidden" name="lun" id="lun">
+		<div class="sheet_submit">
+			<input type="button" value="保存" onclick="save()" id="saveButton" style="display:none;">
+			<!-- 最后一组 -->
+			<input type="button" value="下一轮" onclick="nextGroup()" id="nextButton" style="display:none;">
+			<!-- 都评分完成 -->
+			<c:if test="${overButton }">
+			<input type="button" value="比赛结束" onclick="overMatch()" id="overButton">
+			</c:if>
+		</div>
+	</form>
 </body>
 </html>
