@@ -34,48 +34,20 @@
 		</div>
 		<div class="raning_list">
 			<ul>
-				<c:forEach var="people" items="${fns:getPeopleSort(match.id,type,stype) }">
-					<li class="clearfix one">
-					<span class="fl left">
-						<span class="name">第一名</span>
-						<span>张三</span>
-					</span>
-					<span class="fl content">
-						<img src="${ctxStaticFront}/images/one.png">
-					</span>
-					<span class="fr right">21局21胜</span>
-				</li>
+				<c:forEach var="type" items="${fns:getMatchTypes(match.id) }">
+					<c:forEach var="result" items="${fns:getPeopleSort(match.id,type.btype,type.type) }" end="2" varStatus="num">
+						<li class="clearfix one">
+						<span class="fl left">
+							<span class="name">第${util:numToUpper(num.index+1) }名</span>
+							<span>${result.people.name }</span>
+						</span>
+						<span class="fl content">
+							<img src="${ctxStaticFront}/images/one.png">
+						</span>
+						<span class="fr right">${result.jushu }局${result.shengju }胜</span>
+					</li>
+					</c:forEach>
 				</c:forEach>
-				<li class="clearfix one">
-					<span class="fl left">
-						<span class="name">第一名</span>
-						<span>张三</span>
-					</span>
-					<span class="fl content">
-						<img src="${ctxStaticFront}/images/one.png">
-					</span>
-					<span class="fr right">21局21胜</span>
-				</li>
-				<li class="clearfix two">
-					<span class="fl left">
-						<span class="name">第二名</span>
-						<span>李四</span>
-					</span>
-					<span class="fl content">
-						<img src="${ctxStaticFront}/images/two.png">
-					</span>
-					<span class="fr right">21局20胜</span>
-				</li>
-				<li class="clearfix three">
-					<span class="fl left">
-						<span class="name">第三名</span>
-						<span>王武</span>
-					</span>
-					<span class="fl content">
-						<img src="${ctxStaticFront}/images/three.png">
-					</span>
-					<span class="fr right">21局18胜</span>
-				</li>
 			</ul>
 		</div>
 	</section>

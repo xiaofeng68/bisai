@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+  version="2.0">
+    
+  <description>JSTL 1.1 functions library</description>
+  <display-name>JSTL functions sys</display-name>
+  <tlib-version>1.1</tlib-version>
+  <short-name>util</short-name>
+  <uri>http://java.sun.com/jsp/jstl/functionss</uri>
+
+  <function>
+    <description>数字转大写</description>
+    <name>numToUpper</name>
+    <function-class>com.thinkgem.jeesite.modules.bisai.util.ResultUtils</function-class>
+    <function-signature>java.lang.String numToUpper(java.lang.Integer)</function-signature>
+    <example>${util:numToUpper(num)}</example>
+  </function>
+</taglib>

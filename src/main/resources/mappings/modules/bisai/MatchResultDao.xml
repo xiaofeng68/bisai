@@ -32,14 +32,22 @@
 		FROM bisai_match_result a
 		<include refid="matchResultJoins"/>
 		<where>
-			
+			<if test="matchid!=null and matchid!=''">
+				and matchid = #{matchid}
+			</if>
+			<if test="btype!=null and btype!=''">
+				and btype = #{btype}
+			</if>
+			<if test="type!=null and type!=''">
+				and type = #{type}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				order by lun,shengju desc
+				order by lun desc,shengju desc
 			</otherwise>
 		</choose>
 	</select>

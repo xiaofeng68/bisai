@@ -34,7 +34,7 @@ public class PeopleGroupUtils {
 		matchResult.setType(type);
 		List<MatchResult> resultList = (List<MatchResult>) CacheUtils
 				.get(MatchResult_MAP + ":" + matchid + btype + type);
-		if (resultList != null) {
+		if (resultList == null ||resultList.size()==0) {
 			PeopleGroup peopleGroup = new PeopleGroup();
 			peopleGroup.setMatchid(matchid);
 			peopleGroup.setBtype(btype);
@@ -52,6 +52,9 @@ public class PeopleGroupUtils {
 					PeopleNote pn = new PeopleNote();
 					pn.setId(key1);
 					p1.setPeople(pn);
+					p1.setMatchid(matchid);
+					p1.setBtype(btype);
+					p1.setType(type);
 					peopleMap.put(key1, p1);
 				}
 				p1.setJushu(p1.getJushu() + 1);
@@ -64,7 +67,10 @@ public class PeopleGroupUtils {
 					p2 = new MatchResult();
 					PeopleNote pn = new PeopleNote();
 					pn.setId(key2);
-					p1.setPeople(pn);
+					p2.setPeople(pn);
+					p2.setMatchid(matchid);
+					p2.setBtype(btype);
+					p2.setType(type);
 					peopleMap.put(key2, p2);
 				}
 				p2.setJushu(p2.getJushu() + 1);

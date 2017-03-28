@@ -261,6 +261,13 @@
     <example>${fns:getMatchTypeNote(matchid,type)}</example>  
   </function>
   <function>
+  	<description>获取比赛类型</description>
+    <name>getMatchTypes</name>
+    <function-class>com.thinkgem.jeesite.modules.bisai.util.MatchTypeNoteUtils</function-class>
+    <function-signature>java.util.List getMatchTypes(java.lang.String)</function-signature>
+    <example>${fns:getMatchTypes(matchid)}</example>  
+  </function>
+  <function>
   	<description>获取比赛参赛人数</description>
     <name>getMatchPeople</name>
     <function-class>com.thinkgem.jeesite.modules.bisai.util.MatchTypeNoteUtils</function-class>
