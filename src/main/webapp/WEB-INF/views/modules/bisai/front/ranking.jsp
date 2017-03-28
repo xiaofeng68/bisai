@@ -24,14 +24,14 @@
 		<span>排名</span>
 	</header>
 	<section>
-		<div class="match_topll_thir">
+		<!-- <div class="match_topll_thir">
 			<form>
 				<div>
 					<input class="inputl" type="text" placeholder="搜索">
 					<input class="submitll" type="submit" value="搜索">
 				</div>
 			</form>
-		</div>
+		</div> -->
 		<div class="raning_list">
 			<ul>
 				<c:forEach var="type" items="${fns:getMatchTypes(match.id) }">
@@ -42,7 +42,7 @@
 							<span>${result.people.name }</span>
 						</span>
 						<span class="fl content">
-							<img src="${ctxStaticFront}/images/one.png">
+							<img src="${ctxStaticFront}/images/result${num.index+1 }.png">
 						</span>
 						<span class="fr right">${result.jushu }局${result.shengju }胜</span>
 					</li>

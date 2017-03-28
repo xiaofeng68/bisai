@@ -96,7 +96,7 @@ function divselect(divselectid,inputselectid) {
 						<div class="suggestlx1"><label>${match.address }${match.detailAddress }</label></div>
 						<div class="positionll">
 							<em class="em${match.state }"></em>
-							<p>人数：${match.counts }人</p>
+							<p>人数：${fns:getMatchPeople(match.id) }人</p>
 						</div>
 					</a>
 				</li>

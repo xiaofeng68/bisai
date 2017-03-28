@@ -34,6 +34,7 @@ public class PeopleGroupUtils {
 		matchResult.setType(type);
 		List<MatchResult> resultList = (List<MatchResult>) CacheUtils
 				.get(MatchResult_MAP + ":" + matchid + btype + type);
+		resultList = resultList==null?resultList = matchResultDao.findList(matchResult):resultList;
 		if (resultList == null ||resultList.size()==0) {
 			PeopleGroup peopleGroup = new PeopleGroup();
 			peopleGroup.setMatchid(matchid);
