@@ -157,4 +157,10 @@
 		group by groupnum,chang,p1
 		order by groupnum,chang	
     </select>
+    <select id="getLastGroupScoreSort" resultType="PeopleGroup">
+    	select id,matchid,btype,type,groupnum,chang,p1 as "peopleNote.id",lun,sum(score1) score1 from bisai_people_group
+		where matchid=#{matchid} and btype=#{btype} and type=#{type}   
+		group by lun,groupnum,chang,p1
+		order by lun,groupnum,chang	
+    </select>
 </mapper>

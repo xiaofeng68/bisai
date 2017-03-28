@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.bisai.dao.MatchResultDao">
+    
+	<sql id="matchResultColumns">
+		a.id AS "id",
+		a.matchid AS "matchid",
+		a.btype AS "btype",
+		a.type AS "type",
+		a.peopleid AS "people.id",
+		a.shengju AS "shengju",
+		a.jushu AS "jushu",
+		a.lun as "lun",
+		p.name as "people.name"
+	</sql>
+	
+	<sql id="matchResultJoins">
+		left join bisai_people_note p on p.id = a.peopleid
+	</sql>
+    
+	<select id="get" resultType="MatchResult">
+		SELECT 
+			<include refid="matchResultColumns"/>
+		FROM bisai_match_result a
+		<include refid="matchResultJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="MatchResult">
+		SELECT 
+			<include refid="matchResultColumns"/>
+		FROM bisai_match_result a
+		<include refid="matchResultJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				order by lun,shengju desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MatchResult">
+		SELECT 
+			<include refid="matchResultColumns"/>
+		FROM bisai_match_result a
+		<include refid="matchResultJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO bisai_match_result(
+			matchid,
+			btype,
+			type,
+			peopleid,
+			shengju,
+			jushu,
+			lun
+		) VALUES (
+			#{matchid},
+			#{btype},
+			#{type},
+			#{people.id},
+			#{shengju},
+			#{jushu},
+			#{lun}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bisai_match_result SET 	
+			matchid = #{matchid},
+			btype = #{btype},
+			type = #{type},
+			peopleid = #{people.id},
+			shengju = #{shengju},
+			jushu = #{jushu},
+			lun = #{lun}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM bisai_match_result
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

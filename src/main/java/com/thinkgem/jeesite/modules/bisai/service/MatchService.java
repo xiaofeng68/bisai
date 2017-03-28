@@ -103,6 +103,8 @@ public class MatchService extends CrudService<MatchDao, Match> {
 	@Transactional(readOnly = false)
 	public void updateMatchState(Match match){
 	    dao.updateMatchState(match);
+	    //计算结果
+	    
 	}
 	
 }
