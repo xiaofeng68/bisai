@@ -29,7 +29,7 @@
 		FROM bisai_people_note a
 		<include refid="peopleNoteJoins"/>
 		<where>
-			
+			and a.state!=1
 			<if test="name != null and name != ''">
 				AND a.name LIKE 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>

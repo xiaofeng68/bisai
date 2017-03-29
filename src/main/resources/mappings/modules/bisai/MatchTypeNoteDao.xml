@@ -34,7 +34,6 @@
 		FROM bisai_match_type_note a
 		<include refid="matchTypeNoteJoins"/>
 		<where>
-			
 			<if test="match!=null and match.id != null and match.id != ''">
 				AND a.matchid = #{match.id}
 			</if>
