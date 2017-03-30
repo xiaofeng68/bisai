@@ -25,7 +25,6 @@
 			var inputselectid = "#inputselect" + selid;
 			$.divselect(divselectid,inputselectid);
 		});
-	
 	});
 	function initSelectList(e){
 		var id = $(e).val();
@@ -40,7 +39,7 @@
 		            for (var j = 0; j < lunList.length; j++) {  
 		                optionstring += "<option value=\"" + lunList[j] + "\" >第" + lunList[j] + "轮</option>";  
 		            }  
-		            $("#groupnumSelect").html("<option value=''>请选择</option> "+optionstring);  
+		            $("#groupnumSelect").html("<option value=''>请选择</option> "+optionstring);
 				}else{
 					alert(result.msg);
 				}
@@ -62,7 +61,7 @@
 		            for (var j = 0; j < zuList.length; j++) {  
 		                optionstring += "<option value=\"" + zuList[j] + "\" >第" + zuList[j] + "组</option>";  
 		            }  
-		            $("#xiaozuSelect").html("<option value=''>请选择</option> "+optionstring);  
+		            $("#xiaozuSelect").html("<option value=''>请选择</option> "+optionstring);
 				}else{
 					 $("#xiaozuSelect").html("<option value='请选择'>请选择</option> ");
 				}
@@ -111,7 +110,7 @@
 		    });
 			$("#scores").val(JSON.stringify(arr));
 			if(arr.length<1){
-				alert('请选择小组！');
+				alert('请录制分数！');
 				return false;
 			}
 		}
@@ -142,7 +141,7 @@
 <body>
 	<bisai:message content="${message}"/>
 	<header class="grouping_header clearfix">
-		<span class="fl">
+		<span class="fl" style="line-height: 120%;">
 			<a href="${ctx }/${frontPath}match${urlSuffix}">
 				<img src="${ctxStaticFront}/images/r-arrow.png">
 			</a>
@@ -151,8 +150,8 @@
 	</header>
 	<section>
 		<div class="sheet_table">
-			<div class="clearfix sheet_table_title">
-				<select name="typeSelect" id="typeSelect" onchange="initSelectList(this)" >
+			<div class="clearfix sheet_table_title" style="text-align: center;">
+				<select name="typeSelect" id="typeSelect" onchange="initSelectList(this)" class="select_font_size_2">
 					<option>请选择</option>
 					<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
 						<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
@@ -163,10 +162,10 @@
 					</c:forEach>
 				</select>
 				<!-- 根据前面选择的类型进行查询 -->
-				<select name="groupnumSelect" id="groupnumSelect" onchange="changeXiaozu(this)">
+				<select name="groupnumSelect" id="groupnumSelect" onchange="changeXiaozu(this)" class="select_font_size_2">
 					<option value="">请选择</option>
 				</select>
-				<select name="xiaozuSelect" id="xiaozuSelect" onchange="refrashTable()">
+				<select name="xiaozuSelect" id="xiaozuSelect" onchange="refrashTable()" class="select_font_size_2">
 					<option value="">请选择</option>
 				</select>
 			</div>

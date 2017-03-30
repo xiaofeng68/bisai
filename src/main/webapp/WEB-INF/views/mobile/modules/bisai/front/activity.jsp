@@ -1,156 +1,202 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ include file="/WEB-INF/views/mobile/modules/bisai/front/include/taglib.jsp"%>
+<%@ include file="/WEB-INF/views/mobile/modules/bisai/front/include/taglib.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta content="telephone=no" name="format-detection">
-	<title>${siteTitle }</title>
-	<meta name="keywords" content="${siteKeywords }">
+    <title>${siteTitle }</title>
+    <meta name="keywords" content="${siteKeywords }">
     <meta name="description" content="${siteDescription }">
-	<link rel="stylesheet" type="text/css" href="${ctxStaticFront}/css/incstyle.css" media="all">
-	<link rel="stylesheet" type="text/css" href="${ctxStaticFront}/css/index.css" media="all">
+    <link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/incstyle.css" media="all">
+    <link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/index.css" media="all">
+    <script type="text/javascript" src="${ctxStaticFront }/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${ctxStaticFront }/js/yf.js"></script>
+    <script src="${ctxStatic}/jquery/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="${ctxStatic}/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+        });
+    </script>
 </head>
 <body>
-	<header class="grouping_header clearfix">
+<header class="grouping_header clearfix">
 		<span class="fl">
-			<a href="javascript:history.go(-1);">
-				<img src="${ctxStaticFront}/images/r-arrow.png">
+			<a href="${ctx }/${frontPath}match${urlSuffix}">
+				<img src="${ctxStaticFront }/images/r-arrow.png">
 			</a>
 		</span>
-		<span>活动详情</span>
-	</header>
-	<section>
-		<div class="activity_first">
-			<p>
-				<img src="${ctxStaticFront}/images/img35.png">
-			</p>
-			<p class="name"><fmt:formatDate value="${match.starttime }" pattern="E"/>${match.name }打球</p>
-			<p class="add">${match.name }</p>
-			<p class="time"><fmt:formatDate value="${match.starttime }" pattern="M月d日"/>-<fmt:formatDate value="${match.endtime }" pattern="M月d日"/></p>
-		</div>
-		<div class="activ_list">
-			<ul>
-				<li class="clearfix">
-					<span class="fl li_left f14">赞助商</span>
-					<span class="fl li_right f13">
-					<c:forEach items="${sponsors }" var="sponsor">
-						<span class="border">${sponsor }</span>
-					</c:forEach>
-					</span>
-				</li>
-				<li class="clearfix">
-					<span class="fl li_left f14">主办者</span>
-					<span class="fl li_right f13">
-					<c:forEach items="${orgs }" var="org">
-						<span class="border">${org }</span>
-					</c:forEach>
-					</span>
-				</li>
-				<li class="clearfix">
-					<span class="fl li_left f14">承办单位</span>
-					<span class="fl li_right f13">
-					<c:forEach items="${contractors }" var="contractor">
-						<span class="border">${contractor }</span>
-					</c:forEach>
-					</span>
-				</li>
-				<li class="clearfix">
-					<span class="li_left f14">比赛项目 
-					<label for="dxsRadio">单项赛</label>
-					<label for="dxsRadio">团队赛</label>
-					</span>
-					<div class="li_right2 f13 clearfix">
-						<div class="clearfix li_right1" style="width:100%;margin-bottom:0.4rem;">
-							<div class="first-meun">
-								<img class="first_img1 v-m" src="${ctxStaticFront}/images/img36-1.png">
-								<span class="v-m">男单</span>
-								<img class="first_img1 v-m" src="${ctxStaticFront}/images/img36-2.png">
-								<span class="v-m">女单</span>
-								<img class="first_img2" src="${ctxStaticFront}/images/img36-3.png">
-								<span class="v-m">男双</span>
-								<img class="first_img2" src="${ctxStaticFront}/images/img36-4.png">
-								<span class="v-m">女双</span>
-								<img class="first_img2" src="${ctxStaticFront}/images/img36-5.png">
-								<span class="v-m">混双</span>
-							</div>
-						</div>
-						<div class="clearfix li_right1" style="width:100%;margin-bottom:0.4rem;">
-							<div class="first-meun">
-								<img class="first_img2" src="${ctxStaticFront}/images/img36-5.png">
-								<span>比赛总场次</span>
-                               	<span><div style="float:right;margin-right:6rem; ">
-	                               	<select>
-	                               		<option>3</option>
-	                               		<option>5</option>
-	                               		<option>7</option>
-	                               		<option>9</option>
-	                               	</select></div>
-                               	</span>
-							</div>
-							<div class="first-meun">
-								<img class="first_img2" src="${ctxStaticFront}/images/img36-5.png">
-								<span>比赛总场次</span>
-                               	<span><div style="float:right;width:3.8rem;margin-right:2rem; ">
-	                               	<select>
-	                               		<option>3</option>
-	                               		<option>5</option>
-	                               		<option>7</option>
-	                               		<option>9</option>
-	                               	</select></div>
-                               	</span>
-								<span class="label_but">报名中</span>
-								<span class="label_but active">报名列表</span>                                
-							</div>
-						</div>
-					</div>
-					
-				</li>
-				<li class="clearfix mtll">
-					<span class="fl li_left f14">比赛时间</span>
-					<span class="fl li_right1 f14">
-					</span>
-				</li>
-				<li class="clearfix mtll">
-					<span class="fl li_left f14">比赛地点</span>
-					<span class="fl li_right1 f14">
-					</span>
-				</li>
-				<li class="clearfix mtll">
-					<span class="fl li_left f14">领队</span>
-					<span class="fl li_right1 f14">
-						${match.contacts }
-					</span>
-				</li>
-				<li class="clearfix mtll">
-					<span class="fl li_left f14">电话</span>
-					<span class="fl li_right1 f14">
-						${match.phone }
-					</span>
-				</li>
-				<li class="clearfix mtll">
-					<span class="fl li_left f14">地址</span>
-					<span class="fl li_right1 f14">
-						${match.address }${match.detailAddress }
-					</span>
-				</li>
-				<li class="clearfix mtll">
-					<span class="fl li_left f14">比赛简介</span>
-					<span class="fl li_right1 f14">
-					</span>
-				</li>
-				<li class="clearfix mtll">
-					<span class="fl li_left f14">奖金奖品</span>
-					<span class="fl li_right1 f14">
-					</span>
-				</li>
-			</ul>
-			<div class="acti_buttom1" onclick="history.go(-1)">返回</div>
-			
-		</div>
-	</section>
+    <span>申请举办比赛</span>
+</header>
+<section>
+    <div class="apply_form">
+            <input type="hidden" name="id" value="${match.id }"/>
+            <ul>
+                <li>
+                    <span class="namell">赛事名称</span>
+                    <input class="textll" type="text" name="name" id="name" value="${match.name }"
+                           placeholder="请输入赛事名称">
+                </li>
+                <li class="clearfix">
+                    <div class="apply_border orgsdic">
+                    	<span class="namell">主办者</span>
+                        <c:if test="${not empty match.orgs }">
+                            <c:forEach items='${fn:split(match.orgs,",")}' var="org">
+                                <span class="apply_borderll"><span>${org }</span><em></em></span>
+                            </c:forEach>
+                        </c:if>
+                    </div>
+                </li>
+                <li class="clearfix">&nbsp;&nbsp;
+                    <div class="apply_border contractordic">
+                    	<span class="namell">承办者</span>
+                        <c:if test="${not empty match.contractor }">
+                            <c:forEach items='${fn:split(match.contractor,",")}' var="contractor">
+                                <span class="apply_borderll"><span>${contractor }</span><em></em></span>
+                            </c:forEach>
+                        </c:if>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="apply_border sponsordic">
+                    	<span class="namell">赞助商</span>
+                        <c:if test="${not empty match.sponsors }">
+                            <c:forEach items='${fn:split(match.sponsors,",")}' var="sponsors">
+                                <span class="apply_borderll"><span>${sponsors }</span><em></em></span>
+                            </c:forEach>
+                        </c:if>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="clearfix" style="line-height:13px; padding-bottom:0.7rem">
+                        <span class="namell fl">比赛项目</span>
+                        <input type="hidden" name="type" id="type">
+                        <div class="substance fl" style="width:80%;">
+                            <div style="height: 40px;font-size: 0.7rem;color: #b4b3b3;">
+                                <input type="radio" name="btype" value="1" style="-webkit-appearance: button;"
+                                       onclick="bisai_change(1)" checked="checked" id="dxcRadio"><label for="dxcRadio" id="radio_button_a" class="radio_button" style="background-color:#44bb95;color:#fff;">单项赛</label>
+                                <input type="radio" name="btype" value="2"
+                                       style="-webkit-appearance: button;margin-left: 90px;" onclick="bisai_change(2)"
+                                       id="tdcRadio"><label for="tdcRadio" id="radio_button_b" class="radio_button">团体赛</label>
+                            </div>
+                            <c:set var="btypes" value='${fn:split(match.type,";") }'></c:set>
+                            <div id="danxiang" style="margin-top: 1.5rem;">
+                                <c:forEach var="type" items="${fns:getDictList('MatchTypeNote_type')}">
+                                    <div class="label js-check clearfix" style="margin-top: 1.5rem;">
+                                        <c:set var="hasType" value="false"></c:set>
+                                        <c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,1) }">
+                                            <c:if test="${typeNode.type==type.value }">
+                                                <c:set var="hasType" value="true"></c:set>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:choose>
+                                            <c:when test='${hasType }'>
+                                                <em class="checked fl typecheck" style="margin-top: -0.4rem;"></em>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <em class="unchecked fl typecheck" style="margin-top:-0.4rem;"></em>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <span class="fl">${type.label }</span>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                            <div id="tuanti" style="font-size: 0.7rem;color: #b4b3b3;display: none;margin-top: 1rem;">
+                                <div class="label js-check clearfix">比赛总场次：
+                                    <select class="select_font_size_3" name="changci" id="changci">
+                                        <option value="0">=请选择=</option>
+                                        <c:forEach var="dic" items="${fns:getDictList('MATCH_CHANGCI')}">
+                                            <option value="${dic.value}"
+                                                    <c:if test="${match.changci==dic.value }">selected="selected"</c:if>  >${dic.label }</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <c:forEach var="type" items="${fns:getDictList('MatchTypeNote_type')}">
+                                    <div class="label js-check clearfix" style="margin-top: 1.4rem;">
+                                        <c:set var="hasType" value="false"></c:set>
+                                        <c:set var="cc" value=""></c:set>
+                                        <c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,2) }">
+                                            <c:if test="${typeNode.type==type.value }">
+                                                <c:set var="hasType" value="true"></c:set>
+                                                <c:set var="cc" value="${typeNode.num }"></c:set>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:choose>
+                                            <c:when test='${hasType }'>
+                                                <em class="checked fl ttypecheck" style="margin-top:-0.4rem;"></em>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <em class="unchecked fl ttypecheck" style="margin-top:-0.4rem;"></em>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <span class="fl">${type.label }</span>
+                                        <span class="fl" style="margin-left: 60px;margin-top: -0.5rem;">
+											<%--<input type="text" value="${cc }" style="font-size:0.7rem;width: 100px;border-style:solid;border-width: 1px;height: 1rem;">--%>
+											<select id="select_option_${type}" class="select_font_size_3">
+											</select>
+												<script>
+													var op_str = "<option value='0'>=请选择=</option>";
+                                                    for (var i = 1; i < 10; i++) {
+                                                        op_str += "<option value='" + i + "'>" + i + "</option>";
+                                                    }
+                                                    $("#select_option_${type}").html(op_str);
+												</script>
+										</span><span class="fl" style="margin-left: 10px;">场</span>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <span class="namell">报名时间</span>
+                    <fmt:formatDate value="${match.regstarttime }" var="regstarttime" pattern="yyyy-MM-dd"/>
+                    <input class="textll" type="text" name="regstarttime" value="${regstarttime }" id="regstarttime"
+                           placeholder="报名时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+                </li>
+                <li>
+                    <span class="namell">比赛时间</span>
+                    <fmt:formatDate value="${match.starttime }" var="starttime" pattern="yyyy-MM-dd"/>
+                    <input class="apply_input1" name="starttime" value="${starttime }" id="starttime" type="text"
+                           placeholder="开始时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+                    <span class="apply_text">至</span>
+                    <fmt:formatDate value="${match.endtime }" var="endtime" pattern="yyyy-MM-dd"/>
+                    <input class="apply_input1" name="endtime" value="${endtime }" id="endtime" type="text"
+                           placeholder="结束时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+                </li>
+                <li class="clearfix">
+                    <span class="namell fl v-m">比赛地点</span>
+                    <span class="fl clearfix apply_address v-m">
+							<span class="add_text fl" style="margin-top: 6px;">${match.address }</span>
+						</span>
+
+                </li>
+                <li>
+                    <span class="namell">详细地址</span>
+                    <input class="textll" type="text" name="detailAddress" value="${match.detailAddress }"
+                           placeholder="XX街道">
+                </li>
+                <li>
+                    <span class="namell">联系人</span>
+                    <input class="textll" type="text" name="contacts" value="${match.contacts }" id="contacts"
+                           placeholder="请输入联系人姓名">
+                </li>
+                <li>
+                    <span class="namell">联系电话</span>
+                    <input class="textll" type="text" name="phone" value="${match.phone }" id="phone"
+                           placeholder="请输入联系号码">
+                </li>
+                <li style="margin-top:0.3rem;">
+                    <span class="namell v-t">比赛简介</span>
+                    <textarea name="des" placeholder="请输入比赛简介">${match.des }</textarea>
+                </li>
+                <li style="margin-top:0.3rem;">
+                    <span class="namell v-t">奖金奖品</span>
+                    <textarea name="jiangpin" placeholder="请输入奖金奖品">${match.jiangpin }</textarea>
+                </li>
+            </ul>
+            <div class="apply_submit">
+                <input type="submit" value="返回" onclick="history.go(-1)">
+            </div>
+    </div>
+</section>
 </body>
-</html>	
+</html>

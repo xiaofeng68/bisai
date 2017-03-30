@@ -220,6 +220,7 @@ public class FrontMatchController extends BaseController {
 			MatchTypeNote note = new MatchTypeNote();
 			note.setId(typeid);
 			peopleNote.setNote(note);
+			peopleNote.setState("0");
 			peopleNoteService.save(peopleNote);
 			json.setObj(peopleNote);
 			json.setSuccess(true);

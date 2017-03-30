@@ -100,8 +100,16 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 				for (int m = 0; m < jushu; m++) {
 					if(!notovered)
 						notovered = scores.get(m).getScore1()==null;
-					int score = scores.get(m).getScore1()!=null?Integer.parseInt(scores.get(m).getScore1()):0;
-					tableStr.append("<td><input class='textll' id='people_"+scores.get(m).getId()+"' type='text' style='width:2.5rem;' value='"+ score + "' name='phone'  placeholder='请输入联系号码'></td>");
+					int score = scores.get(m).getScore1()!=null?Integer.parseInt(scores.get(m).getScore1()):21;
+					tableStr.append("<td>");//
+//					tableStr.append("<div id='divselect1"+scores.get(m).getId()+"' class='div_select' div-select-val='21'>");
+//					tableStr.append("<cite>21</cite>");
+					tableStr.append("<select id='people_"+scores.get(m).getId()+"' name='people_"+scores.get(m).getId()+"' class='textll'>");
+					for(int k=0;k<=30;k++){
+						String selected = score==k?"selected='selected'":"";
+						tableStr.append("<option "+selected+">"+k+"</option>");
+					}
+					tableStr.append("</select>");
 				}
 				tableStr.append("</tr>");
 			}

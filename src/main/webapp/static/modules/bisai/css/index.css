@@ -115,7 +115,6 @@
 }
 .contentll_c_img ul li a{
 	display: block;
-	font-size: 0.55rem;
 	color: #666;
 	font-size: 0.65rem;
 }
@@ -179,7 +178,7 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	height:2.35rem;
+	height:2.8rem;
 	background: #f8f8f8;
 }
 .index_footll ul{
@@ -578,6 +577,11 @@
 	font-size:1rem;
 	line-height: 2rem;
 }
+
+.match_fourll{
+	margin-bottom: 1rem;
+}
+
 .match_fourll ul li{
 	background: #fff;
 	margin-bottom:0.3rem;
@@ -613,11 +617,9 @@
 
 .match_fourll ul li .button{
 	background-color: #44bb95;
-	float: right;
-	margin-right: 5rem;
 	width: 5rem;
 	height: 2rem;
-	margin-top: -0.5rem;
+	margin-top: 0.5rem;
 	line-height: 2rem;
 	text-align: center;
 }
@@ -635,24 +637,21 @@
 
 .match_fourll ul li .button_update{
 	background-color: #44bb95;
-	float: right;
-	margin-right: 5rem;
 	width: 5rem;
 	height: 2rem;
-	margin-top: -2rem;
 	line-height: 2rem;
 	text-align: center;
+	margin-top: 0.5rem;
 }
 
 .match_fourll ul li .button_shut{
 	background-color: #44bb95;
-	float: right;
-	margin-right: 5rem;
 	width: 5rem;
 	height: 2rem;
-	margin-top: 1rem;
 	line-height: 2rem;
 	text-align: center;
+	margin-top: 0.5rem;
+	margin-left: 0.2rem;
 }
 
 .match_fourll ul li a{
@@ -858,15 +857,30 @@
 }
 .grouping_header{
 	text-align: center;
-	padding:0.375rem 0.3rem;
+	padding:0.1rem 0.3rem;
 	background: #44bb95;
 	color: #fff;
-	font-size: 1.5rem;
+	font-size: 1rem;
 }
+
+.grouping_header2{
+	text-align: center;
+	padding:0.1rem 0.3rem;
+	background: #44bb95;
+	color: #fff;
+	font-size: 2.5rem;
+}
+
 .grouping_header img{
 	width: 0.375rem;
 	height:0.7rem;
 }
+
+.grouping_header2 img{
+	width: 0.75rem;
+	height:1.4rem;
+}
+
 .grouping_table p{
 	color: #5b5a5a;
 	font-size: 0.7rem;
@@ -958,11 +972,12 @@
 }
 .term_table_sub input{
 	background: #44bb95;
-    border-radius: 0.125rem;
-    color: #fff;
-    font-size: 0.65rem;
-    line-height: 1.4rem;
-    width: 100%
+	border-radius: 0.125rem;
+	color: #fff;
+	font-size: 1.5rem;
+	line-height: 1.5rem;
+	width: 100%;
+	height: 2.5rem;
 }
 /*2016/12/19  11:00; 星期一*/
 .firm_text{
@@ -1067,13 +1082,13 @@
 	margin-bottom: 2rem;
 }
 .sheet_submit input{
-	line-height: 1.625rem;
 	background: #44bb95;
-	border-radius: 3px;
-	text-align: center;
+	border-radius: 0.125rem;
 	color: #fff;
-	font-size: 14px;
+	font-size: 1.5rem;
+	line-height: 1.5rem;
 	width: 100%;
+	height: 2.5rem;
 }
 .raning_list ul{
 	background: #fff;
@@ -1185,14 +1200,14 @@
 }
 .label .checked,.label .unchecked{
 	background: url("../images/checked.png") no-repeat;
-	background-size:0.6rem 0.6rem;
+	background-size:1rem 1rem;
     border: 0.05rem solid #77cdb2;
     border-radius: 0;
     cursor: pointer;
     display: inline-block;
-    height: 0.6rem;
+    height: 1rem;
     vertical-align: middle;
-    width: 0.6rem;
+    width: 1rem;
     margin-right: 3px;
 }
 .label .unchecked {
@@ -1499,8 +1514,8 @@
 	border-radius: 4px;
 }
 .apply_border{
-	font-size: 13px;
-	color: #9c9c9c;
+	font-size: 0.5rem;
+	color: black;
 	border-top:1px solid #ececec;
 	margin-top: 0.725rem;
 }
@@ -1520,9 +1535,9 @@
 	top:-0.3rem;
 	z-index: 100000;
 	background: url(../images/shanchu.png) no-repeat;
-	background-size:0.6rem 0.6rem;
-	width: 0.7rem;
-	height:0.7rem;
+	background-size:1rem 1rem;
+	width: 1rem;
+	height:1rem;
 }
 /*2017.1.5  13:57样式*/
 .match_link{
@@ -1566,3 +1581,43 @@
 }
 
 iframe{-webkit-transform: scale(3);}
+
+.select_font_size_1{
+	font-size: 1rem;
+	width: 4.9rem;
+}
+
+.select_font_size_2{
+	font-size: 1rem;
+	width: 4.5rem;
+}
+
+.select_font_size_3 {
+	font-size: 0.8rem;
+	width: 5.2rem;
+	color: #b4b3b3;
+}
+
+.substance .radio_button{
+	padding: 0.15rem 1rem;
+	border: 2px solid #44bb95;
+	border-radius: 10px;
+}
+
+.fenzu_submit{
+	width: 95%;
+	margin:0 auto;
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+}
+
+.fenzu_submit .fenzu_a{
+	background: #44bb95;
+	border-radius: 0.125rem;
+	color: #fff;
+	font-size: 1.5rem;
+	line-height: 2.5rem;
+	width: 100%;
+	height: 2.5rem;
+	text-align: center;
+}

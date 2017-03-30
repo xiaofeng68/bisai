@@ -18,10 +18,10 @@ body,html{height: 100%;}
 a{-webkit-tap-highlight-color:rgba(255,0,0,0);outline:none;}
 
 .clearfix:after {
-	visibility: hidden; 
-	display: block; 
-	content:" "; 
-	clear:both; 
+	visibility: hidden;
+	display: block;
+	content:" ";
+	clear:both;
 	height:0;
 }
 .clearfix {
@@ -60,7 +60,7 @@ a{-webkit-tap-highlight-color:rgba(255,0,0,0);outline:none;}
 /* 设计宽度=640 */
 @media screen and (min-width: 640px) {
 	html {
-		font-size: 40px;
+		font-size: 60px;
 	}
 }
 

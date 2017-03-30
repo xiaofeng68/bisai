@@ -64,7 +64,7 @@
 </head>
 <body>
 	<header class="grouping_header clearfix">
-		<span class="fl">
+		<span class="fl" style="line-height: 120%;">
 			<a href="${ctx }/${frontPath}match${urlSuffix}">
 				<img src="${ctxStaticFront }/images/r-arrow.png">
 			</a>
@@ -74,8 +74,8 @@
 	<section>
 		<form>
 			<div class="sheet_table">
-				<div class="clearfix sheet_table_title">
-					<select name="typeSelect" id="typeSelect" onchange="initSelectList(this)">
+				<div class="clearfix sheet_table_title" style="text-align: center;">
+					<select name="typeSelect" id="typeSelect" onchange="initSelectList(this)" class="select_font_size_1">
 						<option>请选择</option>
 						<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
 							<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
@@ -86,10 +86,10 @@
 						</c:forEach>
 					</select>
 					<!-- 根据前面选择的类型进行查询 -->
-					<select name="groupnumSelect" id="groupnumSelect" onchange="refrashTable()">
+					<select name="groupnumSelect" id="groupnumSelect" onchange="refrashTable()" class="select_font_size_1">
 						
 					</select>
-					<select name="xiaozuSelect" id="xiaozuSelect" onchange="refrashTable()">
+					<select name="xiaozuSelect" id="xiaozuSelect" onchange="refrashTable()" class="select_font_size_1">
 						
 					</select>
 				</div>
