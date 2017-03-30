@@ -28,16 +28,26 @@
                 $("#" + type + "Div2").show();
             }
         }
-        function addPeopleNote(typeid, div) {
-            var orgname = $("#orgname" + typeid).val();
-            var name = $("#name" + typeid).val();
-            var phone = $("#phone" + typeid).val();
-            var num = parseInt($("#num" + typeid).html());
+        function addPeopleNote(typeid, div,num) {
+        	if(num>1){
+        		var orgname = $("#orgname" + typeid).val();
+        		if(!orgname){
+        			alert("请选择所属单位");
+        			return;
+        		}
+        	}
+        	var arr = [];
+        	for(var i=1;i<=num;i++){
+        		var orgname = $("#orgname" + typeid).val();
+                var name = $("#name" + typeid+"_"+i).val();
+                var phone = $("#phone" + typeid+"_"+i).val();
+                arr.push({orgname:orgname,name:name,phone:phone,typeid:typeid});
+        	}
+            
+            //var num = parseInt($("#num" + typeid).html());
             $.post('${ctx }${frontPath}/match/savePeopleNote', {
-                orgname: orgname,
-                name: name,
-                phone: phone,
-                typeid: typeid
+                peoples:JSON.stringify(arr),
+                typeid:typeid
             }, function (result) {
                 if (result.success) {
                     alert("保存成功");
@@ -191,13 +201,16 @@
                                         </c:forEach>
                                     </select>
                                 </div>
+                                <c:set var="num" value="${typeNode.num==0?1:typeNode.num }"></c:set>
+                                <c:forEach var="peo" begin="1" end="${num }">
                                 <div class="label1 js-check clearfix">
-                                    <input type="text" id="name${typeNode.id}" placeholder="姓名">
+                                    <input type="text" id="name${typeNode.id}_${peo}" placeholder="姓名${peo }">
                                 </div>
                                 <div class="label1 js-check clearfix">
-                                    <input type="text" id="phone${typeNode.id}" placeholder="手机号">
+                                    <input type="text" id="phone${typeNode.id}_${peo}" placeholder="手机号">
                                 </div>
-                                <span class="fr label_but" style="margin-top: 0.5rem;" onclick="addPeopleNote(${typeNode.id},'dnandannum${typeNode.id}Div2')">确定</span>
+                                </c:forEach>
+                                <span class="fr label_but" style="margin-top: 0.5rem;" onclick="addPeopleNote(${typeNode.id},'dnandannum${typeNode.id}Div2',${num })">确定</span>
                             </div>
                             <div class="tree-second fr" id="dnandannum${typeNode.id}Div2" style="display:none;">
                                 <div class="tree_second_list">

@@ -105,7 +105,7 @@
             var ttypeStr = "";
             $(".ttypecheck").each(function () {
                 if ($(this).hasClass('checked')) {
-                    var cc = $(this).parent().find("input").val();//获取场次
+                    var cc = $(this).parent().find("select").val();//获取场次
                     ttypeStr += $(this).next().html() + ":" + cc + ",";
                 }
             });
@@ -136,7 +136,7 @@
                 $(".ttypecheck").each(function () {
                     if ($(this).hasClass('checked')) {
                         $(this).removeClass('checked').addClass('unchecked');
-                        $(this).parent().find("input").val("");//获取场次
+                        $(this).parent().find("select").val("");//获取场次
                     }
                 });
                 elm_a.style.backgroundColor="#44bb95";

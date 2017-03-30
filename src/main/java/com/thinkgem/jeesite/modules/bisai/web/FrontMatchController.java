@@ -215,15 +215,26 @@ public class FrontMatchController extends BaseController {
 
 	@RequestMapping(value = "savePeopleNote")
 	@ResponseBody
-	public Json savePeopleNote(PeopleNote peopleNote, String typeid, HttpServletRequest request, Model model) {
+	public Json savePeopleNote(String peoples, String typeid, HttpServletRequest request, Model model) {
 		Json json = new Json();
 		try {
-			MatchTypeNote note = new MatchTypeNote();
-			note.setId(typeid);
-			peopleNote.setNote(note);
-			peopleNote.setState("0");
-			peopleNoteService.save(peopleNote);
-			json.setObj(peopleNote);
+			peoples = StringEscapeUtils.unescapeHtml4(peoples);
+			JSONArray array = JSONArray.fromObject(peoples);
+			List<PeopleNote> list = new ArrayList<PeopleNote>();
+			for (Object obj : array) {
+				JSONObject jsonObj = (JSONObject) obj;
+				PeopleNote peopleNote = new PeopleNote();
+				MatchTypeNote note = new MatchTypeNote();
+				note.setId(typeid);
+				peopleNote.setNote(note);
+				peopleNote.setState("0");
+				peopleNote.setName(jsonObj.getString("name"));
+				peopleNote.setPhone(jsonObj.getString("phone"));
+				peopleNote.setOrgname(jsonObj.getString("orgname"));
+				peopleNoteService.save(peopleNote);
+				list.add(peopleNote);
+			}
+			json.setObj(list);
 			json.setSuccess(true);
 		} catch (Exception e) {
 			e.printStackTrace();
