@@ -105,5 +105,7 @@
 		DELETE FROM bisai_match_result
 		WHERE id = #{id}
 	</update>
-	
+	<delete id="deleteByMatch">
+		delete from bisai_match_result where matchid=#{matchid}
+	</delete>
 </mapper>

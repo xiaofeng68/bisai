@@ -29,7 +29,9 @@
 		FROM bisai_people_note a
 		<include refid="peopleNoteJoins"/>
 		<where>
-			and a.state!=1
+			<if test="state!=null and state!=''">
+				and a.state!=#{state}
+			</if>
 			<if test="name != null and name != ''">
 				AND a.name LIKE 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
@@ -96,5 +98,7 @@
 		DELETE FROM bisai_people_note
 		WHERE id = #{id}
 	</update>
-	
+	<delete id="deleteByMatch" >
+		delete from bisai_people_note where noteid in(select id from bisai_match_type_note where matchid = #{matchid})
+	</delete>
 </mapper>

@@ -163,4 +163,7 @@
 		group by lun,groupnum,chang,p1
 		order by lun,groupnum,chang	
     </select>
+    <delete id="deleteByMatch">
+		delete from bisai_people_group where matchid=#{matchid}
+	</delete>
 </mapper>

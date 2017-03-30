@@ -96,5 +96,7 @@
 		DELETE FROM bisai_baoming_org
 		WHERE id = #{id}
 	</update>
-	
+	<delete id="deleteByMatch">
+		delete from bisai_baoming_org where matchid=#{matchid}
+	</delete>
 </mapper>

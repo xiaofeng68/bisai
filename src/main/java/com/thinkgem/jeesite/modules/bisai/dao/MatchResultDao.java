@@ -11,5 +11,5 @@ import com.thinkgem.jeesite.modules.bisai.entity.MatchResult;
  */
 @MyBatisDao
 public interface MatchResultDao extends CrudDao<MatchResult> {
-	
+	void deleteByMatch(String matchid);
 }

@@ -156,6 +156,7 @@ public class FrontMatchController extends BaseController {
 			matchTypeNoteService.save(typeNode);
 			PeopleNote peopleNote = new PeopleNote();
 			peopleNote.setNote(typeNode);
+			peopleNote.setState("1");
 			List<List<PeopleNote>> ppeopleList = new ArrayList<List<PeopleNote>>();
 			//根据分组数量进行随机分组
 			List<PeopleNote> peopleList = peopleNoteService.findList(peopleNote);

@@ -11,5 +11,5 @@ import com.thinkgem.jeesite.modules.bisai.entity.BaomingOrg;
  */
 @MyBatisDao
 public interface BaomingOrgDao extends CrudDao<BaomingOrg> {
-	
+	void deleteByMatch(String matchid);
 }

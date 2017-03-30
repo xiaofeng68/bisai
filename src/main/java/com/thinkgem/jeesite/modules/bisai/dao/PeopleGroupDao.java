@@ -56,4 +56,5 @@ public interface PeopleGroupDao extends CrudDao<PeopleGroup> {
      * @return
      */
     List<Integer> getMatchGroupnumList(String matchid);
+    void deleteByMatch(String matchid);
 }

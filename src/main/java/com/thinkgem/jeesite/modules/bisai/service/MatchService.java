@@ -12,8 +12,12 @@ import org.springframework.util.StringUtils;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.bisai.dao.BaomingOrgDao;
 import com.thinkgem.jeesite.modules.bisai.dao.MatchDao;
+import com.thinkgem.jeesite.modules.bisai.dao.MatchResultDao;
 import com.thinkgem.jeesite.modules.bisai.dao.MatchTypeNoteDao;
+import com.thinkgem.jeesite.modules.bisai.dao.PeopleGroupDao;
+import com.thinkgem.jeesite.modules.bisai.dao.PeopleNoteDao;
 import com.thinkgem.jeesite.modules.bisai.entity.Match;
 import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
 import com.thinkgem.jeesite.modules.bisai.util.MatchTypeNoteUtils;
@@ -29,6 +33,15 @@ import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 public class MatchService extends CrudService<MatchDao, Match> {
     @Autowired
     MatchTypeNoteDao matchTypeNoteDao;
+    @Autowired
+    MatchResultDao matchResultDao;
+    @Autowired
+    PeopleGroupDao peopleGroupDao;
+    @Autowired
+    PeopleNoteDao peopleNoteDao;
+    @Autowired
+    BaomingOrgDao baomingOrgDao;
+    
     
 	public Match get(String id) {
 		return super.get(id);
@@ -91,6 +104,11 @@ public class MatchService extends CrudService<MatchDao, Match> {
 	
 	@Transactional(readOnly = false)
 	public void delete(Match match) {
+		matchResultDao.deleteByMatch(match.getId());
+		peopleGroupDao.deleteByMatch(match.getId());
+		peopleNoteDao.deleteByMatch(match.getId());
+		baomingOrgDao.deleteByMatch(match.getId());
+		matchTypeNoteDao.deleteByMatch(match.getId());
 		super.delete(match);
 	}
 	/**   
