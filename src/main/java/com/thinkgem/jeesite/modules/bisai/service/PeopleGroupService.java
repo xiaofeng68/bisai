@@ -156,9 +156,9 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 		List<PeopleGroup> list = dao.getGroupScoreSort(peopleGroup);
 		Map<String,List<PeopleGroup>> map = new HashMap<String, List<PeopleGroup>>();
 		for(PeopleGroup group : list){
-			String key = group.getGroupnum()+"-"+group.getChang();
+			String key = group.getGroupnum();
 			List<PeopleGroup> cList = map.get(key);
-			if(cList==null){
+			if(cList==null){//存放组下的所有人员
 				cList = new ArrayList<PeopleGroup>();
 				map.put(key, cList);
 			}
@@ -174,7 +174,7 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 				}
 			});
 			int size = cl.size();
-			for(int i=0;i<zuchuxian&&i<size;i++){
+			for(int i=0;i<zuchuxian&&i<size;i++){//取出下一局晋级人员
 				cacheList.add(cl.get(i));
 			}
 		}

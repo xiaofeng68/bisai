@@ -181,12 +181,14 @@
 		<input type="hidden" name="lun" id="lun">
 		<div class="sheet_submit">
 			<input type="button" value="保存" onclick="save()" id="saveButton" style="display:none;">
-			<!-- 最后一组 -->
-			<input type="button" value="下一轮" onclick="nextGroup()" id="nextButton" style="display:none;">
-			<!-- 都评分完成 -->
-			<c:if test="${overButton }">
-			<input type="button" value="比赛结束" onclick="overMatch()" id="overButton">
-			</c:if>
+			<c:choose>
+				<c:when test="${overButton }">
+					<input type="button" value="比赛结束" onclick="overMatch()" id="overButton">
+				</c:when>
+				<c:otherwise>
+					<input type="button" value="下一轮" onclick="nextGroup()" id="nextButton" style="display:none;">
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</form>
 </body>

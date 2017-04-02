@@ -30,6 +30,8 @@ import com.thinkgem.jeesite.modules.bisai.service.MatchTypeNoteService;
 import com.thinkgem.jeesite.modules.bisai.service.PeopleGroupService;
 import com.thinkgem.jeesite.modules.bisai.service.PeopleNoteService;
 import com.thinkgem.jeesite.modules.bisai.util.GroupUtils;
+import com.thinkgem.jeesite.modules.bisai.util.MatchTypeNoteUtils;
+import com.thinkgem.jeesite.modules.bisai.util.PeopleGroupUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -90,9 +92,10 @@ public class FrontMatchController extends BaseController {
 		model.addAttribute("match", match);
 		model.addAttribute("stype", stype);
 		if ("1".equals(stype)) {// 录
-			if(!"3".equals(match.getState()))
-			//比赛的成绩都录入完毕
-			model.addAttribute("overButton",peopleGroupService.checkMatchOver(id));
+			if(!"3".equals(match.getState()))//比赛的成绩都录入完毕
+				model.addAttribute("overButton",peopleGroupService.checkMatchOver(id));
+			else
+				model.addAttribute("overButton",true);
 			return "modules/bisai/front/mark";
 		} else {// 查看
 			return "modules/bisai/front/final";
@@ -146,63 +149,152 @@ public class FrontMatchController extends BaseController {
 		peopleGroup.setMatchid(matchid);
 		peopleGroup.setBtype(type);
 		peopleGroupService.deleteByTypeNote(peopleGroup);
-		Map<String, Object> groupMap = new HashMap<String, Object>();
-		for (MatchTypeNote typeNode : matchTypeList) {
-			// 跟新分组信息
-			typeNode.setPeoples(Integer.parseInt(request.getParameter("peoples" + typeNode.getType())));//分组
-			typeNode.setSaizhi(Integer.parseInt(request.getParameter("saizhi" + typeNode.getType())));
-			typeNode.setJushu(Integer.parseInt(request.getParameter("jushu" + typeNode.getType())));
-			typeNode.setZuchuxian(Integer.parseInt(request.getParameter("zuchuxian" + typeNode.getType())));
-			matchTypeNoteService.save(typeNode);
-			PeopleNote peopleNote = new PeopleNote();
-			peopleNote.setNote(typeNode);
-			peopleNote.setState("1");
-			List<List<PeopleNote>> ppeopleList = new ArrayList<List<PeopleNote>>();
-			//根据分组数量进行随机分组
-			List<PeopleNote> peopleList = peopleNoteService.findList(peopleNote);
-			int groupnums = typeNode.getPeoples();//分组数量
-			int peoples = peopleList.size()/groupnums;//每组人数
-			for(int group=0;group<groupnums;group++){
-				List<PeopleNote> list = new ArrayList<PeopleNote>();
-		        do{  
-		            int randomIndex = Math.abs(new Random().nextInt(peopleList.size() ) );  
-		            list.add( peopleList.remove(randomIndex ));  
-		        }while( list.size( ) < peoples); 
-				ppeopleList.add(list);
+		if("2".equals(type)){
+			Map<String, Object> groupMap = new HashMap<String, Object>();
+			for (MatchTypeNote typeNode : matchTypeList) {
+				// 跟新分组信息
+				typeNode.setPeoples(Integer.parseInt(request.getParameter("peoples" + typeNode.getType())));//分组
+				typeNode.setSaizhi(Integer.parseInt(request.getParameter("saizhi" + typeNode.getType())));
+				typeNode.setJushu(Integer.parseInt(request.getParameter("jushu" + typeNode.getType())));
+				typeNode.setZuchuxian(Integer.parseInt(request.getParameter("zuchuxian" + typeNode.getType())));
+				matchTypeNoteService.save(typeNode);
+				PeopleNote peopleNote = new PeopleNote();
+				peopleNote.setNote(typeNode);
+				peopleNote.setState("1");
+				List<List<PeopleNote>> ppeopleList = new ArrayList<List<PeopleNote>>();
+				//根据分组数量进行随机分组
+				List<PeopleNote> peopleList = peopleNoteService.findList(peopleNote);
+				List<PeopleNote> colls = new ArrayList<PeopleNote>();
+				Map<String,List<PeopleNote>> orgMap = new HashMap<String, List<PeopleNote>>(); 
+				for(PeopleNote pl : peopleList){
+					String key = pl.getOrgname();
+					List<PeopleNote> cList = orgMap.get(key);
+					if(cList==null){
+						cList = new ArrayList<PeopleNote>();
+						colls.add(pl);
+					}
+					cList.add(pl);
+					orgMap.put(key, cList);
+				}
+				//查询出所有的部门来
+				int groupnums = typeNode.getPeoples();//分组数量
+				int peoples = colls.size()/groupnums;//每组人数
+				for(int group=0;group<groupnums;group++){
+					List<PeopleNote> list = new ArrayList<PeopleNote>();
+			        do{  
+			            int randomIndex = Math.abs(new Random().nextInt(colls.size() ) );  
+			            list.add(colls.remove(randomIndex ));  
+			        }while( list.size( ) < peoples); 
+					ppeopleList.add(list);
+				}
+				//根据部门进行分组
+				List<List<PeopleNote[]>> groupList = GroupUtils.BiSaifenzu(ppeopleList);
+				groupMap.put(typeNode.getId(), groupList); // 把分组放入缓存
+				Map<String,List<PeopleNote[]>> groupsMap = new HashMap<String,List<PeopleNote[]>>();
+				for (int group = 0, groups = groupList.size(); group < groups; group++) {// 组
+					List<PeopleNote[]> pl = groupList.get(group);
+					for (int cc = 0, ccs = pl.size(); cc < ccs; cc++) {// 场
+						PeopleNote[] notes = pl.get(cc);
+						String key = notes[0].getOrgname();
+						List<PeopleNote> list0 = orgMap.get(notes[0].getOrgname());
+						List<PeopleNote> list1 = orgMap.get(notes[1].getOrgname());
+						groupsMap.put(key, new ArrayList<PeopleNote[]>());
+						for(int changci =0 ;changci <typeNode.getNum();changci++){
+							for(int jushu=1,sum=typeNode.getJushu();jushu<=sum;jushu++){
+								PeopleNote peoplec1 = list0.get(changci);
+								PeopleNote peoplec2 = list1.get(changci);
+								PeopleNote [] arr = new PeopleNote [2];
+								arr[0] = peoplec1;
+								arr[1] = peoplec2;
+								groupsMap.get(key).add(arr);
+								//根据部门下的人进行场次组装分组
+								// 保存人员分组记录
+								PeopleGroup people = new PeopleGroup();
+								people.setMatchid(matchid);
+								people.setBtype(type);
+								people.setType(typeNode.getType());
+								people.setGroupnum(String.valueOf(1 + group));
+								people.setChang(String.valueOf(1 + changci));
+								people.setPeopleNote(peoplec1);
+								people.setJushu(jushu+"");
+								people.setLun("1");
+								peopleGroupService.save(people);
+								people = new PeopleGroup();
+								people.setMatchid(matchid);
+								people.setBtype(type);
+								people.setType(typeNode.getType());
+								people.setGroupnum(String.valueOf(1 + group));
+								people.setChang(String.valueOf(1 + changci));
+								people.setPeopleNote(peoplec2);
+								people.setJushu(jushu+"");
+								people.setLun("1");
+								peopleGroupService.save(people);
+							}
+						}
+					}
+				}
+				model.addAttribute("groupcMap",groupsMap);
 			}
-			List<List<PeopleNote[]>> groupList = GroupUtils.BiSaifenzu(ppeopleList);
-			groupMap.put(typeNode.getId(), groupList); // 把分组放入缓存
-			for (int group = 0, groups = groupList.size(); group < groups; group++) {// 组
-				List<PeopleNote[]> pl = groupList.get(group);
-				for (int cc = 0, ccs = pl.size(); cc < ccs; cc++) {// 场
-					for(int jushu=1,sum=typeNode.getJushu();jushu<=sum;jushu++){
-						PeopleNote[] note = pl.get(cc);
-						// 保存人员分组记录
-						PeopleGroup people = new PeopleGroup();
-						people.setMatchid(matchid);
-						people.setBtype(type);
-						people.setType(typeNode.getType());
-						people.setGroupnum(String.valueOf(1 + group));
-						people.setChang(String.valueOf(1 + cc));
-						people.setPeopleNote(note[0]);
-						people.setJushu(jushu+"");
-						people.setLun("1");
-						peopleGroupService.save(people);
-						people = new PeopleGroup();
-						people.setMatchid(matchid);
-						people.setBtype(type);
-						people.setType(typeNode.getType());
-						people.setGroupnum(String.valueOf(1 + group));
-						people.setChang(String.valueOf(1 + cc));
-						people.setPeopleNote(note[1]);
-						people.setJushu(jushu+"");
-						people.setLun("1");
-						peopleGroupService.save(people);
+			model.addAttribute("groupMap", groupMap);
+		}else{//单项赛
+			Map<String, Object> groupMap = new HashMap<String, Object>();
+			for (MatchTypeNote typeNode : matchTypeList) {
+				// 跟新分组信息
+				typeNode.setPeoples(Integer.parseInt(request.getParameter("peoples" + typeNode.getType())));//分组
+				typeNode.setSaizhi(Integer.parseInt(request.getParameter("saizhi" + typeNode.getType())));
+				typeNode.setJushu(Integer.parseInt(request.getParameter("jushu" + typeNode.getType())));
+				typeNode.setZuchuxian(Integer.parseInt(request.getParameter("zuchuxian" + typeNode.getType())));
+				matchTypeNoteService.save(typeNode);
+				PeopleNote peopleNote = new PeopleNote();
+				peopleNote.setNote(typeNode);
+				peopleNote.setState("1");
+				List<List<PeopleNote>> ppeopleList = new ArrayList<List<PeopleNote>>();
+				//根据分组数量进行随机分组
+				List<PeopleNote> peopleList = peopleNoteService.findList(peopleNote);
+				int groupnums = typeNode.getPeoples();//分组数量
+				int peoples = peopleList.size()/groupnums;//每组人数
+				for(int group=0;group<groupnums;group++){
+					List<PeopleNote> list = new ArrayList<PeopleNote>();
+			        do{  
+			            int randomIndex = Math.abs(new Random().nextInt(peopleList.size() ) );  
+			            list.add( peopleList.remove(randomIndex ));  
+			        }while( list.size( ) < peoples); 
+					ppeopleList.add(list);
+				}
+				List<List<PeopleNote[]>> groupList = GroupUtils.BiSaifenzu(ppeopleList);
+				groupMap.put(typeNode.getId(), groupList); // 把分组放入缓存
+				for (int group = 0, groups = groupList.size(); group < groups; group++) {// 组
+					List<PeopleNote[]> pl = groupList.get(group);
+					for (int cc = 0, ccs = pl.size(); cc < ccs; cc++) {// 场
+						for(int jushu=1,sum=typeNode.getJushu();jushu<=sum;jushu++){
+							PeopleNote[] note = pl.get(cc);
+							// 保存人员分组记录
+							PeopleGroup people = new PeopleGroup();
+							people.setMatchid(matchid);
+							people.setBtype(type);
+							people.setType(typeNode.getType());
+							people.setGroupnum(String.valueOf(1 + group));
+							people.setChang(String.valueOf(1 + cc));
+							people.setPeopleNote(note[0]);
+							people.setJushu(jushu+"");
+							people.setLun("1");
+							peopleGroupService.save(people);
+							people = new PeopleGroup();
+							people.setMatchid(matchid);
+							people.setBtype(type);
+							people.setType(typeNode.getType());
+							people.setGroupnum(String.valueOf(1 + group));
+							people.setChang(String.valueOf(1 + cc));
+							people.setPeopleNote(note[1]);
+							people.setJushu(jushu+"");
+							people.setLun("1");
+							peopleGroupService.save(people);
+						}
 					}
 				}
 			}
+			model.addAttribute("groupMap", groupMap);
 		}
-		model.addAttribute("groupMap", groupMap);
 		// 校验是否都分组完成，分组完成后修改比赛状态
 		if (peopleGroupService.checkGroupEnd(matchid) == 0) {
 			match.setState("2");// 报名完成进入进行中
@@ -420,12 +512,21 @@ public class FrontMatchController extends BaseController {
 	public Json overMatch(String id, HttpServletRequest request) {
 		Json json = new Json();
 		try {
+			//监测成绩是否都已经录入
 			Match match = matchService.get(id);
+			if("3".equals(match.getState()) && peopleGroupService.checkMatchOver(id)){
+				throw new RuntimeException();
+			}
 			match.setState("3");
 			matchService.updateMatchState(match);
+			List<MatchTypeNote> list = MatchTypeNoteUtils.getMatchTypes(id);
+			for(MatchTypeNote note : list){
+				PeopleGroupUtils.savePeopleSort(id,note.getBtype(),note.getType());
+			}
 			json.setSuccess(true);
 		} catch (Exception e) {
 			e.printStackTrace();
+			json.setMsg("本赛事已结束！！");
 			json.setSuccess(false);
 		}
 		return json;

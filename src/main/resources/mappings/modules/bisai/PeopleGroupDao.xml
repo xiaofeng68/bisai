@@ -13,7 +13,8 @@
 		a.type as "type",
 		a.lun as "lun",
 		a.jushu as "jushu",
-		b.name as "peopleNote.name"
+		b.name as "peopleNote.name",
+		b.orgname as "peopleNote.orgname"
 	</sql>
 	
 	<sql id="peopleGroupJoins">

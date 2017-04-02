@@ -24,14 +24,6 @@
 		<span>排名</span>
 	</header>
 	<section>
-		<!-- <div class="match_topll_thir">
-			<form>
-				<div>
-					<input class="inputl" type="text" placeholder="搜索">
-					<input class="submitll" type="submit" value="搜索">
-				</div>
-			</form>
-		</div> -->
 		<div class="raning_list">
 			<ul>
 				<c:forEach var="type" items="${fns:getMatchTypes(match.id) }">
