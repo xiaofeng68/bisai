@@ -15,7 +15,7 @@ public class PeopleGroup extends DataEntity<PeopleGroup> {
 	private String groupnum;		// 组
 	private String chang;		// 场
 	private PeopleNote peopleNote;		// 比赛人
-	private String score1;		// 得分
+	private Integer score1;		// 得分
 	private String matchid;
 	private String btype;
 	private String type;
@@ -49,11 +49,11 @@ public class PeopleGroup extends DataEntity<PeopleGroup> {
 	}
 	
 	@Length(min=0, max=11, message="得分长度必须介于 0 和 11 之间")
-	public String getScore1() {
+	public Integer getScore1() {
 		return score1;
 	}
 
-	public void setScore1(String score1) {
+	public void setScore1(Integer score1) {
 		this.score1 = score1;
 	}
 

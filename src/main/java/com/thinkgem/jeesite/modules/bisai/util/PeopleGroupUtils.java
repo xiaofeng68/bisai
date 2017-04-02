@@ -106,7 +106,7 @@ public class PeopleGroupUtils {
 				if(p2.getLun()<p2lun){
 					p2.setLun(p2lun);
 				}
-				if (Integer.parseInt(pp1.getScore1()) > Integer.parseInt(pp2.getScore1())) {
+				if (pp1.getScore1() > pp2.getScore1()) {
 					p1.setShengju(p1.getShengju() + 1);
 				} else {
 					p2.setShengju(p2.getShengju() + 1);
