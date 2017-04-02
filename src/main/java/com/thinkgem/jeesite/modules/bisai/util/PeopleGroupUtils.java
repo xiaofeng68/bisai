@@ -32,10 +32,35 @@ public class PeopleGroupUtils {
 		matchResult.setMatchid(matchid);
 		matchResult.setBtype(btype);
 		matchResult.setType(type);
-		List<MatchResult> resultList = (List<MatchResult>) CacheUtils
-				.get(MatchResult_MAP + ":" + matchid + btype + type);
-		resultList = resultList==null?resultList = matchResultDao.findList(matchResult):resultList;
-		if (resultList == null ||resultList.size()==0) {
+		List<MatchResult> resultList = (List<MatchResult>) CacheUtils.get(MatchResult_MAP + ":" + matchid + btype + type);
+		if(resultList==null){
+			if("2".equals(btype)){
+				resultList = matchResultDao.findTopResult(matchResult);
+				CacheUtils.put(MatchResult_MAP + ":" + matchid + btype + type, resultList);
+				return resultList;
+			}else{
+				resultList = matchResultDao.findList(matchResult);
+				CacheUtils.put(MatchResult_MAP + ":" + matchid + btype + type, resultList);
+				return resultList;
+			}
+		}
+		// 存储比赛的排名
+		return resultList;
+	}
+	/**
+	 * 保存人员排序
+	 * @param matchid
+	 * @param btype
+	 * @param type
+	 */
+	public static void savePeopleSort(String matchid, String btype, String type){
+		MatchResult matchResult = new MatchResult();
+		matchResult.setMatchid(matchid);
+		matchResult.setBtype(btype);
+		matchResult.setType(type);
+		if("2".equals(btype)){//团队赛
+			
+		}else{//单项赛
 			PeopleGroup peopleGroup = new PeopleGroup();
 			peopleGroup.setMatchid(matchid);
 			peopleGroup.setBtype(btype);
@@ -52,6 +77,7 @@ public class PeopleGroupUtils {
 					p1 = new MatchResult();
 					PeopleNote pn = new PeopleNote();
 					pn.setId(key1);
+					pn.setOrgname(pp1.getPeopleNote().getOrgname());
 					p1.setPeople(pn);
 					p1.setMatchid(matchid);
 					p1.setBtype(btype);
@@ -68,6 +94,7 @@ public class PeopleGroupUtils {
 					p2 = new MatchResult();
 					PeopleNote pn = new PeopleNote();
 					pn.setId(key2);
+					pn.setOrgname(pp2.getPeopleNote().getOrgname());
 					p2.setPeople(pn);
 					p2.setMatchid(matchid);
 					p2.setBtype(btype);
@@ -79,7 +106,7 @@ public class PeopleGroupUtils {
 				if(p2.getLun()<p2lun){
 					p2.setLun(p2lun);
 				}
-				if (Integer.parseInt(pp1.getScore1()) > Integer.parseInt(pp2.getScore1())) {
+				if (pp1.getScore1() > pp2.getScore1()) {
 					p1.setShengju(p1.getShengju() + 1);
 				} else {
 					p2.setShengju(p2.getShengju() + 1);
@@ -97,10 +124,7 @@ public class PeopleGroupUtils {
 			for (MatchResult result : list) {
 				matchResultDao.insert(result);
 			}
-			resultList = matchResultDao.findList(matchResult);
-			CacheUtils.put(MatchResult_MAP + ":" + matchid + btype + type, resultList);
 		}
-		// 存储比赛的排名
-		return resultList;
+		matchResultDao.refashOrg();
 	}
 }

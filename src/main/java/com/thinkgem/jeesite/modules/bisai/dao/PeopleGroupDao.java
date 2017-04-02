@@ -45,6 +45,8 @@ public interface PeopleGroupDao extends CrudDao<PeopleGroup> {
      */
     List<PeopleGroup> getGroupScoreSort(PeopleGroup peopleGroup);
     List<PeopleGroup> getLastGroupScoreSort(PeopleGroup peopleGroup);
+    
+    List<PeopleGroup> getTuanGroupScoreSort(PeopleGroup peopleGroup);
     /**
      * 获取比赛下未录分的数量
      * @param matchid

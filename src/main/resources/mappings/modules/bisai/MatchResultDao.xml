@@ -77,7 +77,8 @@
 			peopleid,
 			shengju,
 			jushu,
-			lun
+			lun,
+			orgname
 		) VALUES (
 			#{matchid},
 			#{btype},
@@ -85,7 +86,8 @@
 			#{people.id},
 			#{shengju},
 			#{jushu},
-			#{lun}
+			#{lun},
+			#{people.orgname}
 		)
 	</insert>
 	
@@ -97,7 +99,8 @@
 			peopleid = #{people.id},
 			shengju = #{shengju},
 			jushu = #{jushu},
-			lun = #{lun}
+			lun = #{lun},
+			orgname = #{people.orgname}
 		WHERE id = #{id}
 	</update>
 	
@@ -108,4 +111,10 @@
 	<delete id="deleteByMatch">
 		delete from bisai_match_result where matchid=#{matchid}
 	</delete>
+	<select id="findTopResult" resultType="MatchResult">
+		select id,matchid,btype,type,peopleid,sum(shengju) shengju,sum(jushu) jushu,sum(lun) lun,orgname from bisai_match_result where matchid=#{matchid} and btype=#{btype} and type =#{type} GROUP BY orgname
+	</select>
+	<update id="refashOrg">
+		update bisai_match_result a set a.orgname = (select orgname from bisai_people_note b where a.peopleid=b.id)
+	</update>
 </mapper>

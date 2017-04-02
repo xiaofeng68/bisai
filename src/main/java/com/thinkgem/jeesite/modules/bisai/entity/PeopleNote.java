@@ -1,5 +1,8 @@
 package com.thinkgem.jeesite.modules.bisai.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -17,6 +20,7 @@ public class PeopleNote extends DataEntity<PeopleNote> {
 	private String phone;		// 手机号
 	private String orgname;		// 单位
 	private String state;		// 状态
+	private List<PeopleNote> cList = new ArrayList<PeopleNote>();
 	
 	public PeopleNote() {
 		super();
@@ -69,5 +73,7 @@ public class PeopleNote extends DataEntity<PeopleNote> {
     public void setNote(MatchTypeNote note) {
         this.note = note;
     }
-	
+    public void add(PeopleNote note){
+    	this.cList.add(note);
+    }
 }

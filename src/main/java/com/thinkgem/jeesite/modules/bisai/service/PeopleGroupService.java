@@ -22,7 +22,7 @@ import com.thinkgem.jeesite.modules.bisai.dao.PeopleNoteDao;
 import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
 import com.thinkgem.jeesite.modules.bisai.entity.PeopleGroup;
 import com.thinkgem.jeesite.modules.bisai.entity.PeopleNote;
-
+import com.thinkgem.jeesite.modules.bisai.entity.MatchResult;
 /**
  * 分组Service
  * 
@@ -100,7 +100,7 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 				for (int m = 0; m < jushu; m++) {
 					if(!notovered)
 						notovered = scores.get(m).getScore1()==null;
-					int score = scores.get(m).getScore1()!=null?Integer.parseInt(scores.get(m).getScore1()):21;
+					int score = scores.get(m).getScore1()!=null?scores.get(m).getScore1():21;
 					tableStr.append("<td>");//
 //					tableStr.append("<div id='divselect1"+scores.get(m).getId()+"' class='div_select' div-select-val='21'>");
 //					tableStr.append("<cite>21</cite>");
@@ -152,13 +152,55 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 	public int countScoreIsNull(PeopleGroup peopleGroup){
 		return dao.countTypeScoreIsNull(peopleGroup);
 	}
+	public List<PeopleNote> getTuanNextGroupPeople(PeopleGroup peopleGroup,MatchTypeNote matchTypeNote,boolean asc){
+		//根据groupnum,chang,jushu排序查询出对应的比赛PK
+		List<PeopleGroup> list = dao.getTuanGroupScoreSort(peopleGroup);
+		List<PeopleNote> peopleList = new ArrayList<PeopleNote>();
+		int jushu = matchTypeNote.getJushu(),changci=matchTypeNote.getNum();
+		//根据PK结果计算出，部门获胜局数
+		for(int i=0,j=list.size(),index=0;i<j;i+=(2*jushu*changci)){
+			int orgNum1=0,orgNum2=0;
+			for(int k=1;k<=changci;k++){//公司比较
+				int jushus1 = 0,jushus2=0;
+				for(int m=1;m<=jushu;m++){//局数比较
+					PeopleGroup p1 = list.get(index);
+					PeopleGroup p2 = list.get(index+1);
+					if(p1.getScore1()>p2.getScore1()){
+						jushus1++;
+					}else if(p1.getScore1()<p2.getScore1()){
+						jushus2++;
+					}
+					index+=2;
+				}
+				if(jushus1>jushus2){
+					orgNum1++;
+				}else if(jushus1<jushus2){
+					orgNum2++;
+				}
+			}
+			if(asc){
+				if(orgNum1>orgNum2){
+					peopleList.add(list.get(i).getPeopleNote());
+				}else{
+					peopleList.add(list.get(i+1).getPeopleNote());
+				}
+			}else{
+				if(orgNum1<orgNum2){
+					peopleList.add(list.get(i).getPeopleNote());
+				}else{
+					peopleList.add(list.get(i+1).getPeopleNote());
+				}
+			}
+		}
+		return peopleList;
+	}
 	public List<PeopleNote> getNextGroupPeople(PeopleGroup peopleGroup,int zuchuxian){
 		List<PeopleGroup> list = dao.getGroupScoreSort(peopleGroup);
 		Map<String,List<PeopleGroup>> map = new HashMap<String, List<PeopleGroup>>();
 		for(PeopleGroup group : list){
-			String key = group.getGroupnum()+"-"+group.getChang();
+			String key = group.getGroupnum();
 			List<PeopleGroup> cList = map.get(key);
-			if(cList==null){
+			if(cList==null){//存放组下的所有人员
 				cList = new ArrayList<PeopleGroup>();
 				map.put(key, cList);
 			}
@@ -170,11 +212,11 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 			Collections.sort(cl, new Comparator<PeopleGroup>(){
 				@Override
 				public int compare(PeopleGroup o1, PeopleGroup o2) {
-					return Integer.parseInt(o2.getScore1())-Integer.parseInt(o1.getScore1());
+					return o2.getScore1()-o1.getScore1();
 				}
 			});
 			int size = cl.size();
-			for(int i=0;i<zuchuxian&&i<size;i++){
+			for(int i=0;i<zuchuxian&&i<size;i++){//取出下一局晋级人员
 				cacheList.add(cl.get(i));
 			}
 		}
@@ -212,7 +254,7 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 			Collections.sort(cl, new Comparator<PeopleGroup>(){
 				@Override
 				public int compare(PeopleGroup o1, PeopleGroup o2) {
-					return -Integer.parseInt(o2.getScore1())+Integer.parseInt(o1.getScore1());
+					return -o2.getScore1()+o1.getScore1();
 				}
 			});
 			int size = cl.size();
