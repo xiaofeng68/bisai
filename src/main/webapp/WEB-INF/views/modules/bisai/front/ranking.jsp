@@ -31,7 +31,14 @@
 						<li class="clearfix one">
 						<span class="fl left">
 							<span class="name">第${util:numToUpper(num.index+1) }名</span>
-							<span>${result.people.name }</span>
+							<c:choose>
+								<c:when test="${type.btype==2  }">
+									<span>${result.people.orgname }</span>
+								</c:when>
+								<c:otherwise>
+									<span>${result.people.name }</span>
+								</c:otherwise>
+							</c:choose>
 						</span>
 						<span class="fl content">
 							<img src="${ctxStaticFront}/images/result${num.index+1 }.png">

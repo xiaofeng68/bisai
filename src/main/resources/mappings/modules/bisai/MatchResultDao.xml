@@ -11,11 +11,13 @@
 		a.shengju AS "shengju",
 		a.jushu AS "jushu",
 		a.lun as "lun",
-		p.name as "people.name"
+		p.name as "people.name",
+		o.name as "people.orgname"
 	</sql>
 	
 	<sql id="matchResultJoins">
 		left join bisai_people_note p on p.id = a.peopleid
+		left join bisai_baoming_org o on p.orgname = o.id
 	</sql>
     
 	<select id="get" resultType="MatchResult">
@@ -33,13 +35,13 @@
 		<include refid="matchResultJoins"/>
 		<where>
 			<if test="matchid!=null and matchid!=''">
-				and matchid = #{matchid}
+				and a.matchid = #{matchid}
 			</if>
 			<if test="btype!=null and btype!=''">
-				and btype = #{btype}
+				and a.btype = #{btype}
 			</if>
 			<if test="type!=null and type!=''">
-				and type = #{type}
+				and a.type = #{type}
 			</if>
 		</where>
 		<choose>
@@ -47,7 +49,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				order by lun desc,shengju desc
+				order by a.lun desc,a.shengju desc
 			</otherwise>
 		</choose>
 	</select>

@@ -175,4 +175,12 @@
 		where a.matchid=#{matchid} and a.btype=#{btype} and a.type=#{type} and a.lun=#{lun}
 		order by a.groupnum,a.chang,a.jushu
     </select>
+    <select id="getTuanLastGroupScoreSort" resultType="PeopleGroup">
+    	SELECT 
+			<include refid="peopleGroupColumns"/>
+		FROM bisai_people_group a
+		<include refid="peopleGroupJoins"/>
+		where a.matchid=#{matchid} and a.btype=#{btype} and a.type=#{type}
+		order by a.lun,a.groupnum,a.chang,a.jushu
+    </select>
 </mapper>

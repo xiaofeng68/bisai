@@ -34,15 +34,9 @@ public class PeopleGroupUtils {
 		matchResult.setType(type);
 		List<MatchResult> resultList = (List<MatchResult>) CacheUtils.get(MatchResult_MAP + ":" + matchid + btype + type);
 		if(resultList==null){
-			if("2".equals(btype)){
-				resultList = matchResultDao.findTopResult(matchResult);
-				CacheUtils.put(MatchResult_MAP + ":" + matchid + btype + type, resultList);
-				return resultList;
-			}else{
-				resultList = matchResultDao.findList(matchResult);
-				CacheUtils.put(MatchResult_MAP + ":" + matchid + btype + type, resultList);
-				return resultList;
-			}
+			resultList = matchResultDao.findList(matchResult);
+			CacheUtils.put(MatchResult_MAP + ":" + matchid + btype + type, resultList);
+			return resultList;
 		}
 		// 存储比赛的排名
 		return resultList;
@@ -59,7 +53,83 @@ public class PeopleGroupUtils {
 		matchResult.setBtype(btype);
 		matchResult.setType(type);
 		if("2".equals(btype)){//团队赛
-			
+			//根据groupnum,chang,jushu排序查询出对应的比赛PK
+			PeopleGroup peopleGroup = new PeopleGroup();
+			peopleGroup.setMatchid(matchid);
+			peopleGroup.setBtype(btype);
+			peopleGroup.setType(type);
+			List<PeopleGroup> peopleGroupList = peopleGroupDao.getTuanLastGroupScoreSort(peopleGroup);
+			Map<String,MatchResult> resultMap = new HashMap<String, MatchResult>();
+			int jushu = 3,changci=3;
+			//根据PK结果计算出，部门获胜局数
+			for(int i=0,j=peopleGroupList.size(),index=0;i<j;i+=(2*jushu*changci)){
+				int orgNum1=0,orgNum2=0;
+				for(int k=1;k<=changci;k++){//公司比较
+					int jushus1 = 0,jushus2=0;
+					for(int m=1;m<=jushu;m++){//局数比较
+						PeopleGroup p1 = peopleGroupList.get(index);
+						PeopleGroup p2 = peopleGroupList.get(index+1);
+						if(p1.getScore1()>p2.getScore1()){
+							jushus1++;
+						}else if(p1.getScore1()<p2.getScore1()){
+							jushus2++;
+						}
+						index+=2;
+					}
+					if(jushus1>jushus2){
+						orgNum1++;
+					}else if(jushus1<jushus2){
+						orgNum2++;
+					}
+				}
+				int lun = Integer.parseInt(peopleGroupList.get(i).getLun());
+				String id1 = peopleGroupList.get(i).getPeopleNote().getId();
+				MatchResult result1 = resultMap.get(id1);
+				if(result1==null){
+					result1 = new MatchResult();
+					result1.setMatchid(matchid);
+					result1.setBtype(btype);
+					result1.setType(type);
+					result1.setShengju(0);
+					result1.setJushu(0);
+					result1.setLun(lun);
+					result1.setPeople(peopleGroupList.get(i).getPeopleNote());
+					resultMap.put(id1, result1);
+				}
+				if(orgNum1>orgNum2)
+					result1.setShengju(result1.getShengju()+1);
+				result1.setJushu(result1.getJushu()+1);
+				result1.setLun(lun);
+				String id2 = peopleGroupList.get(i+1).getPeopleNote().getId();
+				MatchResult result2 = resultMap.get(id2);
+				if(result2==null){
+					result2 = new MatchResult();
+					result2.setMatchid(matchid);
+					result2.setBtype(btype);
+					result2.setType(type);
+					result2.setShengju(0);
+					result2.setJushu(0);
+					result2.setLun(lun);
+					result2.setPeople(peopleGroupList.get(i+1).getPeopleNote());
+					resultMap.put(id2, result2);
+				}
+				if(orgNum1<=orgNum2)
+					result2.setShengju(result2.getShengju()+1);
+				result2.setJushu(result2.getJushu()+1);
+				result2.setLun(lun);
+			}
+			Collection<MatchResult> collections = resultMap.values();
+			List<MatchResult> list = new ArrayList<MatchResult>();
+			list.addAll(collections);
+			Collections.sort(list, new Comparator<MatchResult>() {
+				@Override
+				public int compare(MatchResult o1, MatchResult o2) {
+					return o2.getShengju() - o1.getShengju();
+				}
+			});
+			for (MatchResult result : list) {
+				matchResultDao.insert(result);
+			}
 		}else{//单项赛
 			PeopleGroup peopleGroup = new PeopleGroup();
 			peopleGroup.setMatchid(matchid);
