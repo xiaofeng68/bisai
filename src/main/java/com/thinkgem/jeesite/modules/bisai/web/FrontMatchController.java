@@ -318,6 +318,7 @@ public class FrontMatchController extends BaseController {
 				PeopleNote peopleNote = new PeopleNote();
 				MatchTypeNote note = new MatchTypeNote();
 				note.setId(typeid);
+				peopleNote.setId(jsonObj.getString("id"));
 				peopleNote.setNote(note);
 				peopleNote.setState("0");
 				peopleNote.setName(jsonObj.getString("name"));

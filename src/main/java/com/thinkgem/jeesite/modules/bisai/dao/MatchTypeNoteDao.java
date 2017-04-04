@@ -14,6 +14,7 @@ import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
  */
 @MyBatisDao
 public interface MatchTypeNoteDao extends CrudDao<MatchTypeNote> {
+	void updateCount(MatchTypeNote typeNode);
 	  /**   
 	 * @Title: deleteByMatch   
 	 * @Description: 根据match删除对应的比赛类型记录

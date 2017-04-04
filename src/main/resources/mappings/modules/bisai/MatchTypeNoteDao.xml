@@ -120,4 +120,7 @@
 	<select id="getMatchPeopleCount" resultType="int">
 		select sum(counts) from bisai_match_type_note where matchid=#{matchid}
 	</select>
+	<update id="updateCount">
+		update bisai_match_type_note a set counts = (select count(1) from bisai_people_note b where a.id=b.noteid and state!=1 and b.noteid=#{id}) where a.id=#{id}
+	</update>
 </mapper>

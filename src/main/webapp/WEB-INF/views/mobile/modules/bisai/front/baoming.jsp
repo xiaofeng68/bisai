@@ -41,7 +41,9 @@
         		var orgname = $("#orgname" + typeid).val();
                 var name = $("#name" + typeid+"_"+i).val();
                 var phone = $("#phone" + typeid+"_"+i).val();
-                arr.push({orgname:orgname,name:name,phone:phone,typeid:typeid});
+                var id = $("#id" + typeid+"_"+i).val();
+                if(name)
+                arr.push({id:id,orgname:orgname,name:name,phone:phone,typeid:typeid});
         	}
             
             //var num = parseInt($("#num" + typeid).html());
@@ -70,10 +72,12 @@
             }, 'JSON');
         }
         function addOrgNote(div) {
+        	var id = $("#id").val();
             var name = $("#name").val();
             var user = $("#user").val();
             var phone = $("#phone").val();
             $.post('${ctx }${frontPath}/match/saveOrgNote', {
+            	id:id,
                 name: name,
                 user: user,
                 phone: phone,
@@ -98,6 +102,20 @@
                     alert(result.msg);
                 }
             }, 'JSON');
+        }
+        function updateOrg(id,name,phone,user){
+        	$("#id").val(id);
+        	$("#name").val(name);
+        	$("#phone").val(phone);
+        	$("#user").val(user);
+        	changeTab('dnandannum','1');
+        }
+        function updatePeopleNote(id,name,phone,orgname,typeid){
+        	$("#orgname"+typeid).val(orgname);
+        	$("#name"+typeid+"_"+1).val(name);
+        	$("#phone"+typeid+"_"+1).val(phone);
+        	$("#id"+typeid+"_"+1).val(id);
+        	changeTab('dnandannum'+typeid,'1')
         }
     </script>
 </head>
@@ -133,6 +151,7 @@
                         </div>
                         <div class="tree-second fr" id="dnandannumDiv1" style="display:none;">
                             <div class="label1 js-check clearfix">
+                            	<input type="hidden" id="id"/>
                                 <input type="text" id="name" placeholder="参赛单位名称">
                             </div>
                             <div class="label1 js-check clearfix">
@@ -167,6 +186,8 @@
                                             <c:otherwise>
                                                 <span class="list_butt fr"
                                                       onclick="updateOrgState(${org.id },1)">删除</span>
+												<span class="list_butt fr"
+                                                      onclick="updateOrg(${org.id },'${org.name }','${org.phone }','${org.user }')">修改</span>                                                      
                                             </c:otherwise>
                                         </c:choose>
                                     </div>
@@ -204,6 +225,7 @@
                                 </div>
                                 <c:set var="num" value="${typeNode.num==0?1:typeNode.num }"></c:set>
                                 <c:forEach var="peo" begin="1" end="${num }">
+                                <input type="hidden" id="id${typeNode.id}_${peo}"/>
                                 <div class="label1 js-check clearfix">
                                     <input type="text" id="name${typeNode.id}_${peo}" placeholder="姓名${peo }">
                                 </div>
@@ -236,6 +258,8 @@
                                                 <c:otherwise>
                                                     <span class="list_butt fr"
                                                           onclick="updateState(${people.id },1)">踢人</span>
+                                                    <span class="list_butt fr"
+                                                      onclick="updatePeopleNote(${people.id },'${people.name }','${people.phone }',${people.orgname },${typeNode.id })">修改</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>

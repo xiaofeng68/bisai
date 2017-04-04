@@ -42,12 +42,7 @@ public class PeopleNoteService extends CrudService<PeopleNoteDao, PeopleNote> {
 		super.save(peopleNote);
 		//更新typeNode的数量
 		MatchTypeNote typeNode = matchTypeNoteDao.get(peopleNote.getNote().getId());
-		if("1".equals(peopleNote.getState())){
-		    typeNode.setCounts(typeNode.getCounts()-1);
-		}else{
-		    typeNode.setCounts(typeNode.getCounts()+1);
-		}
-		matchTypeNoteDao.update(typeNode);
+		matchTypeNoteDao.updateCount(typeNode);
 		MatchTypeNoteUtils.clearCache(typeNode);
 		PeopleNoteUtils.clearCache(peopleNote);
 	}
