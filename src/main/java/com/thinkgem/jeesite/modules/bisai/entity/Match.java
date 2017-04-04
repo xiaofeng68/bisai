@@ -43,7 +43,7 @@ public class Match extends DataEntity<Match> {
 	private User user;
 	private String jiangpin;//奖金奖品
 	private String changci;//总场次
-	
+	private String searchName;
     public Match() {
 		super();
 	}
@@ -256,6 +256,14 @@ public class Match extends DataEntity<Match> {
 
 	public void setChangci(String changci) {
 		this.changci = changci;
+	}
+
+	public String getSearchName() {
+		return searchName;
+	}
+
+	public void setSearchName(String searchName) {
+		this.searchName = searchName;
 	}
 	
 }

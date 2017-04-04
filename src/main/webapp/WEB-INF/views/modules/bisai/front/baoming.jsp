@@ -115,8 +115,9 @@
         <p>
             <img src="${ctxStaticFront}/images/img35.png">
         </p>
-        <p class="name"><fmt:formatDate value="${match.starttime }" pattern="E"/>${match.name }打球</p>
-        <p class="add">${match.name }</p>
+        <p class="name">${match.name }</p>
+        <p class="add">${match.orgs }</p>
+        <p class="time">${match.address }${match.detailAddress }</p>
         <p class="time"><fmt:formatDate value="${match.starttime }" pattern="M月d日"/>-<fmt:formatDate
                 value="${match.endtime }" pattern="M月d日"/></p>
     </div>

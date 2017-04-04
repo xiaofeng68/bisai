@@ -149,14 +149,27 @@ public class FrontController extends BaseController {
     @RequestMapping(value = "match${urlSuffix}")
     public String match(HttpServletRequest request,HttpServletResponse response,Model model) {
         Account account = (Account) request.getSession().getAttribute(GlobalBuss.CURRENTACCOUNT);
+        Match match = new Match();
         if(account!=null){//我的赛事
-            Match match = new Match();
             match.setAccount(account);
             Page<Match> page = matchService.findPage(new Page<Match>(request, response), match); 
             model.addAttribute("mypage", page);
         }
-        Page<Match> page = matchService.findAllMatch(new Page<Match>(request, response)); 
+        Page<Match> page = matchService.findAllMatch(new Page<Match>(request, response),match); 
         model.addAttribute("page", page);
+        return "modules/bisai/front/match";
+    }
+    @RequestMapping(value = "matchSearch${urlSuffix}")
+    public String matchSearch(Match match,HttpServletRequest request,HttpServletResponse response,Model model) {
+        Account account = (Account) request.getSession().getAttribute(GlobalBuss.CURRENTACCOUNT);
+        if(account!=null){//我的赛事
+            match.setAccount(account);
+            Page<Match> page = matchService.findPage(new Page<Match>(request, response), match); 
+            model.addAttribute("mypage", page);
+        }
+        Page<Match> page = matchService.findAllMatch(new Page<Match>(request, response),match); 
+        model.addAttribute("page", page);
+        model.addAttribute("smatch",match);
         return "modules/bisai/front/match";
     }
     /**赛事申请*/

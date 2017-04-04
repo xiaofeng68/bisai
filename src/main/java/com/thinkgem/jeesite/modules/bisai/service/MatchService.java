@@ -54,10 +54,9 @@ public class MatchService extends CrudService<MatchDao, Match> {
 	public Page<Match> findPage(Page<Match> page, Match match) {
 		return super.findPage(page, match);
 	}
-	public Page<Match> findAllMatch(Page<Match> page){
-	    Match match = new Match();
+	public Page<Match> findAllMatch(Page<Match> page,Match match){
         match.setPage(page);
-        page.setList(dao.findAllMatch(match));
+        page.setList(dao.findAllList(match));
 	    return page;
 	}
 	@Transactional(readOnly = false)

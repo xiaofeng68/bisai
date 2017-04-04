@@ -59,6 +59,17 @@
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
+			<if test="searchName!=null and searchName!=''">
+				and (
+				a.name like concat('%',#{searchName},'%') 
+				or a.orgs like concat('%',#{searchName},'%') 
+				or a.contractor like concat('%',#{searchName},'%') 
+				or a.sponsors like concat('%',#{searchName},'%') 
+				or a.phone like concat('%',#{searchName},'%') 
+				or a.address like concat('%',#{searchName},'%') 
+				or a.detailAddress like concat('%',#{searchName},'%') 
+				)
+			</if>
 			<if test="orgs != null and orgs != ''">
 				AND a.orgs = #{orgs}
 			</if>
@@ -87,7 +98,17 @@
 		FROM bisai_match a
 		<include refid="matchJoins"/>
 		<where>
-			
+			<if test="searchName!=null and searchName!=''">
+				and (
+				a.name like concat('%',#{searchName},'%') 
+				or a.orgs like concat('%',#{searchName},'%') 
+				or a.contractor like concat('%',#{searchName},'%') 
+				or a.sponsors like concat('%',#{searchName},'%') 
+				or a.phone like concat('%',#{searchName},'%') 
+				or a.address like concat('%',#{searchName},'%') 
+				or a.detailAddress like concat('%',#{searchName},'%') 
+				)
+			</if>
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -200,20 +221,4 @@
 	<update id="updateMatchState">
 		update bisai_match set state=#{state} where id = #{id}
 	</update>
-	<select id="findAllMatch" resultType="Match">
-		SELECT 
-			<include refid="matchColumns"/>
-		FROM bisai_match a
-		<include refid="matchJoins"/>
-		<where>
-			and a.state>0
-		</where>
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-			</otherwise>
-		</choose>
-	</select>
 </mapper>

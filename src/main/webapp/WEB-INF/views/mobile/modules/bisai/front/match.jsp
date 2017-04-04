@@ -62,15 +62,16 @@
         </ul>
     </div>
     <div class="match_topll_thir">
-        <form>
+        <form action="${ctx }/${frontPath}matchSearch${urlSuffix}">
             <div>
-                <input class="inputl" type="text" placeholder="搜索">
+                <input class="inputl" type="text" name="searchName" placeholder="搜索" value="${smatch.searchName }">
                 <input class="submitll" type="submit" value="搜索"></div>
         </form>
     </div>
     <div class="match_fourll">
         <ul>
             <c:forEach items="${page.list}" var="match">
+            <c:if test="${match.state>1 }">
                 <li>
                     <a href="${ctx }/${frontPath}activity${urlSuffix}?id=${match.id}">
                         <div class="clearfix">
@@ -102,6 +103,7 @@
                         </div>
                     </a>
                 </li>
+                </c:if>
             </c:forEach>
         </ul>
     </div>

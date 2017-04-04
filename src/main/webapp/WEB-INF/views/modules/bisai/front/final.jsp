@@ -3,6 +3,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="telephone=no" name="format-detection">
 	<title>${siteTitle }</title>
 	<meta name="keywords" content="${siteKeywords }">
 	<meta name="description" content="${siteDescription }">
@@ -11,35 +16,58 @@
 	<script type="text/javascript" src="${ctxStaticFront }/js/jquery.js"></script>
 	<script type="text/javascript" src="${ctxStaticFront }/js/divselect.js"></script>
 	<script type="text/javascript">
+	var isCheck = false;
+	var lunNum = 0;
 	$(function(){
-		
+		$(".div_select").each(function(){
+			var selid = $(this).attr('div-select-val');
+			var divselectid = "#divselect" + selid;
+			var inputselectid = "#inputselect" + selid;
+			$.divselect(divselectid,inputselectid);
+		});
 	});
 	function initSelectList(e){
 		var id = $(e).val();
 		if(id){
-			$.post('${ctx }${frontPath}/match/initSelectList', {
+			$.post('${ctx }${frontPath}/match/initZuSelectList', {
 				id : id,
 			}, function(result) {
 				if (result.success) {
-					var lunList = result.obj.lunList;
+					var lunList = result.obj;
+					lunNum = lunList.length;
 					var optionstring = "";  
 		            for (var j = 0; j < lunList.length; j++) {  
 		                optionstring += "<option value=\"" + lunList[j] + "\" >第" + lunList[j] + "轮</option>";  
 		            }  
-		            $("#groupnumSelect").html("<option value=''>请选择...</option> "+optionstring);  
-		            var groupList = result.obj.groupList;
-					optionstring = "";  
-		            for (var j = 0; j < groupList.length; j++) {  
-		                optionstring += "<option value=\"" + groupList[j] + "\" >小组" + groupList[j] + "</option>";  
-		            }  
-		            $("#xiaozuSelect").html("<option value=''>请选择...</option> "+optionstring);  
+		            $("#groupnumSelect").html("<option value=''>请选择</option> "+optionstring);
 				}else{
 					alert(result.msg);
 				}
 			}, 'JSON');
 		}else{
-            $("#groupnumSelect").html("<option value='请选择'>请选择</option> ");
-            $("#xiaozuSelect").html("<option value='请选择'>请选择</option> ");
+	        $("#groupnumSelect").html("<option value='请选择'>请选择</option> ");
+		}
+	}
+	function changeXiaozu(e){
+		var lun = $(e).val();
+		if(lun){
+			$.post('${ctx }${frontPath}/match/initSelectList', {
+				id : $("#typeSelect").val(),
+				saizhi:lun
+			}, function(result) {
+				if (result.success) {
+					var zuList = result.obj;
+					var optionstring = "";  
+		            for (var j = 0; j < zuList.length; j++) {  
+		                optionstring += "<option value=\"" + zuList[j] + "\" >第" + zuList[j] + "组</option>";  
+		            }  
+		            $("#xiaozuSelect").html("<option value=''>请选择</option> "+optionstring);
+				}else{
+					 $("#xiaozuSelect").html("<option value='请选择'>请选择</option> ");
+				}
+			}, 'JSON');
+		}else{
+			$("#xiaozuSelect").html("<option value='请选择'>请选择</option> ");
 		}
 	}
 	function refrashTable(){
@@ -54,49 +82,56 @@
 			}, function(result) {
 				if (result.success) {
 					 $("#scoreTable").html(result.obj.tableHtml);
+					 if(result.obj.notovered){
+						 $("#saveButton").show();
+					 }else if(lunNum==lun){
+						 $("#nextButton").show();
+					 }
 				}else{
 					alert(result.msg);
 				}
 			}, 'JSON');
 		}
+		if(lun){
+			$("#lun").val(lun);
+		}
 	}
 </script>
 </head>
 <body>
+	<bisai:message content="${message}"/>
 	<header class="grouping_header clearfix">
 		<span class="fl" style="line-height: 120%;">
 			<a href="${ctx }/${frontPath}match${urlSuffix}">
-				<img src="${ctxStaticFront }/images/r-arrow.png">
+				<img src="${ctxStaticFront}/images/r-arrow.png">
 			</a>
 		</span>
 		<span>${match.name }</span>
 	</header>
 	<section>
-		<form>
-			<div class="sheet_table">
-				<div class="clearfix sheet_table_title" style="text-align: center;">
-					<select name="typeSelect" id="typeSelect" onchange="initSelectList(this)" class="select_font_size_1">
-						<option>请选择</option>
-						<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
-							<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
-								<c:if test="${typeNode.type==dic.value }">
-									<option value="${typeNode.id }">${dic.label }</option>
-								</c:if>
-							</c:forEach>
+		<div class="sheet_table">
+			<div class="clearfix sheet_table_title" style="text-align: center;">
+				<select name="typeSelect" id="typeSelect" onchange="initSelectList(this)" class="select_font_size_2">
+					<option>请选择</option>
+					<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
+						<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
+							<c:if test="${typeNode.type==dic.value }">
+								<option value="${typeNode.id }">${dic.label }</option>
+							</c:if>
 						</c:forEach>
-					</select>
-					<!-- 根据前面选择的类型进行查询 -->
-					<select name="groupnumSelect" id="groupnumSelect" onchange="refrashTable()" class="select_font_size_1">
-						
-					</select>
-					<select name="xiaozuSelect" id="xiaozuSelect" onchange="refrashTable()" class="select_font_size_1">
-						
-					</select>
-				</div>
-				<div id="scoreTable">
-				</div>
+					</c:forEach>
+				</select>
+				<!-- 根据前面选择的类型进行查询 -->
+				<select name="groupnumSelect" id="groupnumSelect" onchange="changeXiaozu(this)" class="select_font_size_2">
+					<option value="">请选择</option>
+				</select>
+				<select name="xiaozuSelect" id="xiaozuSelect" onchange="refrashTable()" class="select_font_size_2">
+					<option value="">请选择</option>
+				</select>
 			</div>
-		</form>
+			<div id="scoreTable">
+			</div>
+		</div>
 	</section>
 </body>
 </html>

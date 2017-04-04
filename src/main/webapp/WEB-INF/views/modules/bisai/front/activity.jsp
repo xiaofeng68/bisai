@@ -24,7 +24,14 @@
 				<img src="${ctxStaticFront }/images/r-arrow.png">
 			</a>
 		</span>
-    <span>申请举办比赛</span>
+    <span><c:choose>
+    <c:when test="${match.state==1 }">
+   比赛报名
+    </c:when>
+    <c:otherwise>
+    申请举办比赛
+    </c:otherwise>
+    </c:choose></span>
 </header>
 <section>
     <div class="apply_form">
