@@ -157,12 +157,22 @@
                                     </c:if>
                                 </c:when>
                                 <c:when test="${match.state==2 }">
-                                    <div style="height:2.5rem;">
-                                    <div class="button_update fl"><a
-                                            href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=1&stype=0&id=${match.id}">查看成绩</a></div>
-                                    <div class="button_shut fl"><a
-                                            href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=1&stype=1&id=${match.id}">成绩录入</a></div>
-                                    </div>
+                                	<c:if test="${empty match.changci or match.changci=='0'}">
+                                        <div style="height:2.5rem;">
+	                                    <div class="button_update fl"><a
+	                                            href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=1&stype=0&id=${match.id}">查看成绩</a></div>
+	                                    <div class="button_shut fl"><a
+	                                            href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=1&stype=1&id=${match.id}">成绩录入</a></div>
+	                                    </div>
+                                    </c:if>
+                                    <c:if test="${not empty match.changci and match.changci!='0'}">
+                                         <div style="height:2.5rem;">
+		                                    <div class="button_update fl"><a
+		                                            href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=2&stype=0&id=${match.id}">查看成绩</a></div>
+		                                    <div class="button_shut fl"><a
+		                                            href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=2&stype=1&id=${match.id}">成绩录入</a></div>
+	                                    </div>
+                                    </c:if>
                                 </c:when>
                                 <c:when test="${match.state==-1 }">
                                     <div class="button"><a
