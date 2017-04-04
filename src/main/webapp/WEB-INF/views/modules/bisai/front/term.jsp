@@ -54,7 +54,16 @@ $(function(){
 					<c:if test="${typeNode.type==dic.value }">
 					<tr>
 						<td>${dic.label }</td>
-						<td>${typeNode.counts }</td>
+						<td>
+						<c:choose>
+							<c:when test="${typeNode.btype==2 }">
+								<fmt:formatNumber type="number" value="${typeNode.counts / typeNode.num}" maxFractionDigits="0"/> 
+							</c:when>
+							<c:otherwise>
+							${typeNode.counts }	
+							</c:otherwise>
+						</c:choose>
+						</td>
 						<td>
 							<div id="divselect1${typeNode.type }" class="div_select" div-select-val="1${typeNode.type }">
 								<cite>1</cite>
