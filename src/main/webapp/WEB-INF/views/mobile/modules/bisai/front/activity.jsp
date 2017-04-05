@@ -12,9 +12,113 @@
     <script type="text/javascript" src="${ctxStaticFront }/js/yf.js"></script>
     <script src="${ctxStatic}/jquery/jquery-1.8.3.min.js" type="text/javascript"></script>
     <script src="${ctxStatic}/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script type="text/javascript" src="${ctxStaticFront }/js/divselect.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-        });
+	var isCheck = false;
+	var lunNum = 0;
+	$(function(){
+		$(".div_select").each(function(){
+			var selid = $(this).attr('div-select-val');
+			var divselectid = "#divselect" + selid;
+			var inputselectid = "#inputselect" + selid;
+			$.divselect(divselectid,inputselectid);
+		});
+		$(".gains_table li").on("click", function() {
+			$(this).addClass("active").siblings().removeClass("active");
+			$(".matchdiv").hide().eq($(this).index()).show();
+		});
+	});
+	function initSelectList(e){
+		var id = $(e).val();
+		if(id){
+			$.post('${ctx }${frontPath}/match/initZuSelectList', {
+				id : id,
+			}, function(result) {
+				if (result.success) {
+					var lunList = result.obj;
+					lunNum = lunList.length;
+					var optionstring = "";  
+		            for (var j = 0; j < lunList.length; j++) {  
+		                optionstring += "<option value=\"" + lunList[j] + "\" >第" + lunList[j] + "轮</option>";  
+		            }  
+		            $("#groupnumSelect").html("<option value=''>请选择</option> "+optionstring);
+				}else{
+					alert(result.msg);
+				}
+			}, 'JSON');
+		}else{
+	        $("#groupnumSelect").html("<option value='请选择'>请选择</option> ");
+		}
+	}
+	function changeXiaozu(e){
+		var lun = $(e).val();
+		if(lun){
+			$.post('${ctx }${frontPath}/match/initSelectList', {
+				id : $("#typeSelect").val(),
+				saizhi:lun
+			}, function(result) {
+				if (result.success) {
+					var zuList = result.obj;
+					var optionstring = "";  
+		            for (var j = 0; j < zuList.length; j++) {  
+		                optionstring += "<option value=\"" + zuList[j] + "\" >第" + zuList[j] + "组</option>";  
+		            }  
+		            $("#xiaozuSelect").html("<option value=''>请选择</option> "+optionstring);
+				}else{
+					 $("#xiaozuSelect").html("<option value='请选择'>请选择</option> ");
+				}
+			}, 'JSON');
+		}else{
+			$("#xiaozuSelect").html("<option value='请选择'>请选择</option> ");
+		}
+	}
+	function refrashTable(){
+		var type = $("#typeSelect").val();
+		var lun = $("#groupnumSelect").val();
+		var xiaozu = $("#xiaozuSelect").val();
+		if(type && lun && xiaozu){
+			$.post('${ctx }${frontPath}/match/initScoreTable', {
+				id : type,
+				lun:lun,
+				groupnum:xiaozu
+			}, function(result) {
+				if (result.success) {
+					 $("#scoreTable").html(result.obj.tableHtml);
+					 if(result.obj.notovered){
+						 $("#saveButton").show();
+					 }else if(lunNum==lun){
+						 $("#nextButton").show();
+					 }
+					 $("#scoreTable select").attr("disabled","disabled");
+				}else{
+					alert(result.msg);
+				}
+			}, 'JSON');
+		}
+		if(lun){
+			$("#lun").val(lun);
+		}
+	}
+	function bisai_change(val) {
+		var elm_a=document.getElementById("radio_button_a");
+        var elm_b=document.getElementById("radio_button_b");
+        if (val == 1) {
+            document.getElementById("danxiang").style.display = 'inherit';
+            document.getElementById("tuanti").style.display = 'none';
+            elm_a.style.backgroundColor="#44bb95";
+            elm_b.style.backgroundColor="";
+            elm_a.style.color="#fff";
+            elm_b.style.color="#b4b3b3";
+        }
+        if (val == 2) {
+            document.getElementById("danxiang").style.display = 'none';
+            document.getElementById("tuanti").style.display = 'inherit';
+            elm_a.style.backgroundColor="";
+            elm_b.style.backgroundColor="#44bb95";
+            elm_a.style.color="#b4b3b3";
+            elm_b.style.color="#fff";
+        }
+    }
     </script>
 </head>
 <body>
@@ -24,23 +128,23 @@
 				<img src="${ctxStaticFront }/images/r-arrow.png">
 			</a>
 		</span>
-    <span><c:choose>
-    <c:when test="${match.state==1 }">
-   比赛报名
-    </c:when>
-    <c:otherwise>
-    申请举办比赛
-    </c:otherwise>
-    </c:choose></span>
+    <span>${match.name }</span>
 </header>
+<div class="gains_table">
+<ul style="float: left;font-size: 13px;color: #aaaaaa;background: #fff;line-height: 1.5rem;width: 100%;text-align: center;">
+	<li class="active">赛事信息</li>
+	<li>人员名单</li>
+	<li>分组及成绩</li>
+</ul>
+</div>
+<br/>
 <section>
-    <div class="apply_form">
+    <div class="apply_form matchdiv">
             <input type="hidden" name="id" value="${match.id }"/>
             <ul>
                 <li>
                     <span class="namell">赛事名称</span>
-                    <input class="textll" type="text" name="name" id="name" value="${match.name }"
-                           placeholder="请输入赛事名称">
+                    <span class="textll" >${match.name }</span>
                 </li>
                 <li class="clearfix">
                     <div class="apply_border orgsdic">
@@ -79,7 +183,7 @@
                         <div class="substance fl" style="width:80%;">
                             <div style="height: 40px;font-size: 0.7rem;color: #b4b3b3;">
                                 <input type="radio" name="btype" value="1" style="-webkit-appearance: button;"
-                                       onclick="bisai_change(1)" checked="checked" id="dxcRadio"><label for="dxcRadio" id="radio_button_a" class="radio_button" style="background-color:#44bb95;color:#fff;">单项赛</label>
+                                       onclick="bisai_change(1)" id="dxcRadio"><label for="dxcRadio" id="radio_button_a" class="radio_button" style="background-color:#44bb95;color:#fff;">单项赛</label>
                                 <input type="radio" name="btype" value="2"
                                        style="-webkit-appearance: button;margin-left: 90px;" onclick="bisai_change(2)"
                                        id="tdcRadio"><label for="tdcRadio" id="radio_button_b" class="radio_button">团体赛</label>
@@ -96,23 +200,18 @@
                                         </c:forEach>
                                         <c:choose>
                                             <c:when test='${hasType }'>
-                                                <em class="checked fl typecheck" style="margin-top: -0.4rem;"></em>
+                                                <span class="fl">${type.label }</span>
                                             </c:when>
-                                            <c:otherwise>
-                                                <em class="unchecked fl typecheck" style="margin-top:-0.4rem;"></em>
-                                            </c:otherwise>
                                         </c:choose>
-                                        <span class="fl">${type.label }</span>
                                     </div>
                                 </c:forEach>
                             </div>
                             <div id="tuanti" style="font-size: 0.7rem;color: #b4b3b3;display: none;margin-top: 1rem;">
                                 <div class="label js-check clearfix">比赛总场次：
-                                    <select class="select_font_size_3" name="changci" id="changci">
+                                    <select class="select_font_size_3" name="changci" id="changci" disabled="disabled">
                                         <option value="0">=请选择=</option>
                                         <c:forEach var="dic" items="${fns:getDictList('MATCH_CHANGCI')}">
-                                            <option value="${dic.value}"
-                                                    <c:if test="${match.changci==dic.value }">selected="selected"</c:if>  >${dic.label }</option>
+                                            <option value="${dic.value}" <c:if test="${match.changci==dic.value }">selected="selected"</c:if>  >${dic.label }</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -128,25 +227,17 @@
                                         </c:forEach>
                                         <c:choose>
                                             <c:when test='${hasType }'>
-                                                <em class="checked fl ttypecheck" style="margin-top:-0.4rem;"></em>
+                                                <span class="fl">${type.label }</span>
+		                                        <span class="fl" style="margin-left: 60px;margin-top: -0.5rem;">
+													<select id="select_option_${type}" class="select_font_size_3" disabled="disabled">
+														<option value="0">=请选择=</option>
+				                                        <c:forEach var="dic" items="${fns:getDictList('MATCH_CHANGCI')}">
+				                                        <option value="${dic.value}" <c:if test="${match.changci==dic.value and hasType}">selected="selected"</c:if>  >${dic.label }</option>
+				                                        </c:forEach>
+													</select>
+												</span><span class="fl" style="margin-left: 10px;">场</span>
                                             </c:when>
-                                            <c:otherwise>
-                                                <em class="unchecked fl ttypecheck" style="margin-top:-0.4rem;"></em>
-                                            </c:otherwise>
                                         </c:choose>
-                                        <span class="fl">${type.label }</span>
-                                        <span class="fl" style="margin-left: 60px;margin-top: -0.5rem;">
-											<%--<input type="text" value="${cc }" style="font-size:0.7rem;width: 100px;border-style:solid;border-width: 1px;height: 1rem;">--%>
-											<select id="select_option_${type}" class="select_font_size_3">
-											</select>
-												<script>
-													var op_str = "<option value='0'>=请选择=</option>";
-                                                    for (var i = 1; i < 10; i++) {
-                                                        op_str += "<option value='" + i + "'>" + i + "</option>";
-                                                    }
-                                                    $("#select_option_${type}").html(op_str);
-												</script>
-										</span><span class="fl" style="margin-left: 10px;">场</span>
                                     </div>
                                 </c:forEach>
                             </div>
@@ -157,17 +248,17 @@
                     <span class="namell">报名时间</span>
                     <fmt:formatDate value="${match.regstarttime }" var="regstarttime" pattern="yyyy-MM-dd"/>
                     <input class="textll" type="text" name="regstarttime" value="${regstarttime }" id="regstarttime"
-                           placeholder="报名时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+                           placeholder="报名时间" >
                 </li>
                 <li>
                     <span class="namell">比赛时间</span>
                     <fmt:formatDate value="${match.starttime }" var="starttime" pattern="yyyy-MM-dd"/>
                     <input class="apply_input1" name="starttime" value="${starttime }" id="starttime" type="text"
-                           placeholder="开始时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+                           placeholder="开始时间" >
                     <span class="apply_text">至</span>
                     <fmt:formatDate value="${match.endtime }" var="endtime" pattern="yyyy-MM-dd"/>
                     <input class="apply_input1" name="endtime" value="${endtime }" id="endtime" type="text"
-                           placeholder="结束时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+                           placeholder="结束时间" >
                 </li>
                 <li class="clearfix">
                     <span class="namell fl v-m">比赛地点</span>
@@ -178,32 +269,84 @@
                 </li>
                 <li>
                     <span class="namell">详细地址</span>
-                    <input class="textll" type="text" name="detailAddress" value="${match.detailAddress }"
-                           placeholder="XX街道">
+                    <span class="textll">${match.detailAddress }</span>
                 </li>
                 <li>
                     <span class="namell">联系人</span>
-                    <input class="textll" type="text" name="contacts" value="${match.contacts }" id="contacts"
-                           placeholder="请输入联系人姓名">
+                    <span class="textll">${match.contacts }</span>
                 </li>
                 <li>
                     <span class="namell">联系电话</span>
-                    <input class="textll" type="text" name="phone" value="${match.phone }" id="phone"
-                           placeholder="请输入联系号码">
+                    <span class="textll">${match.phone }</span>
                 </li>
                 <li style="margin-top:0.3rem;">
                     <span class="namell v-t">比赛简介</span>
-                    <textarea name="des" placeholder="请输入比赛简介">${match.des }</textarea>
+                    <textarea name="des" placeholder="请输入比赛简介" readonly="readonly">${match.des }</textarea>
                 </li>
                 <li style="margin-top:0.3rem;">
                     <span class="namell v-t">奖金奖品</span>
-                    <textarea name="jiangpin" placeholder="请输入奖金奖品">${match.jiangpin }</textarea>
+                    <textarea name="jiangpin" placeholder="请输入奖金奖品" readonly="readonly">${match.jiangpin }</textarea>
                 </li>
             </ul>
-            <div class="apply_submit">
-                <input type="submit" value="返回" onclick="history.go(-1)">
-            </div>
     </div>
+    <div class="sheet_table matchdiv" style="display:none;">
+    	<span class="li_left f14">比赛类型</span>
+        <c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
+            <div class="li_right2 f13 clearfix">
+                <div class="clearfix li_right1" style="width:100%;margin-bottom:0.4rem;">
+                    <div class="first-meun">
+                        <img class="first_img1 v-m" src="${ctxStaticFront}/images/img36-1.png">
+                        <span class="v-m">${fns:getDictLabel(typeNode.type, 'MatchTypeNote_type', '')}</span>
+                        <span>（已报名<label id="num${typeNode.id}">${typeNode.counts }</label>人）</span>
+                    </div>
+                    <div class="tree-second fr" id="dnandannum${typeNode.id}Div2" >
+                        <div class="tree_second_list">
+                            <c:forEach var="people" items="${fns:getPeopleByType(typeNode.id) }">
+                                <div class="second_list_con clearfix">
+								<span class="activity_po">
+									<c:choose>
+                                        <c:when test="${people.state==1 }">
+                                            <img id="img${people.id }"
+                                                 src="${ctxStaticFront}/images/img37-1.png">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img id="img${people.id }" src="${ctxStaticFront}/images/img37.png">
+                                        </c:otherwise>
+                                    </c:choose>
+								</span>
+                                <span class="list_name">${people.name }</span>
+                                <span class="list_butt1 fr">${people.org.name }</span>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+    <div class="sheet_table matchdiv" style="display:none;">
+		<div class="clearfix sheet_table_title" style="text-align: center;">
+			<select name="typeSelect" id="typeSelect" onchange="initSelectList(this)" class="select_font_size_2">
+				<option>请选择</option>
+				<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
+					<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
+						<c:if test="${typeNode.type==dic.value }">
+							<option value="${typeNode.id }">${dic.label }</option>
+						</c:if>
+					</c:forEach>
+				</c:forEach>
+			</select>
+			<!-- 根据前面选择的类型进行查询 -->
+			<select name="groupnumSelect" id="groupnumSelect" onchange="changeXiaozu(this)" class="select_font_size_2">
+				<option value="">请选择</option>
+			</select>
+			<select name="xiaozuSelect" id="xiaozuSelect" onchange="refrashTable()" class="select_font_size_2">
+				<option value="">请选择</option>
+			</select>
+		</div>
+		<div id="scoreTable">
+		</div>
+	</div>
 </section>
 </body>
 </html>

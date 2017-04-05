@@ -202,31 +202,36 @@ public class FrontController extends BaseController {
     public String activity(String id,HttpServletRequest request,Model model) {
         Match match = matchService.get(id);
         model.addAttribute("match", match);
+        model.addAttribute("isall",request.getParameter("isall"));
         //根据状态进行跳转页面
         String state = match.getState();
         if(StringUtils.isEmpty(state)) throw new RuntimeException("状态码错误，请联系管理员");
-        if("0".equals(state)){
-            List<String> orgs = Arrays.asList(match.getOrgs().split(","));
-            model.addAttribute("orgs", orgs);
-            List<String> contractors = Arrays.asList(match.getContractor().split(","));
-            model.addAttribute("contractors", contractors);
-            List<String> sponsors = Arrays.asList(match.getSponsors().split(","));
-            model.addAttribute("sponsors", sponsors);
-            return "modules/bisai/front/apply";
-        }else if("1".equals(state)){
-            return "modules/bisai/front/activity";
-        }else if("2".equals(state)){//查看成绩
-        	//获取大类
-        	MatchTypeNote matchTypeNode = new MatchTypeNote();
-        	matchTypeNode.setMatch(match);
-        	List<MatchTypeNote> typeList = matchTypeNoteService.findList(matchTypeNode);
-    		model.addAttribute("type", typeList.get(0).getBtype());
-    		model.addAttribute("stype", 0);
-			return "modules/bisai/front/final";
-        }else if("-1".equals(state)){
-        	return "modules/bisai/front/apply";
-        }else{//查看排名
-        	return "modules/bisai/front/ranking";
+        if("1".equals(request.getParameter("isall"))){
+        	return "modules/bisai/front/activity";
+        }else{
+	        if("0".equals(state)){
+	            List<String> orgs = Arrays.asList(match.getOrgs().split(","));
+	            model.addAttribute("orgs", orgs);
+	            List<String> contractors = Arrays.asList(match.getContractor().split(","));
+	            model.addAttribute("contractors", contractors);
+	            List<String> sponsors = Arrays.asList(match.getSponsors().split(","));
+	            model.addAttribute("sponsors", sponsors);
+	            return "modules/bisai/front/apply";
+	        }else if("1".equals(state)){
+	            return "modules/bisai/front/activity2";
+	        }else if("2".equals(state)){//查看成绩
+	        	//获取大类
+	        	MatchTypeNote matchTypeNode = new MatchTypeNote();
+	        	matchTypeNode.setMatch(match);
+	        	List<MatchTypeNote> typeList = matchTypeNoteService.findList(matchTypeNode);
+	    		model.addAttribute("type", typeList.get(0).getBtype());
+	    		model.addAttribute("stype", 0);
+				return "modules/bisai/front/final";
+	        }else if("-1".equals(state)){
+	        	return "modules/bisai/front/apply";
+	        }else{//查看排名
+	        	return "modules/bisai/front/ranking";
+	        }
         }
     }
     

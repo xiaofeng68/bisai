@@ -20,6 +20,7 @@ public class PeopleNote extends DataEntity<PeopleNote> {
 	private String phone;		// 手机号
 	private String orgname;		// 单位
 	private String state;		// 状态
+	private BaomingOrg org;
 	private List<PeopleNote> cList = new ArrayList<PeopleNote>();
 	
 	public PeopleNote() {
@@ -76,4 +77,12 @@ public class PeopleNote extends DataEntity<PeopleNote> {
     public void add(PeopleNote note){
     	this.cList.add(note);
     }
+
+	public BaomingOrg getOrg() {
+		return org;
+	}
+
+	public void setOrg(BaomingOrg org) {
+		this.org = org;
+	}
 }

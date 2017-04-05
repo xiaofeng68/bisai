@@ -71,9 +71,9 @@
     <div class="match_fourll">
         <ul>
             <c:forEach items="${page.list}" var="match">
-            <c:if test="${match.state>1 }">
+            <c:if test="${match.state>0 }">
                 <li>
-                    <a href="${ctx }/${frontPath}activity${urlSuffix}?id=${match.id}">
+                    <a href="${ctx }/${frontPath}activity${urlSuffix}?id=${match.id}&isall=1">
                         <div class="clearfix">
                             <div class="fl clearfix suggestll">
                                 <c:choose>
