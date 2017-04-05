@@ -87,6 +87,7 @@
 					 }else if(lunNum==lun){
 						 $("#nextButton").show();
 					 }
+					 $("#scoreTable select").attr("disabled","disabled");
 				}else{
 					alert(result.msg);
 				}

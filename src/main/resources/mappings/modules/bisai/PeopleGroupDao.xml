@@ -150,7 +150,7 @@
     	select count(1) from bisai_people_group where matchid=#{matchid} and score1 is null
     </select>
     <select id="getMatchGroupnumList" resultType="java.lang.Integer">
-    	select DISTINCT groupnum from bisai_people_group where matchid = matchid and lun = (select max(lun) from bisai_people_group where matchid=#{matchid})
+    	select DISTINCT groupnum from bisai_people_group where matchid = #{matchid} and lun = (select max(lun) from bisai_people_group where matchid=#{matchid})
     </select>
     <select id="getGroupScoreSort" resultType="PeopleGroup">
     	select id,matchid,btype,type,groupnum,chang,p1 as "peopleNote.id",lun,sum(score1) score1 from bisai_people_group
