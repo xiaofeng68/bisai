@@ -155,7 +155,7 @@
                     	<span class="namell">主办者</span>
                         <c:if test="${not empty match.orgs }">
                             <c:forEach items='${fn:split(match.orgs,",")}' var="org">
-                                <span class="apply_borderll"><span>${org }</span><em></em></span>
+                                <span class="apply_borderll"><span>${org }</span></span>
                             </c:forEach>
                         </c:if>
                     </div>
@@ -165,7 +165,7 @@
                     	<span class="namell">承办者</span>
                         <c:if test="${not empty match.contractor }">
                             <c:forEach items='${fn:split(match.contractor,",")}' var="contractor">
-                                <span class="apply_borderll"><span>${contractor }</span><em></em></span>
+                                <span class="apply_borderll"><span>${contractor }</span></span>
                             </c:forEach>
                         </c:if>
                     </div>
@@ -175,7 +175,7 @@
                     	<span class="namell">赞助商</span>
                         <c:if test="${not empty match.sponsors }">
                             <c:forEach items='${fn:split(match.sponsors,",")}' var="sponsors">
-                                <span class="apply_borderll"><span>${sponsors }</span><em></em></span>
+                                <span class="apply_borderll"><span>${sponsors }</span></span>
                             </c:forEach>
                         </c:if>
                     </div>
@@ -350,6 +350,34 @@
 		</div>
 		<div id="scoreTable">
 		</div>
+		<section>
+		<span>赛事排名</span>
+		<div class="raning_list">
+			<ul>
+				<c:forEach var="type" items="${fns:getMatchTypes(match.id) }">
+					<c:forEach var="result" items="${fns:getPeopleSort(match.id,type.btype,type.type) }" end="2" varStatus="num">
+						<li class="clearfix one">
+						<span class="fl left">
+							<span class="name">第${util:numToUpper(num.index+1) }名</span>
+							<c:choose>
+								<c:when test="${type.btype==2  }">
+									<span>${result.people.orgname }</span>
+								</c:when>
+								<c:otherwise>
+									<span>${result.people.name }</span>
+								</c:otherwise>
+							</c:choose>
+						</span>
+						<span class="fl content">
+							<img src="${ctxStaticFront}/images/result${num.index+1 }.png">
+						</span>
+						<span class="fr right">${result.jushu }局${result.shengju }胜</span>
+					</li>
+					</c:forEach>
+				</c:forEach>
+			</ul>
+		</div>
+		</section>
 	</div>
 </section>
 </body>
