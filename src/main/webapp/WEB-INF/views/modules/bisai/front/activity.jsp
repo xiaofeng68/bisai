@@ -27,6 +27,10 @@
 			$(this).addClass("active").siblings().removeClass("active");
 			$(".matchdiv").hide().eq($(this).index()).show();
 		});
+		var changci = parseInt('${match.changci}');
+		if(changci){
+			bisai_change(2);
+		}
 	});
 	function initSelectList(e){
 		var id = $(e).val();
