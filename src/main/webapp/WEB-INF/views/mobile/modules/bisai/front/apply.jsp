@@ -114,14 +114,19 @@
             $("#type").val(typeStr + ";" + ttypeStr);
             
             var regstart = new Date($('#regstarttime').val().replace(/-/g,'/'));
+            var regend = new Date($('#regendtime').val().replace(/-/g,'/'));
+            if(regstart>regend){
+        		alert("报名开始时间必须早于结束时间！");
+        		return false;
+        	}
         	var start = new Date($('#starttime').val().replace(/-/g,'/'));
         	var end = new Date($('#endtime').val().replace(/-/g,'/'));
-        	if(regstart>start){
-        		alert("报名时间必须早于比赛时间！");
+        	if(regend>start){
+        		alert("比赛时间晚于报名时间！");
         		return false;
         	}
         	if(start>end){
-        		alert("比赛开始时间必须早于比赛结束时间！");
+        		alert("比赛开始时间必须早于结束时间！");
         		return false;
         	}
             
@@ -304,10 +309,14 @@
                     </div>
                 </li>
                 <li>
-                    <span class="namell">报名时间</span>
+					<span class="namell">报名时间</span>
                     <fmt:formatDate value="${match.regstarttime }" var="regstarttime" pattern="yyyy-MM-dd"/>
-                    <input class="textll" type="text" name="regstarttime" value="${regstarttime }" id="regstarttime"
-                           placeholder="报名时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+                    <input class="apply_input1" name="regstarttime" value="${regstarttime }" id="regstarttime" type="text"
+                           placeholder="开始时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+                    <span class="apply_text">至</span>
+                    <fmt:formatDate value="${match.regendtime }" var="regendtime" pattern="yyyy-MM-dd"/>
+                    <input class="apply_input1" name="regendtime" value="${regendtime }" id="regendtime" type="text"
+                           placeholder="结束时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">                           
                 </li>
                 <li>
                     <span class="namell">比赛时间</span>
