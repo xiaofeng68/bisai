@@ -20,7 +20,7 @@
 			<div class="warp_headll">
 				<img class="img11" src="${ctxStaticFront}/images/img11.png">
 				<p>
-					<span class="v-m">上次前年</span>
+					<span class="v-m">${CURRENTACCOUNT.phone }</span>
 					<img class="img12" src="${ctxStaticFront}/images/img12.png">
 				</p>
 			</div>
