@@ -251,18 +251,23 @@
                 <li>
                     <span class="namell">报名时间</span>
                     <fmt:formatDate value="${match.regstarttime }" var="regstarttime" pattern="yyyy-MM-dd"/>
-                    <input class="textll" type="text" name="regstarttime" value="${regstarttime }" id="regstarttime"
-                           placeholder="报名时间" >
+                    <input class="apply_input1" name="regstarttime" value="${regstarttime }" id="regstarttime" type="text"
+                           placeholder="开始时间" readonly="readonly" >
+                    <span class="apply_text">至</span>
+                    <fmt:formatDate value="${match.regendtime }" var="regendtime" pattern="yyyy-MM-dd"/>
+                    <input class="apply_input1" name="regendtime" value="${regendtime }" id="regendtime" type="text"
+                           placeholder="结束时间" readonly="readonly">     
+                           
                 </li>
                 <li>
                     <span class="namell">比赛时间</span>
                     <fmt:formatDate value="${match.starttime }" var="starttime" pattern="yyyy-MM-dd"/>
                     <input class="apply_input1" name="starttime" value="${starttime }" id="starttime" type="text"
-                           placeholder="开始时间" >
+                           placeholder="开始时间" readonly="readonly">
                     <span class="apply_text">至</span>
                     <fmt:formatDate value="${match.endtime }" var="endtime" pattern="yyyy-MM-dd"/>
                     <input class="apply_input1" name="endtime" value="${endtime }" id="endtime" type="text"
-                           placeholder="结束时间" >
+                           placeholder="结束时间" readonly="readonly">
                 </li>
                 <li class="clearfix">
                     <span class="namell fl v-m">比赛地点</span>
@@ -306,21 +311,16 @@
                     <div class="tree-second fr" id="dnandannum${typeNode.id}Div2" >
                         <div class="tree_second_list">
                             <c:forEach var="people" items="${fns:getPeopleByType(typeNode.id) }">
+                            <c:if test="${people.state!=1 }">
                                 <div class="second_list_con clearfix">
 								<span class="activity_po">
-									<c:choose>
-                                        <c:when test="${people.state==1 }">
-                                            <img id="img${people.id }"
-                                                 src="${ctxStaticFront}/images/img37-1.png">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <img id="img${people.id }" src="${ctxStaticFront}/images/img37.png">
-                                        </c:otherwise>
-                                    </c:choose>
+                                         <img id="img${people.id }"
+                                              src="${ctxStaticFront}/images/img37.png">
 								</span>
                                 <span class="list_name">${people.name }</span>
                                 <span class="list_butt1 fr">${people.org.name }</span>
                                 </div>
+                            </c:if>
                             </c:forEach>
                         </div>
                     </div>
@@ -329,29 +329,7 @@
         </c:forEach>
     </div>
     <div class="sheet_table matchdiv" style="display:none;">
-		<div class="clearfix sheet_table_title" style="text-align: center;">
-			<select name="typeSelect" id="typeSelect" onchange="initSelectList(this)" class="select_font_size_2">
-				<option>请选择</option>
-				<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
-					<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
-						<c:if test="${typeNode.type==dic.value }">
-							<option value="${typeNode.id }">${dic.label }</option>
-						</c:if>
-					</c:forEach>
-				</c:forEach>
-			</select>
-			<!-- 根据前面选择的类型进行查询 -->
-			<select name="groupnumSelect" id="groupnumSelect" onchange="changeXiaozu(this)" class="select_font_size_2">
-				<option value="">请选择</option>
-			</select>
-			<select name="xiaozuSelect" id="xiaozuSelect" onchange="refrashTable()" class="select_font_size_2">
-				<option value="">请选择</option>
-			</select>
-		</div>
-		<div id="scoreTable">
-		</div>
-		<section>
-		<span>赛事排名</span>
+    	<section>
 		<div class="raning_list">
 			<ul>
 				<c:forEach var="type" items="${fns:getMatchTypes(match.id) }">
@@ -378,6 +356,27 @@
 			</ul>
 		</div>
 		</section>
+		<div class="clearfix sheet_table_title" style="text-align: center;">
+			<select name="typeSelect" id="typeSelect" onchange="initSelectList(this)" class="select_font_size_2">
+				<option>请选择</option>
+				<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
+					<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
+						<c:if test="${typeNode.type==dic.value }">
+							<option value="${typeNode.id }">${dic.label }</option>
+						</c:if>
+					</c:forEach>
+				</c:forEach>
+			</select>
+			<!-- 根据前面选择的类型进行查询 -->
+			<select name="groupnumSelect" id="groupnumSelect" onchange="changeXiaozu(this)" class="select_font_size_2">
+				<option value="">请选择</option>
+			</select>
+			<select name="xiaozuSelect" id="xiaozuSelect" onchange="refrashTable()" class="select_font_size_2">
+				<option value="">请选择</option>
+			</select>
+		</div>
+		<div id="scoreTable">
+		</div>
 	</div>
 </section>
 </body>
