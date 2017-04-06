@@ -299,9 +299,9 @@
             </ul>
     </div>
     <div class="sheet_table matchdiv" style="display:none;">
-    	<span class="li_left f14">比赛类型</span>
+    	<span class="li_left r05">比赛类型</span>
         <c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
-            <div class="li_right2 f13 clearfix">
+            <div class="li_right2 r05 clearfix">
                 <div class="clearfix li_right1" style="width:100%;margin-bottom:0.4rem;">
                     <div class="first-meun">
                         <img class="first_img1 v-m" src="${ctxStaticFront}/images/img36-1.png">

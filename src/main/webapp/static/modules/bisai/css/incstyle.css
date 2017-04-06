@@ -119,13 +119,17 @@ a{-webkit-tap-highlight-color:rgba(255,0,0,0);outline:none;}
 	margin-top:0.3rem;
 }
 .f14{
-	font-size: 14px
+	font-size: 14px;
 }
 .f13{
-	font-size: 13px
+	font-size: 13px;
 }
-
-
-
-
-
+.f20{
+	font-size: 20px;
+}
+.r1{
+	font-size: 1rem;
+}
+.r05{
+	font-size: 0.5rem;
+}
