@@ -396,6 +396,7 @@ public class FrontMatchController extends BaseController {
 	public Json initScoreTable(MatchTypeNote matchTypeNote, String groupnum, String lun, HttpServletRequest request) {
 		Json json = new Json();
 		try {
+			boolean readOnly = matchTypeNote.isReadOnly();
 			matchTypeNote = matchTypeNoteService.get(matchTypeNote);
 			PeopleGroup peopleGroup = new PeopleGroup();
 			peopleGroup.setMatchid(matchTypeNote.getMatch().getId());
@@ -403,6 +404,7 @@ public class FrontMatchController extends BaseController {
 			peopleGroup.setType(matchTypeNote.getType());
 			peopleGroup.setLun(lun);
 			peopleGroup.setGroupnum(groupnum);
+			matchTypeNote.setReadOnly(readOnly);
 			Map<String, Object> data = peopleGroupService.initScoreTable(matchTypeNote, peopleGroup);
 			json.setObj(data);
 			json.setSuccess(true);

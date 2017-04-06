@@ -22,7 +22,6 @@ import com.thinkgem.jeesite.modules.bisai.dao.PeopleNoteDao;
 import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
 import com.thinkgem.jeesite.modules.bisai.entity.PeopleGroup;
 import com.thinkgem.jeesite.modules.bisai.entity.PeopleNote;
-import com.thinkgem.jeesite.modules.bisai.entity.MatchResult;
 /**
  * 分组Service
  * 
@@ -79,6 +78,7 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 		List<PeopleGroup> groupList = dao.findList(peopleGroup);
 		List<Map<PeopleNote, List<PeopleGroup>>> list = changeList2Table(groupList);
 		boolean notovered = false;
+		boolean readOnly = matchTypeNote.isReadOnly();
 		for (int i = 0, j = list.size(); i < j; i++) {
 			tableStr.append("<tr>");
 			tableStr.append("<td><img src='/static/modules/bisai/images/img31.png'></td>");
@@ -101,15 +101,17 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 					if(!notovered)
 						notovered = scores.get(m).getScore1()==null;
 					int score = scores.get(m).getScore1()!=null?scores.get(m).getScore1():21;
-					tableStr.append("<td>");//
-//					tableStr.append("<div id='divselect1"+scores.get(m).getId()+"' class='div_select' div-select-val='21'>");
-//					tableStr.append("<cite>21</cite>");
-					tableStr.append("<select id='people_"+scores.get(m).getId()+"' name='people_"+scores.get(m).getId()+"' class='textll'>");
-					for(int k=0;k<=30;k++){
-						String selected = score==k?"selected='selected'":"";
-						tableStr.append("<option "+selected+">"+k+"</option>");
+					tableStr.append("<td>");
+					if(readOnly || !notovered){
+						tableStr.append(score);
+					}else{
+						tableStr.append("<select id='people_"+scores.get(m).getId()+"' name='people_"+scores.get(m).getId()+"' class='textll'>");
+						for(int k=0;k<=30;k++){
+							String selected = score==k?"selected='selected'":"";
+							tableStr.append("<option "+selected+">"+k+"</option>");
+						}
+						tableStr.append("</select>");
 					}
-					tableStr.append("</select>");
 				}
 				tableStr.append("</tr>");
 			}

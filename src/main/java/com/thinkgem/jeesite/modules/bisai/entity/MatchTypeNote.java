@@ -21,6 +21,7 @@ public class MatchTypeNote extends DataEntity<MatchTypeNote> {
 	private Integer saizhi;//赛制:0循环，1淘汰
 	private Integer jushu;//局数
 	private Integer zuchuxian;//组出线
+	private boolean readOnly;
 	
 	public MatchTypeNote() {
 		super();
@@ -103,4 +104,12 @@ public class MatchTypeNote extends DataEntity<MatchTypeNote> {
     public void setZuchuxian(Integer zuchuxian) {
         this.zuchuxian = zuchuxian;
     }
+
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
+	}
 }

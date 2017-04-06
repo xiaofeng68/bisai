@@ -84,7 +84,8 @@
 			$.post('${ctx }${frontPath}/match/initScoreTable', {
 				id : type,
 				lun:lun,
-				groupnum:xiaozu
+				groupnum:xiaozu,
+				readOnly:true
 			}, function(result) {
 				if (result.success) {
 					 $("#scoreTable").html(result.obj.tableHtml);

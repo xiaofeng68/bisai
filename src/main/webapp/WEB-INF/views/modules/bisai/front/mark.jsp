@@ -74,6 +74,9 @@
 		var type = $("#typeSelect").val();
 		var lun = $("#groupnumSelect").val();
 		var xiaozu = $("#xiaozuSelect").val();
+		
+		$("#saveButton").hide();
+		$("#nextButton").hide();
 		if(type && lun && xiaozu){
 			$.post('${ctx }${frontPath}/match/initScoreTable', {
 				id : type,
