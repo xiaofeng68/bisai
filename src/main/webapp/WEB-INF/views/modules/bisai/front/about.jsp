@@ -18,11 +18,22 @@
 				<span class="fr warp_rll"><a href="${ctx }/${frontPath}/logout">退出</a></span>
 			</div>
 			<div class="warp_headll">
+			<c:choose>
+				<c:when test="${not empty CURRENTACCOUNT.wxname }">
+				<img class="img11" src="${CURRENTACCOUNT.wxphoto }">
+				<p>
+				<span class="v-m">${CURRENTACCOUNT.wxname }</span>
+				<img class="img12" src="${ctxStaticFront}/images/img12.png">
+				</p>
+				</c:when>
+				<c:otherwise>
 				<img class="img11" src="${ctxStaticFront}/images/img11.png">
 				<p>
-					<span class="v-m">${CURRENTACCOUNT.phone }</span>
-					<img class="img12" src="${ctxStaticFront}/images/img12.png">
+				<span class="v-m">${CURRENTACCOUNT.phone }</span>
+				<img class="img12" src="${ctxStaticFront}/images/img12.png">
 				</p>
+				</c:otherwise>
+			</c:choose>
 			</div>
 		</div>
 		<div class="about_linkll">

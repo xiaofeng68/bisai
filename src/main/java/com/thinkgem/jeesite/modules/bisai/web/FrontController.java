@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kidinfor.fastweixin.api.response.GetUserInfoResponse;
+import com.kidinfor.util.WeixinHelp;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.MD5Util;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -52,10 +54,18 @@ public class FrontController extends BaseController {
     @RequestMapping
     public String index(HttpServletRequest request,Model model) {
     	HttpSession session = request.getSession();
-    	String openId = (String) session.getAttribute("openid");
+    	String openId = (String) session.getAttribute(WeixinHelp.OPENID);
     	if(StringUtils.isEmpty(openId)){
-	    	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
-	        session.setAttribute("openId",token.getString("openid"));
+    		try{
+		    	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
+		    	openId = token.getString(WeixinHelp.OPENID);
+		        session.setAttribute(WeixinHelp.OPENID,openId);
+		        //如果注册过或授权登陆过无需再次登陆
+		        Account tAccount = accountService.getAccountByOpenId(openId);
+		        request.getSession().setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
+    		}catch(Exception e){
+    			
+    		}
     	}
         model.addAttribute("isIndex", true);
         return "modules/bisai/front/index";
@@ -82,33 +92,26 @@ public class FrontController extends BaseController {
     public String regist(HttpServletRequest request) {
         return "modules/bisai/front/register";
     }
-    /**微信用户授权*/
-    @RequestMapping(value = "authtest")
-    public String authtest(HttpServletRequest request ,HttpServletResponse response){
-        //第一步：用户同意授权，获取code
-        String projectPath = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-        return "redirect:"+WeixinUtil.getWxCode(projectPath+"wxoauth");
-    }
+   
     /** 微信授权 */
     @RequestMapping(value = "wxoauth")
-    public String wxoauth(HttpServletRequest request,String code,String state) {
-        //第二步：通过code换取网页授权access_token
-        JSONObject token = WeixinUtil.getUserToken(code);
-        String openId = token.getString("openid");
+    public String wxoauth(HttpServletRequest request,String state) {
+    	HttpSession session = request.getSession();
+        String openId = (String) session.getAttribute(WeixinHelp.OPENID);
         Account tAccount = accountService.getAccountByOpenId(openId);
         if(tAccount==null){
             //第四步：拉取用户信息(需scope为 snsapi_userinfo)
-            JSONObject account = WeixinUtil.getUserInfo(token.getString("access_token"), openId);
+        	GetUserInfoResponse account = WeixinHelp.getInstance().getUserInfo(openId);
             //保存用户信息
             tAccount = new Account();
-            tAccount.setWxname(account.getString("nickname"));
-            tAccount.setSex(account.getString("sex"));
-            tAccount.setOpenid(account.getString("openid"));
-            tAccount.setWxphoto(account.getString("headimgurl"));
+            tAccount.setWxname(account.getNickname());
+            tAccount.setSex(account.getSex()+"");
+            tAccount.setOpenid(openId);
+            tAccount.setWxphoto(account.getHeadimgurl());
             accountService.save(tAccount);
-            request.getSession().setAttribute("currentAccount", tAccount);
+            request.getSession().setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
         }
-        if(tAccount!=null && !StringUtils.isEmpty(tAccount.getPhone())){
+        if(tAccount!=null && StringUtils.isEmpty(tAccount.getPhone())){
             return "modules/bisai/front/register";
         }
         //如果没有手机进行手机注册页面，并关联进行
@@ -122,13 +125,17 @@ public class FrontController extends BaseController {
             request.setAttribute("errorMsg", "当前手机号已被注册！");
             return "modules/bisai/front/register";
         }else{
-            account.setPassword(MD5Util.md5Hex(account.getPassword()));
-            accountService.save(account);
-            request.getSession().setAttribute(GlobalBuss.CURRENTACCOUNT, account);
+        	HttpSession session =request.getSession();
+        	Account accountc = (Account) session.getAttribute(GlobalBuss.CURRENTACCOUNT);
+        	if(accountc==null){
+        		accountc = account;
+        	}
+        	accountc.setPhone(account.getPhone());
+        	accountc.setOpenid((String) session.getAttribute(WeixinHelp.OPENID));
+        	accountc.setPassword(MD5Util.md5Hex(account.getPassword()));
+            accountService.save(accountc);
+            session.setAttribute(GlobalBuss.CURRENTACCOUNT, accountc);
             return "modules/bisai/front/about";
-            //第一步：用户同意授权，获取code
-            //String projectPath = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-            //return "redirect:"+WeixinUtil.getWxCode(projectPath+"wxoauth");
         }
     }
     @RequestMapping(value = "login",method=RequestMethod.POST)

@@ -92,11 +92,11 @@ public class FastweixinTest {
         ApiConfig config = new ApiConfig(appid, secret);
         TestConfigChangeHandle configChangeHandle = new TestConfigChangeHandle();
         config.addHandle(configChangeHandle);
-        createMenu(config);
-//        getUserList(config);
+        //createMenu(config);
+        getUserList(config);
 //        uploadMedia(config);
 //        downloadMedia(config);
-//          getUserInfo(config);
+//        getUserInfo(config);
 //        getMenu(config);
 //        addCustomAccount(config);
 //          getOauthPageUrl(config);

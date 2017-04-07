@@ -19,7 +19,7 @@ import com.thinkgem.jeesite.common.config.Global;
 @RequestMapping("/weixin")
 public class WeixinController extends WeixinControllerSupport {
         private static final Logger log = LoggerFactory.getLogger(WeixinController.class);
-        private static final String TOKEN = Global.getConfig("token");
+        private static final String TOKEN = Global.getConfig("Token");
         //设置TOKEN，用于绑定微信服务器
         @Override
         protected String getToken() {

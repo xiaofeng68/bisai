@@ -31,6 +31,9 @@
 			<c:if test="${not empty errorMsg }">
 				<script type="text/javascript">alert('${errorMsg }')</script>
 			</c:if>
+			<c:if test="${not empty currentAccount }">
+				<span>微信绑定成功，请继续</span>
+			</c:if>
 			<form action="${ctx}/${frontPath}regist" method="post" onsubmit="return checkRegister()">
 				<div class="background">
 					<div>
