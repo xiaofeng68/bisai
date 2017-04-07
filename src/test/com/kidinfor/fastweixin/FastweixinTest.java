@@ -92,7 +92,7 @@ public class FastweixinTest {
         ApiConfig config = new ApiConfig(appid, secret);
         TestConfigChangeHandle configChangeHandle = new TestConfigChangeHandle();
         config.addHandle(configChangeHandle);
-//        createMenu(config);
+        createMenu(config);
 //        getUserList(config);
 //        uploadMedia(config);
 //        downloadMedia(config);
@@ -105,7 +105,7 @@ public class FastweixinTest {
         //ApiConfig config = new ApiConfig(appid, secret, true);
         //testGetJsApiTicket(config);
         //testJsApiSign(config);
-        getUserData(config);
+        //getUserData(config);
 //        getArticleData(config);
 //        sendAllMessage(config);
         //getUserGroups(config);
@@ -131,16 +131,16 @@ public class FastweixinTest {
         MenuButton main1 = new MenuButton();
         main1.setType(MenuType.CLICK);
         main1.setKey("main1");
-        main1.setName("测试");
+        main1.setName("测试2");
         //准备子菜单
         MenuButton sub1 = new MenuButton();
         sub1.setKey("sub1");
-        sub1.setName("授权");
+        sub1.setName("授权2");
         sub1.setType(MenuType.VIEW);
-        sub1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxafb7b8f9457b5d50&redirect_uri=http://121.40.140.41/erhuluanzi/app/testGet&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
+        sub1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://bisai.tunnel.qydev.com/f&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
         MenuButton sub2 = new MenuButton();
         sub2.setKey("sub2");
-        sub2.setName("点击");
+        sub2.setName("点击2");
         sub2.setType(MenuType.CLICK);
 
 

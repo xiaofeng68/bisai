@@ -32,8 +32,8 @@ public class WeixinUtil {
     public static String menu_create_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
     //客服接口地址
     public static String send_message_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN";
-    public static String APPID = "wx1a66c29b8ce03e28";
-    public static String APPSECRET = "appsecret";
+    public static String APPID = "wxdd7dda6d8a13b2a0";
+    public static String APPSECRET = "10daec969800177c94a81d378faa7242";
     /**   
      * 第一步：用户同意授权，获取code
      */

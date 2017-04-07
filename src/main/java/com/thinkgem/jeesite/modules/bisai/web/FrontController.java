@@ -50,7 +50,13 @@ public class FrontController extends BaseController {
      * 网站首页
      */
     @RequestMapping
-    public String index(Model model) {
+    public String index(HttpServletRequest request,Model model) {
+    	HttpSession session = request.getSession();
+    	String openId = (String) session.getAttribute("openid");
+    	if(StringUtils.isEmpty(openId)){
+	    	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
+	        session.setAttribute("openId",token.getString("openid"));
+    	}
         model.addAttribute("isIndex", true);
         return "modules/bisai/front/index";
     }
