@@ -40,7 +40,7 @@ public class WeixinController extends WeixinControllerSupport {
         protected BaseMsg handleTextMsg(TextReqMsg msg) {
             String content = msg.getContent();
             log.debug("用户发送到服务器的内容:{}", content);
-            return new TextMsg("服务器回复用户消息!");
+            return new TextMsg("欢迎关注!");
         }
         /*1.1版本新增，重写父类方法，加入自定义微信消息处理器
          *不是必须的，上面的方法是统一处理所有的文本消息，如果业务觉复杂，上面的会显得比较乱
