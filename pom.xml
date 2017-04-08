@@ -54,7 +54,9 @@
 		<webserver.port>8181</webserver.port>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<downloadSources>true</downloadSources>
-
+		<!-- 软件授权 -->
+		<kid.lesence.version>0.0.1-SNAPSHOT</kid.lesence.version>
+	
 	</properties>
 
 	<!-- 设定主仓库，按设定顺序进行查找。 -->
@@ -81,7 +83,7 @@
 
 	<!-- 依赖项定义 -->
 	<dependencies>
-
+		
 		<!-- SPRING begin -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -620,6 +622,12 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
 			<version>4.5.3</version>
+		</dependency>
+		<!-- 系统注册码密钥 -->
+		<dependency>
+			<groupId>kid-lesence</groupId>
+			<artifactId>kid-lesence-client</artifactId>
+			<version>${kid.lesence.version}</version>
 		</dependency>
 	</dependencies>
 

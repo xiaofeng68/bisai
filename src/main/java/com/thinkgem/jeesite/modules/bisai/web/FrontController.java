@@ -233,7 +233,7 @@ public class FrontController extends BaseController {
 	            model.addAttribute("sponsors", sponsors);
 	            return "modules/bisai/front/apply";
 	        }else if("1".equals(state)){
-	            return "modules/bisai/front/activity2";
+	            return "modules/bisai/front/activity";
 	        }else if("2".equals(state)){//查看成绩
 	        	//获取大类
 	        	MatchTypeNote matchTypeNode = new MatchTypeNote();
