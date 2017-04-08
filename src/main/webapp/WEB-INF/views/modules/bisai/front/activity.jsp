@@ -124,6 +124,58 @@
             elm_b.style.color="#fff";
         }
     }
+	function baoming(type,flag){
+		$.post('${ctx }${frontPath}/match/matchbaoming', {
+			id : type,
+			flag:flag
+		}, function(result) {
+			if (result.success) {
+				 if(flag){
+					 $("#baomspan"+type+"true").hide();
+					 $("#baomspan"+type+"false").show();
+				 }else{
+					 $("#baomspan"+type+"true").show();
+					 $("#baomspan"+type+"false").hide();
+				 }
+			}else{
+				alert(result.msg);
+			}
+		}, 'JSON');
+	}
+	function addPeopleNote(type,flag){
+		var name = $("#notename").val();
+		if(!name) {
+			alert("请输入队友姓名！");
+			return;
+		}
+		var phone = $("#notephone").val();
+		if(!phone) {
+			alert("请输入队友手机号！");
+			return;
+		}
+		$.post('${ctx }${frontPath}/match/matchbaomings', {
+			typeid : type,
+			flag:flag,
+			name:name,
+			phone:phone,
+			id:$("#noteid").val()
+		}, function(result) {
+			if (result.success) {
+				 $("#noteid").val(result.obj.id);
+				 if(flag){
+					 $("#baomspan"+type+"true").hide();
+					 $("#baomspan"+type).show();
+					 $("#baomspan"+type+"false").show();
+				 }else{
+					 $("#baomspan"+type+"true").show();
+					 $("#baomspan"+type+"false").hide();
+					 $("#baomspan"+type).hide();
+				 }
+			}else{
+				alert(result.msg);
+			}
+		}, 'JSON');
+	}
     </script>
 </head>
 <body>
@@ -181,17 +233,22 @@
                         </c:if>
                     </div>
                 </li>
+                <c:set var="isDuanxiang" value="${match.changci==0 }"></c:set>
                 <li class="clearfix">
                     <div class="clearfix" style="line-height:13px; padding-bottom:0.7rem">
                         <span class="namell fl">比赛项目</span>
                         <input type="hidden" name="type" id="type">
                         <div class="substance fl" style="width:80%;">
                             <div style="height: 40px;font-size: 0.7rem;color: #b4b3b3;">
+                            <c:if test="${isDuanxiang }">
                                 <input type="radio" name="btype" value="1" style="-webkit-appearance: button;"
                                        onclick="bisai_change(1)" id="dxcRadio"><label for="dxcRadio" id="radio_button_a" class="radio_button" style="background-color:#44bb95;color:#fff;">单项赛</label>
+                            </c:if>
+                            <c:if test="${!isDuanxiang }">
                                 <input type="radio" name="btype" value="2"
                                        style="-webkit-appearance: button;margin-left: 90px;" onclick="bisai_change(2)"
-                                       id="tdcRadio"><label for="tdcRadio" id="radio_button_b" class="radio_button">团体赛</label>
+                                       id="tdcRadio"><label for="tdcRadio" id="radio_button_b" class="radio_button" style="background-color:#44bb95;color:#fff;">团体赛</label>
+                            </c:if>
                             </div>
                             <c:set var="btypes" value='${fn:split(match.type,";") }'></c:set>
                             <div id="danxiang" style="margin-top: 1.5rem;">
@@ -380,5 +437,49 @@
 		</div>
 	</div>
 </section>
+<!-- 单项赛才允许再报名时间段内报名 -->
+<c:if test="${match.changci==0 and not empty CURRENTACCOUNT and CURRENTACCOUNT.id!=match.account.id}">
+<jsp:useBean id="now" class="java.util.Date" /> 
+<fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="nowDate"/> 
+<fmt:formatDate value="${match.regendtime}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="regendtime"/>
+<fmt:formatDate value="${match.regstarttime}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="regstarttime"/>
+<c:choose>
+	<c:when test="${nowDate lt regstarttime}">报名还未开始</c:when>
+	<c:when test="${nowDate gt regendtime}">报名已截止</c:when>
+	<c:otherwise>
+		<div id="danxiang" style="margin-top: 1.5rem;">
+             <c:forEach var="type" items="${fns:getDictList('MatchTypeNote_type')}">
+                 <div class="label js-check clearfix" style="margin-top: 1.5rem;">
+                     <c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,1) }">
+                         <c:if test="${typeNode.type==type.value }">
+                         	<span class="fl">${type.label }</span>
+                             <c:if test="${type.value==2 or type.value==4 or type.value==5}">
+                             <c:set var="peoples" value="${fns:peopleHasBaoming(typeNode.id,CURRENTACCOUNT.openid) }"></c:set>
+                             <c:forEach var="note" items="${peoples }">
+                             <c:choose>
+                             	<c:when test="${note.phone != CURRENTACCOUNT.phone}">
+                             		<input type="hidden" id="noteid" value="${note.id }"/>
+	                                <input type="text" id="notename" placeholder="队友姓名" value="${note.name }">
+	                                <input type="text" id="notephone" placeholder="手机号" value="${note.phone }">
+                             	</c:when>
+                             </c:choose>
+                             </c:forEach>
+                             <span class="fr label_but" style="margin-top: 0.5rem;<c:if test="${fn:length(peoples)==2}">display:none;</c:if>" onclick="addPeopleNote(${typeNode.id},true)" id="baomspan${typeNode.id }true">报名</span>
+                             <span class="fr label_but" style="margin-top: 0.5rem;<c:if test="${fn:length(peoples)==1}">display:none;</c:if>" onclick="addPeopleNote(${typeNode.id},false)" id="baomspan${typeNode.id }false">取消报名</span>
+                             <span class="fr label_but" style="margin-top: 0.5rem;<c:if test="${fn:length(peoples)==1}">display:none;</c:if>" onclick="addPeopleNote(${typeNode.id},true)" id="baomspan${typeNode.id }">修改</span>
+	                         </c:if>
+	                         <c:if test="${type.value==1 or type.value==3 }">
+	                         	 <c:set var="hasBaoming" value="${fns:checkHasBaoming(typeNode.id,CURRENTACCOUNT.openid) }"/>
+	                             <span class="fr label_but" style="margin-top: 0.5rem;<c:if test="${hasBaoming }">display:none;</c:if>" onclick="baoming(${typeNode.id},true)" id="baomspan${typeNode.id }true">报名</span>
+	                             <span class="fr label_but" style="margin-top: 0.5rem;<c:if test="${!hasBaoming }">display:none;</c:if>" onclick="baoming(${typeNode.id},false)" id="baomspan${typeNode.id }false">取消报名</span>
+	                         </c:if>
+                         </c:if>
+                     </c:forEach>
+                 </div>
+             </c:forEach>
+         </div>
+	</c:otherwise>
+</c:choose>
+</c:if>
 </body>
 </html>

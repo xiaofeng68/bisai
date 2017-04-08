@@ -9,6 +9,7 @@
 		a.phone AS "phone",
 		a.orgname AS "orgname",
 		a.state AS "state",
+		a.openid as "openid",
 		c.name as "org.name"
 	</sql>
 	
@@ -43,6 +44,9 @@
 			<if test="note!=null and note.id!=null and note.id!=''">
 				and a.noteid= #{note.id}
 			</if>
+			<if test="openid!=null and openid!=''">
+				and a.openid= #{openid}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -76,13 +80,15 @@
 			name,
 			phone,
 			orgname,
-			state
+			state,
+			openid
 		) VALUES (
 			#{note.id},
 			#{name},
 			#{phone},
 			#{orgname},
-			#{state}
+			#{state},
+			#{openid}
 		)
 	</insert>
 	
@@ -92,7 +98,8 @@
 			name = #{name},
 			phone = #{phone},
 			orgname = #{orgname},
-			state = #{state}
+			state = #{state},
+			openid = #{openid}
 		WHERE id = #{id}
 	</update>
 	
@@ -102,5 +109,8 @@
 	</update>
 	<delete id="deleteByMatch" >
 		delete from bisai_people_note where noteid in(select id from bisai_match_type_note where matchid = #{matchid})
+	</delete>
+	<delete id="deleteByOpenid">
+		delete from bisai_people_note where noteid=#{note.id} and openid=#{openid}
 	</delete>
 </mapper>

@@ -12,4 +12,9 @@ import com.thinkgem.jeesite.modules.bisai.entity.PeopleNote;
 @MyBatisDao
 public interface PeopleNoteDao extends CrudDao<PeopleNote> {
 	void deleteByMatch(String matchid);
+	/**
+	 * 根据type和openid删除参赛用户
+	 * @param peopleNote
+	 */
+	void deleteByOpenid(PeopleNote peopleNote);
 }

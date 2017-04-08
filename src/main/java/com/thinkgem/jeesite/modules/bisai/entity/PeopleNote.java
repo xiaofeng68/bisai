@@ -21,6 +21,7 @@ public class PeopleNote extends DataEntity<PeopleNote> {
 	private String orgname;		// 单位
 	private String state;		// 状态
 	private BaomingOrg org;
+	private String openid;
 	private List<PeopleNote> cList = new ArrayList<PeopleNote>();
 	
 	public PeopleNote() {
@@ -84,5 +85,13 @@ public class PeopleNote extends DataEntity<PeopleNote> {
 
 	public void setOrg(BaomingOrg org) {
 		this.org = org;
+	}
+
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
 	}
 }

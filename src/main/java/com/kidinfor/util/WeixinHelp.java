@@ -1,7 +1,9 @@
 package com.kidinfor.util;
 
+import com.kidinfor.fastweixin.api.JsAPI;
 import com.kidinfor.fastweixin.api.UserAPI;
 import com.kidinfor.fastweixin.api.config.ApiConfig;
+import com.kidinfor.fastweixin.api.response.GetSignatureResponse;
 import com.kidinfor.fastweixin.api.response.GetUserInfoResponse;
 import com.thinkgem.jeesite.common.config.Global;
 
@@ -25,5 +27,9 @@ public class WeixinHelp {
         GetUserInfoResponse userInfo = userAPI.getUserInfo(openId);
         return userInfo;
     }
-    
+    public GetSignatureResponse getJsApiSign(String url){
+    	JsAPI jsAPI = new JsAPI(config);
+    	GetSignatureResponse response = jsAPI.getSignature(url);
+    	return response;
+    }
 }

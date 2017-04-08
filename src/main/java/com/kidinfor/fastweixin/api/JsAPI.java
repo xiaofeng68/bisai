@@ -58,6 +58,7 @@ public class JsAPI extends BaseAPI {
             response.setErrmsg("获取签名异常");
             return response;
         }
+        response.setAppid(this.config.getAppid());
         response.setNoncestr(nonceStr);
         response.setSignature(sign);
         response.setTimestamp(timestame);

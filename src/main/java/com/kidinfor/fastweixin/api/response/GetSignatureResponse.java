@@ -5,6 +5,7 @@ package com.kidinfor.fastweixin.api.response;
  */
 public class GetSignatureResponse extends BaseResponse {
 
+	private String appid;
     private String noncestr;
     private long   timestamp;
     private String url;
@@ -41,4 +42,12 @@ public class GetSignatureResponse extends BaseResponse {
     public void setSignature(String signature) {
         this.signature = signature;
     }
+
+	public String getAppid() {
+		return appid;
+	}
+
+	public void setAppid(String appid) {
+		this.appid = appid;
+	}
 }

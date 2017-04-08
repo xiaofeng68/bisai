@@ -12,6 +12,8 @@
     <script type="text/javascript" src="${ctxStaticFront }/js/yf.js"></script>
     <script src="${ctxStatic}/jquery/jquery-1.8.3.min.js" type="text/javascript"></script>
     <script src="${ctxStatic}/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=DpmmgKEQnkQSLN7zrlgdCacccrGTatIx"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $(".apply_border em").live('click', function () {
@@ -166,6 +168,54 @@
                 elm_b.style.color="#fff";
             }
         }
+        function toCenter(){
+        	$.post('${ctx }${frontPath}/match/address', {
+        		url: location.href.split('#')[0]
+            }, function (result) {
+            	var obj = result.obj;
+                if (result.success) {
+                	wx.config({
+                	    debug: false,
+                	    appId: obj.appid,
+                	    timestamp: obj.timestamp,
+                	    nonceStr: obj.noncestr,
+                	    signature: obj.signature,
+                	    jsApiList: ['checkJsApi','openLocation','getLocation']
+                	});
+                    wx.ready(function () {
+                    	wx.checkJsApi({
+                    	    jsApiList: [
+                    	        'getLocation'
+                    	    ],
+                    	    success: function (res) {
+                    	        alert(JSON.stringify(res));
+                    	        alert(JSON.stringify(res.checkResult.getLocation));
+                    	        if (res.checkResult.getLocation == false) {
+                    	            alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
+                    	            return;
+                    	        }
+                    	    }
+                    	});
+                    	wx.getLocation({
+                    		type: 'wgs84',
+                    	    success: function (res) {
+                    	    	alert('获取');
+                    	        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    	        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    	        var speed = res.speed; // 速度，以米/每秒计
+                    	        var accuracy = res.accuracy; // 位置精度
+                    	        alert(latitude+"\t"+longitude);
+                    	    },
+                    	    cancel: function (res) {
+                    	        alert('用户拒绝授权获取地理位置');
+                    	    }
+                    	});
+    		  		});
+                } else {
+                    alert(result.msg);
+                }
+            }, 'JSON');
+      	}
     </script>
 </head>
 <body>
@@ -335,7 +385,7 @@
 							<span class="add_text fl" style="margin-top: 6px;">点击选择</span>
 							<input class="apply_input" name="address" value="${match.address }" id="address" type="text"
                                    placeholder="请选择">
-							<span class="fr add_butt">重新选择</span>
+							<span class="fr add_butt" onclick="toCenter()">重新选择</span>
 						</span>
 
                 </li>

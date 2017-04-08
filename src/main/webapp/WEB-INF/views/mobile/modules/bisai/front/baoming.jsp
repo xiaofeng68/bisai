@@ -9,6 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta content="telephone=no" name="format-detection">
     <title>${siteTitle }</title>
+    <meta name="decorator" content="bisai"/>
     <meta name="description" content="${siteDescription }"/>
     <meta name="keywords" content="${siteKeywords }"/>
     <link rel="stylesheet" type="text/css" href="${ctxStaticFront}/css/incstyle.css" media="all">
@@ -16,6 +17,8 @@
     <script type="text/javascript" src="${ctxStaticFront }/js/jquery.min.js"></script>
     <script type="text/javascript">
         function changeTab(type, index) {
+        	$(".dnandannum").hide();
+        	$(".dnandannumtab").removeClass("active");
             if (index == '1') {
                 $("#" + type + "1").addClass("active");
                 $("#" + type + "2").removeClass("active");
@@ -146,10 +149,10 @@
                 <div class="li_right2 f13 clearfix">
                     <div class="clearfix li_right1" style="width:100%;margin-bottom:0.4rem;">
                         <div class="first-meun">
-                            <span class="label_but" id="dnandannum1" onclick="changeTab('dnandannum','1')">单位维护</span>
-                            <span class="label_but" id="dnandannum2" onclick="changeTab('dnandannum','2')">单位列表</span>
+                            <span class="label_but dnandannumtab" id="dnandannum1" onclick="changeTab('dnandannum','1')">单位维护</span>
+                            <span class="label_but dnandannumtab" id="dnandannum2" onclick="changeTab('dnandannum','2')">单位列表</span>
                         </div>
-                        <div class="tree-second fr" id="dnandannumDiv1" style="display:none;">
+                        <div class="tree-second fr  dnandannum" id="dnandannumDiv1" style="display:none;">
                             <div class="label1 js-check clearfix">
                             	<input type="hidden" id="id"/>
                                 <input type="text" id="name" placeholder="参赛单位名称">
@@ -162,7 +165,7 @@
                             </div>
                                 <span class="fr label_but" onclick="addOrgNote('dnandannumDiv2')" style="margin-top: 0.5rem;">确定</span>
                         </div>
-                        <div class="tree-second fr" id="dnandannumDiv2" style="display:none;">
+                        <div class="tree-second fr dnandannum" id="dnandannumDiv2" style="display:none;">
                             <div class="tree_second_list">
                                 <c:forEach var="org" items="${fns:getBaomingOrg(match.id) }">
                                     <div class="second_list_con clearfix">
@@ -206,12 +209,12 @@
                                 <img class="first_img1 v-m" src="${ctxStaticFront}/images/img36-1.png">
                                 <span class="v-m">${fns:getDictLabel(typeNode.type, 'MatchTypeNote_type', '')}</span>
                                 <span>（已报名<label id="num${typeNode.id}">${typeNode.counts }</label>人）</span>
-                                <span class="label_but" id="dnandannum1"
+                                <span class="label_but dnandannumtab" id="dnandannum${typeNode.id}1"
                                       onclick="changeTab('dnandannum${typeNode.id}','1')">报名中</span>
-                                <span class="label_but" id="dnandannum2"
+                                <span class="label_but dnandannumtab" id="dnandannum${typeNode.id}2"
                                       onclick="changeTab('dnandannum${typeNode.id}','2')">报名列表</span>
                             </div>
-                            <div class="tree-second fr" id="dnandannum${typeNode.id}Div1" style="display:none;">
+                            <div class="tree-second fr dnandannum" id="dnandannum${typeNode.id}Div1" style="display:none;">
                                 <div class="label1 js-check clearfix">
                                     <span class="v-m">单位  </span>
                                     <select id="orgname${typeNode.id}">
@@ -235,7 +238,7 @@
                                 </c:forEach>
                                 <span class="fr label_but" style="margin-top: 0.5rem;" onclick="addPeopleNote(${typeNode.id},'dnandannum${typeNode.id}Div2',${num })">确定</span>
                             </div>
-                            <div class="tree-second fr" id="dnandannum${typeNode.id}Div2" style="display:none;">
+                            <div class="tree-second fr dnandannum" id="dnandannum${typeNode.id}Div2" style="display:none;">
                                 <div class="tree_second_list">
                                     <c:forEach var="people" items="${fns:getPeopleByType(typeNode.id) }">
                                         <div class="second_list_con clearfix">

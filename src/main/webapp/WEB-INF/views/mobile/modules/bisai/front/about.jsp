@@ -64,7 +64,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="about_secll">
+		<%-- <div class="about_secll">
 			<div class="clearfix titlell">
 				<div class="clearfix fl titlell_l">
 					<img class="fl img17 v-m" src="${ctxStaticFront}/images/img17.png">
@@ -102,7 +102,7 @@
 					<p class="col6-text">排位赛胜率</p>
 				</li>
 			</ul>
-		</div>
+		</div> --%>
 		<div class="about_thirll">
 			<ul>
 				<li class="clearfix">
@@ -119,7 +119,7 @@
 				<li class="clearfix">
 					<p class="fl">
 						<img class="img19" src="${ctxStaticFront}/images/img19.png">
-						<span class="v-m">赛事管理</span>
+						<span class="v-m"><a href="${ctx }/${frontPath}match${urlSuffix}?ismy=true">赛事管理</a></span>
 					</p>
 					<span class="fr">
 						<a href="#">

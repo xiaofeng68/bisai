@@ -170,6 +170,8 @@ public class FrontController extends BaseController {
         }
         Page<Match> page = matchService.findAllMatch(new Page<Match>(request, response),match); 
         model.addAttribute("page", page);
+        boolean ismy = "true".equals(request.getParameter("ismy"));
+        model.addAttribute("ismy",ismy);
         return "modules/bisai/front/match";
     }
     @RequestMapping(value = "matchSearch${urlSuffix}")

@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>JeeSite</title>
+	<title>${siteTitle }</title>
 	<meta name="decorator" content="bisai" />
-	<meta name="description" content="JeeSite" />
-	<meta name="keywords" content="JeeSite" />
+	<meta name="description" content="${siteDescription }" />
+	<meta name="keywords" content="${siteKeywords }" />
 </head>
 <body>
 	<header class="index_topll">

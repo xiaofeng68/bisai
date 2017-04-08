@@ -52,5 +52,11 @@ public class PeopleNoteService extends CrudService<PeopleNoteDao, PeopleNote> {
 		super.delete(peopleNote);
 		PeopleNoteUtils.clearCache(peopleNote);
 	}
+	@Transactional(readOnly = false)
+	public void deleteByOpenid(PeopleNote peopleNote) {
+		dao.deleteByOpenid(peopleNote);
+		PeopleNoteUtils.clearCache(peopleNote);
+	}
+	
 	
 }

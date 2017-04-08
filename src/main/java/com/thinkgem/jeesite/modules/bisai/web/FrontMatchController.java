@@ -7,8 +7,10 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +19,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kidinfor.fastweixin.api.response.GetSignatureResponse;
+import com.kidinfor.util.WeixinHelp;
 import com.thinkgem.jeesite.common.utils.Json;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.bisai.entity.Account;
 import com.thinkgem.jeesite.modules.bisai.entity.BaomingOrg;
 import com.thinkgem.jeesite.modules.bisai.entity.Match;
 import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
 import com.thinkgem.jeesite.modules.bisai.entity.PeopleGroup;
 import com.thinkgem.jeesite.modules.bisai.entity.PeopleNote;
+import com.thinkgem.jeesite.modules.bisai.global.GlobalBuss;
 import com.thinkgem.jeesite.modules.bisai.service.BaomingOrgService;
 import com.thinkgem.jeesite.modules.bisai.service.MatchService;
 import com.thinkgem.jeesite.modules.bisai.service.MatchTypeNoteService;
@@ -563,7 +569,85 @@ public class FrontMatchController extends BaseController {
 		}
 		return json;
 	}
-
+	@RequestMapping(value = "address")
+	@ResponseBody
+	public Json address(String url, HttpServletRequest request) {
+		Json json = new Json();
+		try {
+			GetSignatureResponse sign = WeixinHelp.getInstance().getJsApiSign(url);
+			json.setObj(sign);
+			json.setSuccess(true);
+		} catch (Exception e) {
+			json.setMsg("请求失败，请联系管理员!");
+			json.setSuccess(false);
+		}
+		return json;
+	}
+	@RequestMapping(value = "matchbaoming")
+	@ResponseBody
+	public Json matchbaoming(String id,boolean flag, HttpServletRequest request) {
+		Json json = new Json();
+		try {
+			HttpSession session =request.getSession();
+			Account account = (Account) session.getAttribute(GlobalBuss.CURRENTACCOUNT);
+			PeopleNote peopleNote = new PeopleNote();
+			MatchTypeNote note = matchTypeNoteService.get(id);
+			peopleNote.setNote(note);
+			peopleNote.setState("0");
+			peopleNote.setName(account.getWxname());
+			peopleNote.setPhone(account.getPhone());
+			peopleNote.setOpenid(account.getOpenid());
+			if(flag)
+				peopleNoteService.save(peopleNote);
+			else
+				peopleNoteService.deleteByOpenid(peopleNote);
+			json.setSuccess(true);
+		} catch (Exception e) {
+			if(flag)
+				json.setMsg("报名失败！");
+			else
+				json.setMsg("取消报名失败！");
+			json.setSuccess(false);
+		}
+		return json;
+	}
+	@RequestMapping(value = "matchbaomings")
+	@ResponseBody
+	public Json matchbaomings(String typeid,boolean flag, PeopleNote peopleNote,HttpServletRequest request) {
+		Json json = new Json();
+		try {
+			HttpSession session =request.getSession();
+			Account account = (Account) session.getAttribute(GlobalBuss.CURRENTACCOUNT);
+			PeopleNote pnote = new PeopleNote();
+			MatchTypeNote note = matchTypeNoteService.get(typeid);
+			pnote.setNote(note);
+			pnote.setState("0");
+			pnote.setName(account.getWxname()+";"+peopleNote.getName());
+			pnote.setPhone(account.getPhone()+";"+peopleNote.getPhone());
+			pnote.setOpenid(account.getOpenid());
+			pnote.setOrgname("");
+			if(flag){
+				if(!StringUtils.isEmpty(peopleNote.getId())){
+					pnote.setId(peopleNote.getId());
+				}
+				peopleNoteService.save(pnote);
+				json.setObj(pnote);
+			}
+			else
+				peopleNoteService.deleteByOpenid(pnote);
+			json.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			if(flag)
+				json.setMsg("报名失败！");
+			else
+				json.setMsg("取消报名失败！");
+			json.setSuccess(false);
+		}
+		return json;
+	}
+	
+	
 	private void initNextGroup(String id, String type, String stype, MatchTypeNote matchTypeNote, int nextLun,
 			List<PeopleNote> peopleGroup34List) {
 		for (int i = 0, zu = 1, j = peopleGroup34List.size(); i < j; zu++, i += 2) {// 进行淘汰赛

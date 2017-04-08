@@ -21,6 +21,17 @@
                 $(this).addClass("active").siblings().removeClass("active");
                 $(".match_fourll").hide().eq($(this).index()).show();
             });
+            var ismy = '${ismy}';
+            if(ismy=='true'){
+	            var i=0;
+	            $(".match_topll_sec li").each(function(){
+	            	if(i==1){
+	            		$(this).addClass("active").siblings().removeClass("active");
+	            		$(".match_fourll").hide().eq($(this).index()).show();
+	            	}
+	                 i++
+	            });
+            }
         });
         function divselect(divselectid, inputselectid) {
             var inputselect = $(inputselectid);

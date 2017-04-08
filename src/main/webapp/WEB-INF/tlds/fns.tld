@@ -289,6 +289,21 @@
     <function-signature>java.util.List getChuXianPeople(java.lang.Integer)</function-signature>
     <example>${fns:getChuXianPeople(sum)}</example>  
   </function>
+  <function>
+  	<description>获取比赛类型记录标签</description>
+    <name>checkHasBaoming</name>
+    <function-class>com.thinkgem.jeesite.modules.bisai.util.PeopleNoteUtils</function-class>
+    <function-signature>java.lang.Boolean checkHasBaoming(java.lang.String,java.lang.String)</function-signature>
+    <example>${fns:checkHasBaoming(typeid,phone)}</example>  
+  </function>
+  <function>
+  	<description>获取个人报名列表</description>
+    <name>peopleHasBaoming</name>
+    <function-class>com.thinkgem.jeesite.modules.bisai.util.PeopleNoteUtils</function-class>
+    <function-signature>java.util.List peopleHasBaoming(java.lang.String,java.lang.String)</function-signature>
+    <example>${fns:peopleHasBaoming(typeid,phone)}</example>  
+  </function>
+  
   <!-- 获取比赛类型记录 -->
   <function>
   	<description>获取单位标签</description>
@@ -305,4 +320,5 @@
     <function-signature>java.util.List getPeopleSort(java.lang.String,java.lang.String,java.lang.String)</function-signature>
     <example>${fns:getPeopleSort(matchid,btype,type)}</example>  
   </function>
+  
 </taglib>
