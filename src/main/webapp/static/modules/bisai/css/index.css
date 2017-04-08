@@ -1059,7 +1059,7 @@
 	background: #fff;
 }
 .sheet_table table tr{
-	font-size:13px;
+	font-size:0.6rem;
 	color: #666;
 	border-bottom: 1px solid #ececec;
 }
@@ -1069,7 +1069,7 @@
     text-align: center
 }
 .sheet_table table tr td:first-child{
-	font-size:13px;
+	font-size:0.6rem;
 }
 .sheet_table table tr td img{
 	width: 0.825rem;
