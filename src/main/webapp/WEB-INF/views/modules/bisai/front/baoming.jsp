@@ -274,9 +274,11 @@
                 </c:forEach>
             </li>
         </ul>
+        <div style="height:300px;">
         <a href="${ctx }${frontPath}/match/term-${match.id}-${type}${urlSuffix}">
             <div class="acti_buttom">分组抽签</div>
         </a>
+        </div>
     </div>
 </section>
 </body>

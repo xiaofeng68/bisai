@@ -92,8 +92,8 @@ public class FastweixinTest {
         ApiConfig config = new ApiConfig(appid, secret);
         TestConfigChangeHandle configChangeHandle = new TestConfigChangeHandle();
         config.addHandle(configChangeHandle);
-        //createMenu(config);
-        getUserList(config);
+        createMenu(config);
+        //getUserList(config);
 //        uploadMedia(config);
 //        downloadMedia(config);
 //        getUserInfo(config);
@@ -131,7 +131,10 @@ public class FastweixinTest {
         MenuButton main1 = new MenuButton();
         main1.setType(MenuType.CLICK);
         main1.setKey("main1");
-        main1.setName("测试2");
+        main1.setName("天羽联");
+        main1.setType(MenuType.VIEW);
+        main1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://bisai.tunnel.qydev.com/f&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
+        
         //准备子菜单
         MenuButton sub1 = new MenuButton();
         sub1.setKey("sub1");
@@ -148,10 +151,22 @@ public class FastweixinTest {
         list.add(sub1);
         list.add(sub2);
         //将子菜单放入主菜单里
-        main1.setSubButton(list);
+        //main1.setSubButton(list);
 
+        MenuButton main2 = new MenuButton();
+        main2.setKey("main2");
+        main2.setName("广告合作");
+        main2.setType(MenuType.CLICK);
+        MenuButton main3 = new MenuButton();
+        main3.setKey("main3");
+        main3.setName("赛场加盟");
+        main3.setType(MenuType.CLICK);
+        
         List<MenuButton> mainList = new ArrayList<MenuButton>();
         mainList.add(main1);
+        mainList.add(main2);
+        mainList.add(main3);
+        
         //将主菜单加入请求对象
         request.setButton(mainList);
         LOG.debug(request.toJsonString());

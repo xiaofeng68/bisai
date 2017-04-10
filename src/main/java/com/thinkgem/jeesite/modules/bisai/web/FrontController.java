@@ -114,6 +114,7 @@ public class FrontController extends BaseController {
         if(tAccount!=null && StringUtils.isEmpty(tAccount.getPhone())){
             return "modules/bisai/front/register";
         }
+        session.setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
         //如果没有手机进行手机注册页面，并关联进行
         return "modules/bisai/front/about";
     }
