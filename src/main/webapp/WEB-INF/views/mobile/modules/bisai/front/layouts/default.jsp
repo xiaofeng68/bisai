@@ -10,7 +10,7 @@
 </head>
 <body>
 <sitemesh:body/>
-<footer class="index_footll">
+<footer class="index_footll" style="display:none;">
 	<ul class="clearfix">
 		<li class="active">
 			<a href="index.html">

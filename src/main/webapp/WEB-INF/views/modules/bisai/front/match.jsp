@@ -18,8 +18,16 @@
 
             //tab切换
             $(".match_topll_sec li").click(function () {
-                $(this).addClass("active").siblings().removeClass("active");
-                $(".match_fourll").hide().eq($(this).index()).show();
+            	var user = '${CURRENTACCOUNT}';
+            	if(user && $(this).index()==1){
+	                $(this).addClass("active").siblings().removeClass("active");
+	                $(".match_fourll").hide().eq($(this).index()).show();
+            	}else if($(this).index()==1){
+            		window.location.href="${ctx }${frontPath}/my.html"; 
+            	}else{
+            		 $(this).addClass("active").siblings().removeClass("active");
+ 	                 $(".match_fourll").hide().eq($(this).index()).show();
+            	}
             });
             var ismy = '${ismy}';
             if(ismy=='true'){
@@ -65,11 +73,9 @@
             <li class="active"><em class="sec_bg2"></em>
                 <span>所有赛事</span>
             </li>
-            <c:if test="${CURRENTACCOUNT!=null }">
-                <li><em class="sec_bg1"></em>
-                    <span>我的赛事</span>
-                </li>
-            </c:if>
+            <li><em class="sec_bg1"></em>
+                <span>我的赛事</span>
+            </li>
         </ul>
     </div>
     <div class="match_topll_thir">

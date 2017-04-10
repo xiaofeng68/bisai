@@ -58,7 +58,7 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="match">
 			<tr>
-				<td><a href="${ctx}/bisai/match/form?id=${match.id}">
+				<td><a href="${ctxf }/activity.html?id=${match.id}">
 					${match.name}
 				</a></td>
 				<td>

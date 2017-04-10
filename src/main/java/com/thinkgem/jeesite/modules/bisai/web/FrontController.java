@@ -54,21 +54,23 @@ public class FrontController extends BaseController {
     @RequestMapping
     public String index(HttpServletRequest request,Model model) {
     	HttpSession session = request.getSession();
-    	String openId = (String) session.getAttribute(WeixinHelp.OPENID);
-    	if(StringUtils.isEmpty(openId)){
+//    	String openId = (String) session.getAttribute(WeixinHelp.OPENID);
+//    	if(StringUtils.isEmpty(openId)){
     		try{
 		    	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
-		    	openId = token.getString(WeixinHelp.OPENID);
+		    	String openId = token.getString(WeixinHelp.OPENID);
 		        session.setAttribute(WeixinHelp.OPENID,openId);
 		        //如果注册过或授权登陆过无需再次登陆
 		        Account tAccount = accountService.getAccountByOpenId(openId);
+		        if(tAccount==null) throw new RuntimeException();
 		        request.getSession().setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
-    		}catch(Exception e){
-    			
+    		}catch(Exception e){//没授权先授权登陆
+    			return "modules/bisai/front/login";
     		}
-    	}
-        model.addAttribute("isIndex", true);
-        return "modules/bisai/front/index";
+//    	}
+        //model.addAttribute("isIndex", true);
+//        return "modules/bisai/front/index";
+        return "redirect:match.html";
     }
 
     /**
@@ -111,12 +113,15 @@ public class FrontController extends BaseController {
             accountService.save(tAccount);
             request.getSession().setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
         }
-        if(tAccount!=null && StringUtils.isEmpty(tAccount.getPhone())){
-            return "modules/bisai/front/register";
+        if(tAccount==null /*&& StringUtils.isEmpty(tAccount.getPhone())*/){
+            //return "modules/bisai/front/register";
+            return "modules/bisai/front/login";
         }
         session.setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
+        request.setAttribute("ismy", true);
         //如果没有手机进行手机注册页面，并关联进行
-        return "modules/bisai/front/about";
+        //return "modules/bisai/front/about";
+        return "redirect:match.html";
     }
     @RequestMapping(value = "regist",method=RequestMethod.POST)
     public String registAccount(HttpServletRequest request,Account account){

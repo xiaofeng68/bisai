@@ -27,25 +27,30 @@
 		<div class="raning_list">
 			<ul>
 				<c:forEach var="type" items="${fns:getMatchTypes(match.id) }">
-					<c:forEach var="result" items="${fns:getPeopleSort(match.id,type.btype,type.type) }" end="2" varStatus="num">
-						<li class="clearfix one">
-						<span class="fl left">
-							<span class="name">第${util:numToUpper(num.index+1) }名</span>
-							<c:choose>
-								<c:when test="${type.btype==2  }">
-									<span>${result.people.orgname }</span>
-								</c:when>
-								<c:otherwise>
-									<span>${result.people.name }</span>
-								</c:otherwise>
-							</c:choose>
-						</span>
-						<span class="fl content">
-							<img src="${ctxStaticFront}/images/result${num.index+1 }.png">
-						</span>
-						<span class="fr right">${result.jushu }局${result.shengju }胜</span>
-					</li>
-					</c:forEach>
+				<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
+                <c:if test="${type.type==dic.value }">
+                <li class="clearfix one">${dic.label }  </li>          
+				<c:forEach var="result" items="${fns:getPeopleSort(match.id,type.btype,type.type) }" end="2" varStatus="num">
+					<li class="clearfix one">
+					<span class="fl left">
+						<span class="name">第${util:numToUpper(num.index+1) }名</span>
+						<c:choose>
+							<c:when test="${type.btype==2  }">
+								<span>${result.people.orgname }</span>
+							</c:when>
+							<c:otherwise>
+								<span>${result.people.name }</span>
+							</c:otherwise>
+						</c:choose>
+					</span>
+					<span class="fl content">
+						<img src="${ctxStaticFront}/images/result${num.index+1 }.png">
+					</span>
+					<span class="fr right">${result.jushu }局${result.shengju }胜</span>
+				</li>
+				</c:forEach>
+				</c:if>
+                </c:forEach>
 				</c:forEach>
 			</ul>
 		</div>

@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta content="telephone=no" name="format-detection">
     <title>${siteTitle }</title>
-    <meta name="decorator" content="bisai"/>
+    <!-- <meta name="decorator" content="bisai"/> -->
     <meta name="description" content="${siteDescription }"/>
     <meta name="keywords" content="${siteKeywords }"/>
     <link rel="stylesheet" type="text/css" href="${ctxStaticFront}/css/incstyle.css" media="all">
@@ -25,9 +25,9 @@
                 $("#" + type + "Div1").show();
                 $("#" + type + "Div2").hide();
             } else {
-                $("#" + type + "2").addClass("active");
-                $("#" + type + "1").removeClass("active");
+            	$("#" + type + "1").removeClass("active");
                 $("#" + type + "Div1").hide();
+                $("#" + type + "2").addClass("active");
                 $("#" + type + "Div2").show();
             }
         }
@@ -41,9 +41,21 @@
         	}
         	var arr = [];
         	for(var i=1;i<=num;i++){
+        		var namep = $("#name" + typeid+"_"+i+"p").val();
+        		if(namep){
+        			namep=";"+namep;
+        		}else{
+        			namep="";
+        		}
+        		var phonep=$("#phone" + typeid+"_"+i+"p").val();
+        		if(phonep){
+        			phonep=";"+phonep;
+        		}else{
+        			phonep="";
+        		}
         		var orgname = $("#orgname" + typeid).val();
-                var name = $("#name" + typeid+"_"+i).val();
-                var phone = $("#phone" + typeid+"_"+i).val();
+                var name = $("#name" + typeid+"_"+i).val()+namep;
+                var phone = $("#phone" + typeid+"_"+i).val()+phonep;
                 var id = $("#id" + typeid+"_"+i).val();
                 if(name)
                 arr.push({id:id,orgname:orgname,name:name,phone:phone,typeid:typeid});
@@ -74,7 +86,7 @@
                 }
             }, 'JSON');
         }
-        function updateState(id) {
+        function deletePeopleNote(id) {
             $.post('${ctx }${frontPath}/match/deletePeopleNote', {
                 id: id
             }, function (result) {
@@ -117,6 +129,7 @@
                 }
             }, 'JSON');
         }
+        
         function updateOrg(id,name,phone,user){
         	$("#id").val(id);
         	$("#name").val(name);
@@ -125,9 +138,17 @@
         	changeTab('dnandannum','1');
         }
         function updatePeopleNote(id,name,phone,orgname,typeid){
+        	var names = name.split(";");
+        	var phones = phone.split(";");
+        	var name = names[0];
+        	var phone = phones[0]
         	$("#orgname"+typeid).val(orgname);
         	$("#name"+typeid+"_"+1).val(name);
         	$("#phone"+typeid+"_"+1).val(phone);
+        	try{
+        	$("#name"+typeid+"_"+1+"p").val(names[1]);
+        	$("#phone"+typeid+"_"+1+"p").val(phones[1]);
+        	}catch(e){}
         	$("#id"+typeid+"_"+1).val(id);
         	changeTab('dnandannum'+typeid,'1')
         }
@@ -240,12 +261,30 @@
                                 <c:set var="num" value="${typeNode.num==0?1:typeNode.num }"></c:set>
                                 <c:forEach var="peo" begin="1" end="${num }">
                                 <input type="hidden" id="id${typeNode.id}_${peo}"/>
+                                <c:choose>
+                                <c:when test="${typeNode.type==2 or typeNode.type==4 or typeNode.type==5}">
                                 <div class="label1 js-check clearfix">
                                     <input type="text" id="name${typeNode.id}_${peo}" placeholder="姓名${peo }">
                                 </div>
                                 <div class="label1 js-check clearfix">
                                     <input type="text" id="phone${typeNode.id}_${peo}" placeholder="手机号">
                                 </div>
+                                <div class="label1 js-check clearfix">
+                                    <input type="text" id="name${typeNode.id}_${peo}p" placeholder="队友${peo }">
+                                </div>
+                                <div class="label1 js-check clearfix">
+                                    <input type="text" id="phone${typeNode.id}_${peo}p" placeholder="手机号">
+                                </div>
+                                </c:when>
+                                <c:otherwise>
+                                <div class="label1 js-check clearfix">
+                                    <input type="text" id="name${typeNode.id}_${peo}" placeholder="姓名${peo }">
+                                </div>
+                                <div class="label1 js-check clearfix">
+                                    <input type="text" id="phone${typeNode.id}_${peo}" placeholder="手机号">
+                                </div>
+                                </c:otherwise>
+                                </c:choose>
                                 </c:forEach>
                                 <span class="fr label_but" style="margin-top: 0.5rem;" onclick="addPeopleNote(${typeNode.id},'dnandannum${typeNode.id}Div2',${num })">确定</span>
                             </div>
@@ -279,7 +318,7 @@
                                                     <span class="list_butt fr"
                                                           onclick="updateState(${people.id },1)">踢人</span>
                                                     <span class="list_butt fr"
-                                                      onclick="updatePeopleNote(${people.id },'${people.name }','${people.phone }',${people.orgname },${typeNode.id })">修改</span>
+                                                      onclick="updatePeopleNote(${people.id },'${people.name }','${people.phone }','${people.orgname }',${typeNode.id })">修改</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>

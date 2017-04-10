@@ -50,6 +50,9 @@ public class PeopleNoteService extends CrudService<PeopleNoteDao, PeopleNote> {
 	@Transactional(readOnly = false)
 	public void delete(PeopleNote peopleNote) {
 		super.delete(peopleNote);
+		MatchTypeNote typeNode = matchTypeNoteDao.get(peopleNote.getNote().getId());
+		matchTypeNoteDao.updateCount(typeNode);
+		MatchTypeNoteUtils.clearCache(typeNode);
 		PeopleNoteUtils.clearCache(peopleNote);
 	}
 	@Transactional(readOnly = false)

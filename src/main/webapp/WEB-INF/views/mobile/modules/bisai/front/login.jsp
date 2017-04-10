@@ -40,11 +40,11 @@
 		</span>
 		<span>登录</span>
 	</header>
-	<section>
+	<section style="text-align: center;">
 		<div class="login_logo">
 			<img src="${ctxStaticFront}/images/logo.png">
 		</div>
-		<div class="login_form">
+		<%-- <div class="login_form">
 			<form action="${ctx}/${frontPath}login" method="post" onsubmit="return checkAccount()">
 				<div class="background">
 					<div>
@@ -60,7 +60,7 @@
 					<input class="submit" type="submit" value="登录">
 				</div>
 			</form>
-		</div>
+		</div> -
 		<div class="login_link clearfix">
 			<span class="fl">
 				<a href="${ctx }/${frontPath}regist${urlSuffix}">注册</a>
@@ -72,6 +72,11 @@
 				</a>
 			</span>			
 		</div>
+		--%>
+		<a href="${ctx }/${frontPath}wxoauth${urlSuffix}">
+			<img src="${ctxStaticFront}/images/weixin.png">
+			<span>使用微信登录</span>
+		</a>
 	</section>
 </body>
 </html>
