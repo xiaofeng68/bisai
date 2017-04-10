@@ -208,9 +208,10 @@ public class FastweixinTest {
 
         List<MenuButton> list3 = new ArrayList<MenuButton>();
         list3.add(sub6);
-        list3.add(sub6);
+        list3.add(sub7);
         list3.add(sub8);
-        
+        main3.setSubButton(list3);
+
         List<MenuButton> mainList = new ArrayList<MenuButton>();
         mainList.add(main1);
         mainList.add(main2);
