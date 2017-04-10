@@ -134,6 +134,7 @@
 		}, function(result) {
 			if (result.success) {
 				 $("#overButton").hide();
+				 window.location.href="${ctx }${frontPath}/activity.html?id=${match.id}"; 
 			}else{
 				alert(result.msg);
 			}
