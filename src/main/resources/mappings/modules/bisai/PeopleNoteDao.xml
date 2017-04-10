@@ -10,12 +10,15 @@
 		a.orgname AS "orgname",
 		a.state AS "state",
 		a.openid as "openid",
-		c.name as "org.name"
+		c.name as "org.name",
+		d.id as "account.id",
+		d.wxphoto as "account.wxphoto"
 	</sql>
 	
 	<sql id="peopleNoteJoins">
 		left join bisai_match_type_note b on a.noteid = b.id
 		left join bisai_baoming_org c on c.id = a.orgname
+		left join bisai_account d on a.openid = d.openid
 	</sql>
     
 	<select id="get" resultType="PeopleNote">

@@ -18,7 +18,7 @@ public class WeixinHelp {
     public static WeixinHelp getInstance(){
     	if(WeixinUtil==null){
     		WeixinUtil = new WeixinHelp();
-    		config = new ApiConfig(appid, secret);
+    		config = new ApiConfig(appid, secret,true);
     	}
     	return WeixinUtil;
     }

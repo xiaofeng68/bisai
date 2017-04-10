@@ -34,7 +34,7 @@ public class JsAPI extends BaseAPI {
         //当前时间的秒数
         long timestame = System.currentTimeMillis() / 1000;
         //使用UUID来当随机字符串
-        String nonceStr = UUID.randomUUID().toString().replaceAll("-", "");
+        String nonceStr = UUID.randomUUID().toString();//.replaceAll("-", "");
         return getSignature(nonceStr, timestame, url);
     }
 

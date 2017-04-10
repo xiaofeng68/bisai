@@ -74,6 +74,17 @@
                 }
             }, 'JSON');
         }
+        function updateState(id) {
+            $.post('${ctx }${frontPath}/match/deletePeopleNote', {
+                id: id
+            }, function (result) {
+                if (result.success) {
+                    window.location.reload();
+                } else {
+                    alert(result.msg);
+                }
+            }, 'JSON');
+        }
         function addOrgNote(div) {
         	var id = $("#id").val();
             var name = $("#name").val();
@@ -245,8 +256,12 @@
 										<span class="activity_po">
 											<c:choose>
                                                 <c:when test="${people.state==1 }">
-                                                    <img id="img${people.id }"
-                                                         src="${ctxStaticFront}/images/img37-1.png">
+                                                	<c:if test="${empty people.account }">
+                                                		 <img id="img${people.id }" src="${ctxStaticFront}/images/img37-1.png">
+                                                	</c:if>
+                                                   <c:if test="${not empty people.account }">
+                                                		 <img id="img${people.id }" src="${account.wxphoto }">
+                                                	</c:if>
                                                 </c:when>
                                                 <c:otherwise>
                                                     <img id="img${people.id }" src="${ctxStaticFront}/images/img37.png">
@@ -259,6 +274,8 @@
                                                     <span class="list_butt1 fr" onclick="updateState(${people.id },0)">恢复</span>
                                                 </c:when>
                                                 <c:otherwise>
+                                                	<span class="list_butt fr"
+                                                          onclick="deletePeopleNote(${people.id })">删除</span>
                                                     <span class="list_butt fr"
                                                           onclick="updateState(${people.id },1)">踢人</span>
                                                     <span class="list_butt fr"

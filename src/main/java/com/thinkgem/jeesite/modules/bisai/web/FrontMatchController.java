@@ -364,7 +364,21 @@ public class FrontMatchController extends BaseController {
 		}
 		return json;
 	}
-
+	@RequestMapping(value = "deletePeopleNote")
+	@ResponseBody
+	public Json deletePeopleNote(PeopleNote peopleNote, HttpServletRequest request) {
+		Json json = new Json();
+		try {
+			PeopleNote cpeopleNote = peopleNoteService.get(peopleNote.getId());
+			peopleNoteService.delete(cpeopleNote);
+			json.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.setSuccess(false);
+			json.setMsg("删除失败");
+		}
+		return json;
+	}
 	@RequestMapping(value = "initSelectList")
 	@ResponseBody
 	public Json initSelectList(MatchTypeNote matchTypeNote, HttpServletRequest request) {

@@ -24,7 +24,7 @@ public class MatchTypeNoteUtils {
 	@SuppressWarnings("unchecked")
     public static List<MatchTypeNote> getMatchTypeNote(String matchid,String type){
 		if(StringUtils.isEmpty(matchid)) return new ArrayList<MatchTypeNote>();
-		List<MatchTypeNote> list = (List<MatchTypeNote>) CacheUtils.get(CACHE_SETTING_MAP+":mt:"+matchid+":"+type);
+		List<MatchTypeNote> list = null;//(List<MatchTypeNote>) CacheUtils.get(CACHE_SETTING_MAP+":mt:"+matchid+":"+type);
 		if(list==null){
 		    MatchTypeNote note = new MatchTypeNote();
 		    Match match = new Match();
@@ -32,7 +32,7 @@ public class MatchTypeNoteUtils {
 		    note.setBtype(type);
 		    note.setMatch(match);
 		    list = matchTypeNoteDao.findList(note);
-		    CacheUtils.put(CACHE_SETTING_MAP+":mt:"+matchid+":"+type,list);
+		    //CacheUtils.put(CACHE_SETTING_MAP+":mt:"+matchid+":"+type,list);
 		}
 		return list;
 	}
@@ -53,7 +53,7 @@ public class MatchTypeNoteUtils {
 		return matchTypeNoteDao.getMatchPeopleCount(matchid);
 	}
 	public static void clearCache(MatchTypeNote note){
-        CacheUtils.remove(CACHE_SETTING_MAP+":mt:"+note.getMatch().getId()+":"+note.getBtype());
+        //CacheUtils.remove(CACHE_SETTING_MAP+":mt:"+note.getMatch().getId()+":"+note.getBtype());
         CacheUtils.remove(CACHE_SETTING_MAP+":type:"+note.getMatch().getId());
     }
 }

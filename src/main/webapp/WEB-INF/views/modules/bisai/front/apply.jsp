@@ -29,6 +29,7 @@
                 $("#" + id).val(input);
                 $(this).parent().remove();
             });
+            toCenter();
         });
         function addOrgItems(input, cls, hidden) {
             var name = $("#" + input).val();
@@ -188,8 +189,6 @@
                     	        'getLocation'
                     	    ],
                     	    success: function (res) {
-                    	        alert(JSON.stringify(res));
-                    	        alert(JSON.stringify(res.checkResult.getLocation));
                     	        if (res.checkResult.getLocation == false) {
                     	            alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
                     	            return;
@@ -199,12 +198,25 @@
                     	wx.getLocation({
                     		type: 'wgs84',
                     	    success: function (res) {
-                    	    	alert('获取');
-                    	        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    	    	var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
                     	        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
                     	        var speed = res.speed; // 速度，以米/每秒计
                     	        var accuracy = res.accuracy; // 位置精度
-                    	        alert(latitude+"\t"+longitude);
+                    	        $.ajax({
+                    				url: 'http://api.map.baidu.com/geocoder/v2/?ak=btsVVWf0TM1zUBEbzFz6QqWF&callback=renderReverse&location=' + latitude + ',' + longitude + '&output=json&pois=1',
+                    				type: "get",
+                    				dataType: "jsonp",
+                    				jsonp: "callback",
+                    				success: function (data) {
+                    					var province = data.result.addressComponent.province;
+                    					var cityname = (data.result.addressComponent.city);
+                    					var district = data.result.addressComponent.district;
+                    					var street = data.result.addressComponent.street;
+                    					var street_number = data.result.addressComponent.street_number;
+                    					var formatted_address = data.result.formatted_address;
+                    					$("#address").val(province+cityname+district);
+                    				}
+                    			});
                     	    },
                     	    cancel: function (res) {
                     	        alert('用户拒绝授权获取地理位置');
@@ -381,10 +393,8 @@
                 <li class="clearfix">
                     <span class="namell fl v-m">比赛地点</span>
                     <span class="fl clearfix apply_address v-m">
-							<img src="${ctxStaticFront }/images/fixed.png">
-							<span class="add_text fl" style="margin-top: 6px;">点击选择</span>
-							<input class="apply_input" name="address" value="${match.address }" id="address" type="text"
-                                   placeholder="请选择">
+							<input class="textll" name="address" value="${match.address }" id="address" type="text"
+                                   placeholder="请选择" readonly="readonly">
 							<span class="fr add_butt" onclick="toCenter()">重新选择</span>
 						</span>
 
