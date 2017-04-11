@@ -50,7 +50,12 @@ public class MatchTypeNoteUtils {
 			return list;
 		}
 	public static int getMatchPeople(String matchid){
-		return matchTypeNoteDao.getMatchPeopleCount(matchid);
+		try{
+			return matchTypeNoteDao.getMatchPeopleCount(matchid);
+		}catch(Exception e){
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	public static void clearCache(MatchTypeNote note){
         //CacheUtils.remove(CACHE_SETTING_MAP+":mt:"+note.getMatch().getId()+":"+note.getBtype());
