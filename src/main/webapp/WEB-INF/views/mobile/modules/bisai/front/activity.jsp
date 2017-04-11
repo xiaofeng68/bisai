@@ -357,11 +357,11 @@
             </li>
             <li style="margin-top:0.3rem;">
                 <span class="namell v-t">比赛简介</span>
-                <textarea name="des" placeholder="请输入比赛简介" readonly="readonly">${match.des }</textarea>
+                <textarea class="are" name="des" placeholder="请输入比赛简介" readonly="readonly">${match.des }</textarea>
             </li>
             <li style="margin-top:0.3rem;">
                 <span class="namell v-t">奖金奖品</span>
-                <textarea name="jiangpin" placeholder="请输入奖金奖品" readonly="readonly">${match.jiangpin }</textarea>
+                <textarea class="are" name="jiangpin" placeholder="请输入奖金奖品" readonly="readonly">${match.jiangpin }</textarea>
             </li>
         </ul>
     </div>
