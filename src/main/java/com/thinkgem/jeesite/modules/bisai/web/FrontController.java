@@ -59,7 +59,7 @@ public class FrontController extends BaseController {
 //    	if(StringUtils.isEmpty(openId)){
     		try{
 		    	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
-		    	String openId = token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
+		    	String openId =(String) token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
 		        session.setAttribute(WeixinHelp.OPENID,openId);
 		        //如果注册过或授权登陆过无需再次登陆
 		        Account tAccount = accountService.getAccountByOpenId(openId);
@@ -102,6 +102,9 @@ public class FrontController extends BaseController {
     public String wxoauth(HttpServletRequest request,String state) {
     	HttpSession session = request.getSession();
         String openId = (String) session.getAttribute(WeixinHelp.OPENID);
+        if(openId==null /*&& StringUtils.isEmpty(tAccount.getPhone())*/){
+            //return "modules/bisai/front/register";
+            return "modules/bisai/front/login";}
         Account tAccount = accountService.getAccountByOpenId(openId);
         if(tAccount==null){
             //第四步：拉取用户信息(需scope为 snsapi_userinfo)
@@ -109,7 +112,9 @@ public class FrontController extends BaseController {
             //保存用户信息
             tAccount = new Account();
             tAccount.setWxname(account.getNickname());
-            tAccount.setSex(account.getSex()+"");
+            String s=account.getSex().toString();
+            if(s==null) s="0";
+            tAccount.setSex(s);
             tAccount.setOpenid(openId);
             tAccount.setWxphoto(account.getHeadimgurl());
             accountService.save(tAccount);
@@ -123,7 +128,7 @@ public class FrontController extends BaseController {
         request.setAttribute("ismy", true);
         //如果没有手机进行手机注册页面，并关联进行
         //return "modules/bisai/front/about";
-        return "redirect:match.html";
+        return "modules/bisai/front/apply";//如何判断授权是从哪个页面过来的？我不会
     }
     @RequestMapping(value = "regist",method=RequestMethod.POST)
     public String registAccount(HttpServletRequest request,Account account){
@@ -201,7 +206,7 @@ public class FrontController extends BaseController {
         HttpSession session = request.getSession();
         if (session.getAttribute(GlobalBuss.CURRENTACCOUNT) == null) {//请先登陆
         	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
-        	String openId = token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
+        	String openId = (String) token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
         	request.getSession().setAttribute(WeixinHelp.OPENID,openId);
             //如果注册过或授权登陆过无需再次登陆
             Account tAccount = accountService.getAccountByOpenId(openId);
@@ -287,7 +292,7 @@ public class FrontController extends BaseController {
     	Account tAccount = null;
         if (session.getAttribute(GlobalBuss.CURRENTACCOUNT) == null) {//请先登陆
         	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
-        	String openId = token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
+        	String openId = (String) token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
         	request.getSession().setAttribute(WeixinHelp.OPENID,openId);
             //如果注册过或授权登陆过无需再次登陆
         	tAccount = accountService.getAccountByOpenId(openId);
