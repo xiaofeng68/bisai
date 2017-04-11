@@ -136,15 +136,15 @@ public class FastweixinTest {
         main1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sportslm.com/f&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
         
         //准备子菜单
-        MenuButton sub1 = new MenuButton();
-        sub1.setKey("sub1");
-        sub1.setName("授权2");
-        sub1.setType(MenuType.VIEW);
-        sub1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://bisai.tunnel.qydev.com/f&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
-        MenuButton sub2 = new MenuButton();
-        sub2.setKey("sub2");
-        sub2.setName("点击2");
-        sub2.setType(MenuType.CLICK);
+//        MenuButton sub1 = new MenuButton();
+//        sub1.setKey("sub1");
+//        sub1.setName("授权2");
+//        sub1.setType(MenuType.VIEW);
+//        sub1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://bisai.tunnel.qydev.com/f&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
+//        MenuButton sub2 = new MenuButton();
+//        sub2.setKey("sub2");
+//        sub2.setName("点击2");
+//        sub2.setType(MenuType.CLICK);
 
 
         List<MenuButton> list = new ArrayList<MenuButton>();
@@ -162,19 +162,31 @@ public class FastweixinTest {
         sub3.setKey("sub3");
         sub3.setName("友场馆");
         sub3.setType(MenuType.VIEW);
+<<<<<<< HEAD
         sub3.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sprotslm.com/info/area.action&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
+=======
+        sub3.setUrl("http://www.sprotslm.com/info/area.action");
+>>>>>>> 5668cd2fdf8f2c603474fea4df7fa1a0156c5910
 
         MenuButton sub4 = new MenuButton();
         sub4.setKey("sub4");
         sub4.setName("友赞助");
         sub4.setType(MenuType.VIEW);
+<<<<<<< HEAD
         sub4.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sprotslm.com/info/aword.action&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
+=======
+        sub4.setUrl("http://www.sprotslm.com/info/aword.action");
+>>>>>>> 5668cd2fdf8f2c603474fea4df7fa1a0156c5910
 
         MenuButton sub5 = new MenuButton();
         sub5.setKey("sub5");
         sub5.setName("友教练");
         sub5.setType(MenuType.VIEW);
+<<<<<<< HEAD
         sub5.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sprotslm.com/info/tech.action&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
+=======
+        sub5.setUrl("http://www.sprotslm.com/info/tech.action");
+>>>>>>> 5668cd2fdf8f2c603474fea4df7fa1a0156c5910
 
         List<MenuButton> list2 = new ArrayList<MenuButton>();
         list2.add(sub3);
@@ -192,6 +204,7 @@ public class FastweixinTest {
         sub6.setKey("sub6");
         sub6.setName("场馆加盟");
         sub6.setType(MenuType.VIEW);
+<<<<<<< HEAD
         sub6.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sprotslm.com/info/areaadd.action&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
 
         MenuButton sub7 = new MenuButton();
@@ -199,12 +212,25 @@ public class FastweixinTest {
         sub7.setName("赞助加盟");
         sub7.setType(MenuType.VIEW);
         sub7.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sprotslm.com/info/awordadd.action&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
+=======
+        sub6.setUrl("http://www.sprotslm.com/info/areaadd.action");
+
+        MenuButton sub4 = new MenuButton();
+        sub7.setKey("sub7");
+        sub7.setName("赞助加盟");
+        sub7.setType(MenuType.VIEW);
+        sub7.setUrl("http://www.sprotslm.com/info/awordadd.action");
+>>>>>>> 5668cd2fdf8f2c603474fea4df7fa1a0156c5910
 
         MenuButton sub8 = new MenuButton();
         sub8.setKey("sub8");
         sub8.setName("教练加盟");
         sub8.setType(MenuType.VIEW);
+<<<<<<< HEAD
         sub8.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sprotslm.com/info/techadd.action&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
+=======
+        sub8.setUrl("http://www.sprotslm.com/info/techadd.action");
+>>>>>>> 5668cd2fdf8f2c603474fea4df7fa1a0156c5910
 
         List<MenuButton> list3 = new ArrayList<MenuButton>();
         list3.add(sub6);

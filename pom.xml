@@ -54,7 +54,7 @@
 		<webserver.port>8181</webserver.port>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<downloadSources>true</downloadSources>
-		<!-- 软件授权 -->
+		<!-- 软件授权 kid.lesence.version-->
 		<kid.lesence.version>0.0.1-SNAPSHOT</kid.lesence.version>
 	
 	</properties>
