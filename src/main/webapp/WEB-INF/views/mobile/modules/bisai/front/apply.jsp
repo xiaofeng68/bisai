@@ -233,9 +233,9 @@
 <body>
 <header class="grouping_header clearfix">
 		<span class="fl">
-			<a href="${ctx }/${frontPath}match${urlSuffix}">
+			<%-- <a href="${ctx }/${frontPath}match${urlSuffix}">
 				<img src="${ctxStaticFront }/images/r-arrow.png">
-			</a>
+			</a> --%>
 		</span>
     <span>申请举办比赛</span>
 </header>
@@ -394,7 +394,7 @@
                     <span class="namell fl v-m">比赛地点</span>
                     <span class="fl clearfix apply_address v-m">
 							<input class="textll" name="address" value="${match.address }" id="address" type="text"
-                                   placeholder="请选择" readonly="readonly">
+                                   placeholder="请选择" >
 							<span class="fr add_butt" onclick="toCenter()">重新选择</span>
 						</span>
 

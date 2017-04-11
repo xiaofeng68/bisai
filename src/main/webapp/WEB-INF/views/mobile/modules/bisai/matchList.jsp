@@ -49,7 +49,7 @@
 				<th>主办者</th>
 				<th>承办者</th>
 				<th>赞助商</th>
-				<th>报名开始时间</th>
+				<th>报名时间</th>
 				<th>比赛时间</th>
 				<th>状态</th>
 				<shiro:hasPermission name="bisai:match:edit"><th>操作</th></shiro:hasPermission>
@@ -71,7 +71,7 @@
 					${match.sponsors}
 				</td>
 				<td>
-					<fmt:formatDate value="${match.regstarttime}" pattern="yyyy-MM-dd"/>
+					<fmt:formatDate value="${match.regstarttime}" pattern="yyyy-MM-dd"/>至<fmt:formatDate value="${match.regendtime}" pattern="yyyy-MM-dd"/>
 				</td>
 				<td>
 					<fmt:formatDate value="${match.starttime}" pattern="yyyy-MM-dd"/>至<fmt:formatDate value="${match.endtime}" pattern="yyyy-MM-dd"/>
