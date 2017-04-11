@@ -474,7 +474,7 @@
                                             <c:set var="peoples" value="${fns:peopleHasBaoming(typeNode.id,CURRENTACCOUNT.openid) }"></c:set>
                                             <c:forEach var="note" items="${peoples }">
                                                 <c:choose>
-                                                    <c:when test="${note.phone != CURRENTACCOUNT.phone}">
+                                                    <c:when test="${empty note.phone or note.phone != CURRENTACCOUNT.phone}">
                                                         <input type="hidden" id="noteid" value="${note.id }"/>
                                                         <input type="text" id="notename" placeholder="队友姓名" value="${note.name }">
                                                         <input type="text" id="notephone" placeholder="手机号" value="${note.phone }">

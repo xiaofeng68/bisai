@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kidinfor.fastweixin.api.response.GetUserInfoResponse;
 import com.kidinfor.util.WeixinHelp;
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.MD5Util;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -58,7 +59,7 @@ public class FrontController extends BaseController {
 //    	if(StringUtils.isEmpty(openId)){
     		try{
 		    	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
-		    	String openId = token.getString(WeixinHelp.OPENID);
+		    	String openId = token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
 		        session.setAttribute(WeixinHelp.OPENID,openId);
 		        //如果注册过或授权登陆过无需再次登陆
 		        Account tAccount = accountService.getAccountByOpenId(openId);
@@ -71,7 +72,7 @@ public class FrontController extends BaseController {
         //model.addAttribute("isIndex", true);
 //        return "modules/bisai/front/index";
         model.addAttribute("ismy",true);
-        return "modules/bisai/front/match";
+        return "redirect:"+Global.getFrontPath()+"/match.html";
     }
 
     /**
