@@ -444,19 +444,26 @@
         </div>
     </div>
 </section>
+<script>
+    $(function () {
+        var str=window.location.href;
+        var strs=str.split("baoming=");
+        if(strs.length==2){
+            document.getElementById("danxiang_bottom").style.display="block";
+        }
+    })
+</script>
 <!-- 单项赛才允许再报名时间段内报名 -->
 <c:if test="${match.changci==0 and not empty CURRENTACCOUNT and CURRENTACCOUNT.id!=match.account.id}">
     <jsp:useBean id="now" class="java.util.Date"/>
     <fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="nowDate"/>
     <fmt:formatDate value="${match.regendtime}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="regendtime"/>
     <fmt:formatDate value="${match.regstarttime}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="regstarttime"/>
-
-
     <c:choose>
         <c:when test="${nowDate lt regstarttime}">报名还未开始</c:when>
         <c:when test="${nowDate gt regendtime}">报名已截止</c:when>
         <c:otherwise>
-            <div id="danxiang_bottom" class="activity_danxiang">
+            <div id="danxiang_bottom" class="activity_danxiang" style="display:none;">
                 <div class="activity_content">
                     <c:forEach var="type" items="${fns:getDictList('MatchTypeNote_type')}">
                         <div class="label js-check clearfix" style="margin-top: 1rem;margin:0 auto;">
