@@ -70,7 +70,8 @@ public class FrontController extends BaseController {
 //    	}
         //model.addAttribute("isIndex", true);
 //        return "modules/bisai/front/index";
-        return "redirect:match.html";
+        model.addAttribute("ismy",true);
+        return "modules/bisai/front/match";
     }
 
     /**
