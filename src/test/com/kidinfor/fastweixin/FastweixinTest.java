@@ -60,6 +60,7 @@ import com.kidinfor.fastweixin.api.response.UploadMaterialResponse;
 import com.kidinfor.fastweixin.api.response.UploadMediaResponse;
 import com.kidinfor.fastweixin.message.MpNewsMsg;
 import com.kidinfor.fastweixin.util.StrUtil;
+import com.thinkgem.jeesite.common.config.Global;
 
 /**
  * @author peiyu
@@ -147,18 +148,18 @@ public class FastweixinTest {
         sub1.setKey("sub1");
         sub1.setName("所有赛事");
         sub1.setType(MenuType.VIEW);
-        sub1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sportslm.com/f&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
+        sub1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sportslm.com/"+Global.getFrontPath()+"/allmatch.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
         MenuButton sub2 = new MenuButton();
         sub2.setKey("sub2");
         sub2.setName("我的赛事");
         sub2.setType(MenuType.VIEW);
-        sub2.setUrl("");
+        sub2.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sportslm.com/"+Global.getFrontPath()+"/mymatch.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
 
         MenuButton sub_2 = new MenuButton();
         sub_2.setKey("sub_2");
         sub_2.setName("申请比赛");
         sub_2.setType(MenuType.VIEW);
-        sub_2.setUrl("");
+        sub_2.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sportslm.com/"+Global.getFrontPath()+"/apply.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
 
         List<MenuButton> list = new ArrayList<MenuButton>();
         list.add(sub1);

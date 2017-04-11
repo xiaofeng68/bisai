@@ -200,7 +200,14 @@ public class FrontController extends BaseController {
     public String apply(HttpServletRequest request) {
         HttpSession session = request.getSession();
         if (session.getAttribute(GlobalBuss.CURRENTACCOUNT) == null) {//请先登陆
-            return "modules/bisai/front/login";
+        	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
+        	String openId = token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
+        	request.getSession().setAttribute(WeixinHelp.OPENID,openId);
+            //如果注册过或授权登陆过无需再次登陆
+            Account tAccount = accountService.getAccountByOpenId(openId);
+            if(tAccount==null){//我的赛事
+            	 return "modules/bisai/front/login";
+        	}
         }
         return "modules/bisai/front/apply";
     }
@@ -257,5 +264,55 @@ public class FrontController extends BaseController {
 	        }
         }
     }
-    
+    /**********************************************************************/
+    /*****************************一期菜单单独处理*****************************/
+    /**********************************************************************/
+    @RequestMapping(value = "allmatch${urlSuffix}")
+    public String allMatch(HttpServletRequest request,HttpServletResponse response,Model model) {
+        Match match = new Match();
+        Page<Match> page = matchService.findAllMatch(new Page<Match>(request, response),match); 
+        model.addAttribute("page", page);
+        return "modules/bisai/front/allmatch";
+    }
+    @RequestMapping(value = "allmatchSearch${urlSuffix}")
+    public String allmatchSearch(Match match,HttpServletRequest request,HttpServletResponse response,Model model) {
+        Page<Match> page = matchService.findAllMatch(new Page<Match>(request, response),match); 
+        model.addAttribute("page", page);
+        model.addAttribute("smatch",match);
+        return "modules/bisai/front/match";
+    }
+    @RequestMapping(value = "mymatch${urlSuffix}")
+    public String myMatch(HttpServletRequest request,HttpServletResponse response,Model model) {
+    	HttpSession session = request.getSession();
+    	Account tAccount = null;
+        if (session.getAttribute(GlobalBuss.CURRENTACCOUNT) == null) {//请先登陆
+        	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
+        	String openId = token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
+        	request.getSession().setAttribute(WeixinHelp.OPENID,openId);
+            //如果注册过或授权登陆过无需再次登陆
+        	tAccount = accountService.getAccountByOpenId(openId);
+            if(tAccount==null){//我的赛事
+            	 return "modules/bisai/front/login";
+        	}
+        }
+        request.getSession().setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
+        Match match = new Match();
+        match.setAccount(tAccount);
+        Page<Match> page = matchService.findPage(new Page<Match>(request, response), match); 
+        model.addAttribute("mypage", page);
+        return "modules/bisai/front/mymatch";
+    }
+    @RequestMapping(value = "mymatchSearch${urlSuffix}")
+    public String mymatchSearch(Match match,HttpServletRequest request,HttpServletResponse response,Model model) {
+        Account account = (Account) request.getSession().getAttribute(GlobalBuss.CURRENTACCOUNT);
+        if(account!=null){//我的赛事
+            match.setAccount(account);
+            Page<Match> page = matchService.findPage(new Page<Match>(request, response), match); 
+            model.addAttribute("mypage", page);
+        }
+        return "modules/bisai/front/mymatch";
+    }
+    /**********************************************************************/
+    /*****************************一期菜单单独处理结束**************************/
+    /**********************************************************************/
 }

@@ -153,6 +153,7 @@
                 alert("请输入队友手机号！");
                 return;
             }
+            var num = parseInt($("#num"+type).html());
             $.post('${ctx }${frontPath}/match/matchbaomings', {
                 typeid: type,
                 flag: flag,
@@ -166,10 +167,16 @@
                         $("#baomspan" + type + "true").hide();
                         $("#baomspan" + type).show();
                         $("#baomspan" + type + "false").show();
+                        if(!isNaN(num)){
+                        	$("#num"+type).html(num+1)
+                        }
                     } else {
                         $("#baomspan" + type + "true").show();
                         $("#baomspan" + type + "false").hide();
                         $("#baomspan" + type).hide();
+                        if(!isNaN(num)){
+                        	$("#num"+type).html(num-1)
+                        }
                     }
                 } else {
                     alert(result.msg);
