@@ -132,26 +132,40 @@ public class FastweixinTest {
         main1.setType(MenuType.CLICK);
         main1.setKey("main1");
         main1.setName("天羽联");
-        main1.setType(MenuType.VIEW);
-        main1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sportslm.com/f&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
-        
+        main1.setType(MenuType.CLICK);
+
         //准备子菜单
         MenuButton sub1 = new MenuButton();
+//        sub1.setKey("sub1");
+//        sub1.setName("授权2");
+//        sub1.setType(MenuType.VIEW);
+//        sub1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://bisai.tunnel.qydev.com/f&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
+//        MenuButton sub2 = new MenuButton();
+//        sub2.setKey("sub2");
+//        sub2.setName("点击2");
+//        sub2.setType(MenuType.CLICK);
         sub1.setKey("sub1");
-        sub1.setName("授权2");
+        sub1.setName("所有赛事");
         sub1.setType(MenuType.VIEW);
-        sub1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://bisai.tunnel.qydev.com/f&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
+        sub1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sportslm.com/f&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
         MenuButton sub2 = new MenuButton();
         sub2.setKey("sub2");
-        sub2.setName("点击2");
-        sub2.setType(MenuType.CLICK);
+        sub2.setName("我的赛事");
+        sub2.setType(MenuType.VIEW);
+        sub2.setUrl("");
 
+        MenuButton sub_2 = new MenuButton();
+        sub_2.setKey("sub_2");
+        sub_2.setName("申请比赛");
+        sub_2.setType(MenuType.VIEW);
+        sub_2.setUrl("");
 
         List<MenuButton> list = new ArrayList<MenuButton>();
         list.add(sub1);
         list.add(sub2);
+        list.add(sub_2);
         //将子菜单放入主菜单里
-        //main1.setSubButton(list);
+        main1.setSubButton(list);
 
         MenuButton main2 = new MenuButton();
         main2.setKey("main2");
