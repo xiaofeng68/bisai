@@ -467,8 +467,24 @@
     <fmt:formatDate value="${match.regendtime}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="regendtime"/>
     <fmt:formatDate value="${match.regstarttime}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="regstarttime"/>
     <c:choose>
-        <c:when test="${nowDate lt regstarttime}">报名还未开始</c:when>
-        <c:when test="${nowDate gt regendtime}">报名已截止</c:when>
+        <c:when test="${nowDate lt regstarttime}">
+            <div id="danxiang_bottom" class="activity_danxiang" style="display:none;">
+                <div class="activity_content">
+                    <span>报名还未开始</span>
+                    <div class="shut_button" onclick="shut_but()">关闭</div>
+                </div>
+            </div>
+
+
+        </c:when>
+        <c:when test="${nowDate gt regendtime}">
+            <div id="danxiang_bottom" class="activity_danxiang" style="display:none;">
+                <div class="activity_content">
+                    <span>报名已截止</span>
+                    <div class="shut_button" onclick="shut_but()">关闭</div>
+                </div>
+            </div>
+            </c:when>
         <c:otherwise>
             <div id="danxiang_bottom" class="activity_danxiang" style="display:none;">
                 <div class="activity_content">
