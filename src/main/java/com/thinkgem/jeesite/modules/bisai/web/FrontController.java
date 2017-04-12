@@ -173,7 +173,8 @@ public class FrontController extends BaseController {
     @RequestMapping(value = "logout")
     public String logout(HttpServletRequest request ,HttpServletResponse response){
         request.getSession().removeAttribute(GlobalBuss.CURRENTACCOUNT);
-        return "modules/bisai/front/index";
+        request.getSession().removeAttribute(WeixinHelp.OPENID);
+        return null;
     }
     /**賽事列表*/
     @RequestMapping(value = "match${urlSuffix}")
