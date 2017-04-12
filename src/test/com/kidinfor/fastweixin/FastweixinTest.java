@@ -159,7 +159,7 @@ public class FastweixinTest {
         sub_2.setKey("sub_2");
         sub_2.setName("申请比赛");
         sub_2.setType(MenuType.VIEW);
-        sub_2.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sportslm.com/"+Global.getFrontPath()+"/apply.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
+        sub_2.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sportslm.com/"+Global.getFrontPath()+"/myapply.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect");
 
         List<MenuButton> list = new ArrayList<MenuButton>();
         list.add(sub1);

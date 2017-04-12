@@ -59,7 +59,7 @@ public class FrontController extends BaseController {
 //    	if(StringUtils.isEmpty(openId)){
     		try{
 		    	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
-		    	String openId =(String) token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
+		    	String openId ="oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//(String) token.getString(WeixinHelp.OPENID);//
 		        session.setAttribute(WeixinHelp.OPENID,openId);
 		        //如果注册过或授权登陆过无需再次登陆
 		        Account tAccount = accountService.getAccountByOpenId(openId);
@@ -174,7 +174,7 @@ public class FrontController extends BaseController {
     public String logout(HttpServletRequest request ,HttpServletResponse response){
         request.getSession().removeAttribute(GlobalBuss.CURRENTACCOUNT);
         request.getSession().removeAttribute(WeixinHelp.OPENID);
-        return null;
+        return "modules/bisai/front/index";
     }
     /**賽事列表*/
     @RequestMapping(value = "match${urlSuffix}")
@@ -219,7 +219,6 @@ public class FrontController extends BaseController {
             session.setAttribute(WeixinHelp.OPENID,openId);
             session.setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
         }
-        session.setAttribute("fromURL", "apply.html");
         return "modules/bisai/front/apply";
     }
     @RequestMapping(value="apply_s${urlSuffix}",method=RequestMethod.POST)
@@ -303,6 +302,7 @@ public class FrontController extends BaseController {
     @RequestMapping(value = "mymatch${urlSuffix}")
     public String myMatch(HttpServletRequest request,HttpServletResponse response,Model model) {
     	HttpSession session = request.getSession();
+    	session.setAttribute("fromURL", "mymatch.html");
     	Account tAccount = (Account) session.getAttribute(GlobalBuss.CURRENTACCOUNT);
         if (tAccount == null) {//请先登陆
         	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
@@ -317,7 +317,7 @@ public class FrontController extends BaseController {
         }else{
         	session.setAttribute(WeixinHelp.OPENID,tAccount.getOpenid());
         }
-        session.setAttribute("fromURL", "mymatch.html");
+        
         
         Match match = new Match();
         match.setAccount(tAccount);
@@ -338,6 +338,7 @@ public class FrontController extends BaseController {
     @RequestMapping(value = "myapply${urlSuffix}")
     public String myapply(HttpServletRequest request) {
     	HttpSession session = request.getSession();
+    	session.setAttribute("fromURL", "apply.html");
     	Account tAccount = (Account) session.getAttribute(GlobalBuss.CURRENTACCOUNT);
         if (tAccount == null) {//请先登陆
         	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
@@ -353,7 +354,7 @@ public class FrontController extends BaseController {
         	session.setAttribute(WeixinHelp.OPENID,tAccount.getOpenid());
         }
         
-        session.setAttribute("fromURL", "apply.html");
+        
         return "redirect:"+Global.getFrontPath()+"/apply.html";
     }
     /**********************************************************************/
