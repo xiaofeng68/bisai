@@ -29,7 +29,7 @@
                 $("#" + id).val(input);
                 $(this).parent().remove();
             });
-            toCenter();
+            //toCenter();
         });
         function addOrgItems(input, cls, hidden) {
             var name = $("#" + input).val();
@@ -219,6 +219,7 @@
                     					var street = data.result.addressComponent.street;
                     					var street_number = data.result.addressComponent.street_number;
                     					var formatted_address = data.result.formatted_address;
+                    					alert("测试当前位置："+province+cityname+district);
                     					$("#address").val(province+cityname+district);
                     				}
                     			});
