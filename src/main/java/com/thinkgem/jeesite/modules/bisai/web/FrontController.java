@@ -247,6 +247,14 @@ public class FrontController extends BaseController {
         String state = match.getState();
         if(StringUtils.isEmpty(state)) throw new RuntimeException("状态码错误，请联系管理员");
         if("1".equals(request.getParameter("isall"))){
+        	HttpSession session = request.getSession();
+        	String openId = (String) session.getAttribute(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
+            //如果注册过或授权登陆过无需再次登陆
+            Account tAccount = accountService.getAccountByOpenId(openId);
+            if(tAccount==null){//我的赛事
+            	 return "modules/bisai/front/login";
+        	}
+            session.setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
         	return "modules/bisai/front/activity";
         }else{
 	        if("0".equals(state)){
