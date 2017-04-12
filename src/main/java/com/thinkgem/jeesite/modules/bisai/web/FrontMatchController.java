@@ -592,6 +592,7 @@ public class FrontMatchController extends BaseController {
 			json.setObj(sign);
 			json.setSuccess(true);
 		} catch (Exception e) {
+			e.printStackTrace();
 			json.setMsg("请求失败，请联系管理员!");
 			json.setSuccess(false);
 		}

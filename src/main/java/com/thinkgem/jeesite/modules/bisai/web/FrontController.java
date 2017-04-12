@@ -102,6 +102,9 @@ public class FrontController extends BaseController {
     public String wxoauth(HttpServletRequest request,String state) {
     	HttpSession session = request.getSession();
         String openId = (String) session.getAttribute(WeixinHelp.OPENID);
+        if(StringUtils.isEmpty(openId)){
+        	return "modules/bisai/front/login";
+        }
         Account tAccount = accountService.getAccountByOpenId(openId);
         if(tAccount==null){
             //第四步：拉取用户信息(需scope为 snsapi_userinfo)
@@ -121,9 +124,13 @@ public class FrontController extends BaseController {
         }
         session.setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
         request.setAttribute("ismy", true);
+        String fromURL = (String) session.getAttribute("fromURL");
+        if(!StringUtils.isEmpty(fromURL)){
+        	return "redirect:"+fromURL;
+        }
         //如果没有手机进行手机注册页面，并关联进行
         //return "modules/bisai/front/about";
-        return "redirect:match.html";
+        return "redirect:mymatch.html";
     }
     @RequestMapping(value = "regist",method=RequestMethod.POST)
     public String registAccount(HttpServletRequest request,Account account){
@@ -209,6 +216,7 @@ public class FrontController extends BaseController {
             	 return "modules/bisai/front/login";
         	}
         }
+        session.setAttribute("fromURL", "apply.html");
         return "modules/bisai/front/apply";
     }
     @RequestMapping(value="apply_s${urlSuffix}",method=RequestMethod.POST)
@@ -269,6 +277,14 @@ public class FrontController extends BaseController {
     /**********************************************************************/
     @RequestMapping(value = "allmatch${urlSuffix}")
     public String allMatch(HttpServletRequest request,HttpServletResponse response,Model model) {
+    	HttpSession session = request.getSession();
+    	String openId = (String)session.getAttribute(WeixinHelp.OPENID);
+    	if(StringUtils.isEmpty(openId)){
+    		JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
+        	openId = token.getString(WeixinHelp.OPENID);
+    		request.getSession().setAttribute(WeixinHelp.OPENID,openId);
+    	}
+    	session.setAttribute("fromURL", "allmatch.html");
         Match match = new Match();
         Page<Match> page = matchService.findAllMatch(new Page<Match>(request, response),match); 
         model.addAttribute("page", page);
@@ -288,13 +304,14 @@ public class FrontController extends BaseController {
         if (session.getAttribute(GlobalBuss.CURRENTACCOUNT) == null) {//请先登陆
         	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
         	String openId = token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
-        	request.getSession().setAttribute(WeixinHelp.OPENID,openId);
+        	session.setAttribute(WeixinHelp.OPENID,openId);
             //如果注册过或授权登陆过无需再次登陆
         	tAccount = accountService.getAccountByOpenId(openId);
             if(tAccount==null){//我的赛事
             	 return "modules/bisai/front/login";
         	}
         }
+        session.setAttribute("fromURL", "mymatch.html");
         request.getSession().setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
         Match match = new Match();
         match.setAccount(tAccount);

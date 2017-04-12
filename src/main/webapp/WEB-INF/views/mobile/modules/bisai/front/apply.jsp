@@ -43,6 +43,11 @@
             $("#" + hidden).val(value + name);
         }
         function resetValue() {
+        	var name = $("#name").val();
+        	if(!name){
+        		alert("请输入比赛名称！");
+        		return false;
+        	}
             var contractorStr = "";
             var index = 0;
             $(".contractordic").find("span").each(function () {
