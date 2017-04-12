@@ -185,7 +185,7 @@
                 	    appId: obj.appid,
                 	    timestamp: obj.timestamp,
                 	    nonceStr: obj.noncestr,
-                	    signature: obj.signature,
+                	    signature: obj.signature.toUpperCase(),
                 	    jsApiList: ['checkJsApi','openLocation','getLocation']
                 	});
                     wx.ready(function () {

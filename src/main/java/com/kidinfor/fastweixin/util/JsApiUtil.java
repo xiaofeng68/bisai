@@ -25,7 +25,7 @@ public class JsApiUtil {
         paramMap.put("noncestr", nonceStr);
         paramMap.put("timestamp", Long.toString(timestame));
         paramMap.put("url", url);
-
+        System.out.println("签名："+paramMap);
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : paramMap.entrySet()) {
             sb.append("&").append(entry.toString());
