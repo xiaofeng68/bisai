@@ -338,6 +338,7 @@ public class FrontController extends BaseController {
     @RequestMapping(value = "myapply${urlSuffix}")
     public String myapply(HttpServletRequest request) {
     	HttpSession session = request.getSession();
+    	session.setAttribute("fromURL", "apply.html");
     	Account tAccount = (Account) session.getAttribute(GlobalBuss.CURRENTACCOUNT);
         if (tAccount == null) {//请先登陆
         	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
@@ -353,7 +354,7 @@ public class FrontController extends BaseController {
         	session.setAttribute(WeixinHelp.OPENID,tAccount.getOpenid());
         }
         
-        session.setAttribute("fromURL", "apply.html");
+        
         return "redirect:"+Global.getFrontPath()+"/apply.html";
     }
     /**********************************************************************/
