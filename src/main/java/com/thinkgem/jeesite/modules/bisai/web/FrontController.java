@@ -211,12 +211,13 @@ public class FrontController extends BaseController {
         if (session.getAttribute(GlobalBuss.CURRENTACCOUNT) == null) {//请先登陆
         	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
         	String openId = (String) token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
-        	request.getSession().setAttribute(WeixinHelp.OPENID,openId);
             //如果注册过或授权登陆过无需再次登陆
             Account tAccount = accountService.getAccountByOpenId(openId);
             if(tAccount==null){//我的赛事
             	 return "modules/bisai/front/login";
         	}
+            session.setAttribute(WeixinHelp.OPENID,openId);
+            session.setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
         }
         session.setAttribute("fromURL", "apply.html");
         return "modules/bisai/front/apply";
