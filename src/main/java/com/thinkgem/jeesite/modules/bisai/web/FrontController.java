@@ -59,7 +59,7 @@ public class FrontController extends BaseController {
 //    	if(StringUtils.isEmpty(openId)){
     		try{
 		    	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
-		    	String openId = token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
+		    	String openId =(String) token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
 		        session.setAttribute(WeixinHelp.OPENID,openId);
 		        //如果注册过或授权登陆过无需再次登陆
 		        Account tAccount = accountService.getAccountByOpenId(openId);
@@ -112,7 +112,9 @@ public class FrontController extends BaseController {
             //保存用户信息
             tAccount = new Account();
             tAccount.setWxname(account.getNickname());
-            tAccount.setSex(account.getSex()+"");
+            String s=account.getSex().toString();
+            if(s==null) s="0";
+            tAccount.setSex(s);
             tAccount.setOpenid(openId);
             tAccount.setWxphoto(account.getHeadimgurl());
             accountService.save(tAccount);
@@ -208,7 +210,7 @@ public class FrontController extends BaseController {
         HttpSession session = request.getSession();
         if (session.getAttribute(GlobalBuss.CURRENTACCOUNT) == null) {//请先登陆
         	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
-        	String openId = token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
+        	String openId = (String) token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
         	request.getSession().setAttribute(WeixinHelp.OPENID,openId);
             //如果注册过或授权登陆过无需再次登陆
             Account tAccount = accountService.getAccountByOpenId(openId);
