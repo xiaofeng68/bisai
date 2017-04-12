@@ -238,9 +238,9 @@
 <body>
 <header class="grouping_header clearfix">
 		<span class="fl">
-			<%-- <a href="${ctx }/${frontPath}match${urlSuffix}">
+			<a href="${ctx }/${frontPath}/logout">
 				<img src="${ctxStaticFront }/images/r-arrow.png">
-			</a> --%>
+			</a>
 		</span>
     <span>申请举办比赛</span>
 </header>
