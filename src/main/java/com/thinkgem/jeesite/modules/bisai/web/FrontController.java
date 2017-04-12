@@ -59,7 +59,7 @@ public class FrontController extends BaseController {
 //    	if(StringUtils.isEmpty(openId)){
     		try{
 		    	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
-		    	String openId =(String) token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
+		    	String openId ="oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//(String) token.getString(WeixinHelp.OPENID);//
 		        session.setAttribute(WeixinHelp.OPENID,openId);
 		        //如果注册过或授权登陆过无需再次登陆
 		        Account tAccount = accountService.getAccountByOpenId(openId);
@@ -173,6 +173,7 @@ public class FrontController extends BaseController {
     @RequestMapping(value = "logout")
     public String logout(HttpServletRequest request ,HttpServletResponse response){
         request.getSession().removeAttribute(GlobalBuss.CURRENTACCOUNT);
+        request.getSession().removeAttribute(WeixinHelp.OPENID);
         return "modules/bisai/front/index";
     }
     /**賽事列表*/
