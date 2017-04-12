@@ -489,29 +489,36 @@
             <div id="danxiang_bottom" class="activity_danxiang" style="display:none;">
                 <div class="activity_content">
                     <c:forEach var="type" items="${fns:getDictList('MatchTypeNote_type')}">
-                        <div class="label js-check clearfix" style="margin-top: 1rem;margin:0 auto;">
+                        <div class="label js-check clearfix" style="margin:0 auto;">
                                 <c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,1) }">
                                     <c:if test="${typeNode.type==type.value }">
-                                        <span class="fl" style="margin-left: 1rem;margin-top:0.5rem;line-height:1rem;">${type.label }</span>
+                                        <span id="margin_bottom_${typeNode.id}" class="fl" style="margin-left: 1rem;margin-bottom:1rem;line-height:1rem;">${type.label }</span>
                                         <c:if test="${type.value==2 or type.value==4 or type.value==5}">
                                             <c:set var="peoples" value="${fns:peopleHasBaoming(typeNode.id,CURRENTACCOUNT.openid) }"></c:set>
                                             <c:forEach var="note" items="${peoples }">
+                                                <script>
+                                                </script>
                                                 <c:choose>
                                                     <c:when test="${empty note.phone or note.phone != CURRENTACCOUNT.phone}">
+                                                        <script>
+                                                            if(${empty note.phone or note.phone != CURRENTACCOUNT.phone}){
+                                                                document.getElementById("margin_bottom_${typeNode.id}").style.marginBottom="4rem";
+                                                            }
+                                                        </script>
                                                         <input type="hidden" id="noteid" value="${note.id }"/>
-                                                        <input type="text" id="notename" placeholder="队友姓名" value="${note.name }">
-                                                        <input type="text" id="notephone" placeholder="手机号" value="${note.phone }">
+                                                        <input type="text" id="notename" placeholder="队友姓名" value="${note.name }" class="baoming_input" style="margin-top: 1.5rem;">
+                                                        <input type="text" id="notephone" placeholder="手机号" value="${note.phone }" class="baoming_input" style="margin-top: 3rem;">
                                                     </c:when>
                                                 </c:choose>
                                             </c:forEach>
-                                            <span class="fl label_but" style="margin-top:0.5rem;text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${fn:length(peoples)==2}">display:none;</c:if>" onclick="addPeopleNote(${typeNode.id},true)" id="baomspan${typeNode.id }true">报名</span>
-                                            <span class="fl label_but" style="margin-top:0.5rem;text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${fn:length(peoples)==1}">display:none;</c:if>" onclick="addPeopleNote(${typeNode.id},false)" id="baomspan${typeNode.id }false">取消报名</span>
-                                            <span class="fl label_but" style="margin-top:0.5rem;text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${fn:length(peoples)==1}">display:none;</c:if>" onclick="addPeopleNote(${typeNode.id},true)" id="baomspan${typeNode.id }">修改</span>
+                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${fn:length(peoples)==2}">display:none;</c:if>" onclick="addPeopleNote(${typeNode.id},true)" id="baomspan${typeNode.id }true">报名</span>
+                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${fn:length(peoples)==1}">display:none;</c:if>" onclick="addPeopleNote(${typeNode.id},false)" id="baomspan${typeNode.id }false">取消报名</span>
+                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${fn:length(peoples)==1}">display:none;</c:if>" onclick="addPeopleNote(${typeNode.id},true)" id="baomspan${typeNode.id }">修改</span>
                                         </c:if>
                                         <c:if test="${type.value==1 or type.value==3 }">
                                             <c:set var="hasBaoming" value="${fns:checkHasBaoming(typeNode.id,CURRENTACCOUNT.openid) }"/>
-                                            <span class="fl label_but" style="margin-top:0.5rem;text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${hasBaoming }">display:none;</c:if>" onclick="baoming(${typeNode.id},true)" id="baomspan${typeNode.id }true">报名</span>
-                                            <span class="fl label_but" style="margin-top:0.5rem;text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${!hasBaoming }">display:none;</c:if>" onclick="baoming(${typeNode.id},false)" id="baomspan${typeNode.id }false">取消报名</span>
+                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${hasBaoming }">display:none;</c:if>" onclick="baoming(${typeNode.id},true)" id="baomspan${typeNode.id }true">报名</span>
+                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${!hasBaoming }">display:none;</c:if>" onclick="baoming(${typeNode.id},false)" id="baomspan${typeNode.id }false">取消报名</span>
                                         </c:if>
                                     </c:if>
                                 </c:forEach>

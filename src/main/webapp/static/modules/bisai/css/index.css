@@ -1965,3 +1965,9 @@ iframe {
     line-height: 2rem;
     color: #FFF;
 }
+
+.baoming_input{
+    font-size: 0.6rem;
+    margin-left: -1rem;
+    position: absolute;
+}
