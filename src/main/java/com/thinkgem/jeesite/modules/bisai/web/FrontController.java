@@ -219,7 +219,6 @@ public class FrontController extends BaseController {
             session.setAttribute(WeixinHelp.OPENID,openId);
             session.setAttribute(GlobalBuss.CURRENTACCOUNT, tAccount);
         }
-        session.setAttribute("fromURL", "apply.html");
         return "modules/bisai/front/apply";
     }
     @RequestMapping(value="apply_s${urlSuffix}",method=RequestMethod.POST)
@@ -303,6 +302,7 @@ public class FrontController extends BaseController {
     @RequestMapping(value = "mymatch${urlSuffix}")
     public String myMatch(HttpServletRequest request,HttpServletResponse response,Model model) {
     	HttpSession session = request.getSession();
+    	session.setAttribute("fromURL", "mymatch.html");
     	Account tAccount = (Account) session.getAttribute(GlobalBuss.CURRENTACCOUNT);
         if (tAccount == null) {//请先登陆
         	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
@@ -317,7 +317,7 @@ public class FrontController extends BaseController {
         }else{
         	session.setAttribute(WeixinHelp.OPENID,tAccount.getOpenid());
         }
-        session.setAttribute("fromURL", "mymatch.html");
+        
         
         Match match = new Match();
         match.setAccount(tAccount);
