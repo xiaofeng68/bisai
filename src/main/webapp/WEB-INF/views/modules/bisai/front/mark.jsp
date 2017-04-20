@@ -149,7 +149,7 @@
 	<bisai:message content="${message}"/>
 	<header class="grouping_header clearfix">
 		<span class="fl" style="line-height: 120%;">
-			<a href="${ctx }/${frontPath}match${urlSuffix}">
+			<a href="${ctx }/${frontPath}${fromURL}">
 				<img src="${ctxStaticFront}/images/r-arrow.png">
 			</a>
 		</span>

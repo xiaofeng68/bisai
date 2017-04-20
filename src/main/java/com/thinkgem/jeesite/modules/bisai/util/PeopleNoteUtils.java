@@ -28,17 +28,17 @@ public class PeopleNoteUtils {
 	    List<PeopleNote> list = peopleNoteDao.findList(note);
 		return list;
 	}
-	public static boolean checkHasBaoming(String typeid,String openid){
+	public static PeopleNote checkHasBaoming(String typeid,String openid){
 		PeopleNote note = new PeopleNote();
 	    MatchTypeNote type = new MatchTypeNote();
 	    type.setId(typeid);
 	    note.setNote(type);
 	    note.setOpenid(openid);
 		List<PeopleNote> list = peopleNoteDao.findList(note);
-		if(list!=null){
-			return list.size()>0;
+		if(list!=null && list.size()>0){
+			return list.get(0);
 		}
-		return false;
+		return null;
 	}
 	public static List<PeopleNote> peopleHasBaoming(String typeid,String openid){
 		PeopleNote note = new PeopleNote();

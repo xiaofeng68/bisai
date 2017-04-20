@@ -601,24 +601,32 @@ public class FrontMatchController extends BaseController {
 	}
 	@RequestMapping(value = "matchbaoming")
 	@ResponseBody
-	public Json matchbaoming(String id,boolean flag, HttpServletRequest request) {
+	public Json matchbaoming(String typeid,boolean flag,PeopleNote peopleNote, HttpServletRequest request) {
 		Json json = new Json();
 		try {
 			HttpSession session =request.getSession();
 			Account account = (Account) session.getAttribute(GlobalBuss.CURRENTACCOUNT);
-			PeopleNote peopleNote = new PeopleNote();
-			MatchTypeNote note = matchTypeNoteService.get(id);
-			peopleNote.setNote(note);
-			peopleNote.setState("0");
-			peopleNote.setName(account.getWxname());
-			peopleNote.setPhone(account.getPhone());
-			peopleNote.setOpenid(account.getOpenid());
-			if(flag)
-				peopleNoteService.save(peopleNote);
-			else
-				peopleNoteService.deleteByOpenid(peopleNote);
+			account.setWxname(request.getParameter("name"));
+			account.setPhone(request.getParameter("phone"));
+			session.setAttribute(GlobalBuss.CURRENTACCOUNT, account);
+			PeopleNote pnote = new PeopleNote();
+			MatchTypeNote note = matchTypeNoteService.get(typeid);
+			pnote.setNote(note);
+			pnote.setState("0");
+			pnote.setName(account.getWxname());
+			pnote.setPhone(account.getPhone());
+			pnote.setOpenid(account.getOpenid());
+			if(flag){
+				if(!StringUtils.isEmpty(peopleNote.getId())){
+					pnote.setId(peopleNote.getId());
+				}
+				peopleNoteService.save(pnote);
+			}else
+				peopleNoteService.deleteByOpenid(pnote);
+			json.setObj(pnote);
 			json.setSuccess(true);
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(flag)
 				json.setMsg("报名失败！");
 			else
@@ -638,8 +646,8 @@ public class FrontMatchController extends BaseController {
 			MatchTypeNote note = matchTypeNoteService.get(typeid);
 			pnote.setNote(note);
 			pnote.setState("0");
-			pnote.setName(account.getWxname()+";"+peopleNote.getName());
-			pnote.setPhone(account.getPhone()+";"+peopleNote.getPhone());
+			pnote.setName(peopleNote.getName());
+			pnote.setPhone(peopleNote.getPhone());
 			pnote.setOpenid(account.getOpenid());
 			pnote.setOrgname("");
 			if(flag){
@@ -647,10 +655,10 @@ public class FrontMatchController extends BaseController {
 					pnote.setId(peopleNote.getId());
 				}
 				peopleNoteService.save(pnote);
-				json.setObj(pnote);
 			}
 			else
 				peopleNoteService.deleteByOpenid(pnote);
+			json.setObj(pnote);
 			json.setSuccess(true);
 		} catch (Exception e) {
 			e.printStackTrace();

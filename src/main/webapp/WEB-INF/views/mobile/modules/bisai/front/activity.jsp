@@ -3,7 +3,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
     <title>${siteTitle }</title>
     <meta name="keywords" content="${siteKeywords }">
     <meta name="description" content="${siteDescription }">
@@ -126,17 +125,38 @@
             }
         }
         function baoming(type, flag) {
+        	var name = $("#notename"+type).val();
+            if (!name) {
+                alert("请输入姓名！");
+                return;
+            }
+            var phone = $("#notephone"+type).val();
+            if (!phone) {
+                alert("请输入手机号！");
+                return;
+            }
             $.post('${ctx }${frontPath}/match/matchbaoming', {
-                id: type,
-                flag: flag
+            	typeid: type,
+                flag: flag,
+                name: name,
+                phone: phone,
+                id: $("#noteid"+type).val()
             }, function (result) {
                 if (result.success) {
+                	$("#noteid"+type).val(result.obj.id);
                     if (flag) {
                         $("#baomspan" + type + "true").hide();
                         $("#baomspan" + type + "false").show();
+                        $("#baomspan" + type).show();
                     } else {
                         $("#baomspan" + type + "true").show();
                         $("#baomspan" + type + "false").hide();
+                        $("#baomspan" + type).hide();
+                        $("#notename"+type).val('${CURRENTACCOUNT.wxname}');
+                        $("#notephone"+type).val('${CURRENTACCOUNT.phone}');
+                    }
+                    if(flag){
+                    	alert("保存成功");
                     }
                 } else {
                     alert(result.msg);
@@ -144,13 +164,23 @@
             }, 'JSON');
         }
         function addPeopleNote(type, flag) {
-            var name = $("#notename").val();
-            if (!name) {
+        	var name0 = $("#notename0"+type).val();
+            if (!name0) {
+                alert("请输您的姓名！");
+                return;
+            }
+            var phone0 = $("#notephone0"+type).val();
+            if (!phone0) {
+                alert("请输入您的手机号！");
+                return;
+            }
+            var name1 = $("#notename1"+type).val();
+            if (!name1) {
                 alert("请输入队友姓名！");
                 return;
             }
-            var phone = $("#notephone").val();
-            if (!phone) {
+            var phone1 = $("#notephone1"+type).val();
+            if (!phone1) {
                 alert("请输入队友手机号！");
                 return;
             }
@@ -158,12 +188,12 @@
             $.post('${ctx }${frontPath}/match/matchbaomings', {
                 typeid: type,
                 flag: flag,
-                name: name,
-                phone: phone,
-                id: $("#noteid").val()
+                name: name0+";"+name1,
+                phone: phone0+";"+phone1,
+                id: $("#noteid"+type).val()
             }, function (result) {
                 if (result.success) {
-                    $("#noteid").val(result.obj.id);
+                    $("#noteid"+type).val(result.obj.id);
                     if (flag) {
                         $("#baomspan" + type + "true").hide();
                         $("#baomspan" + type).show();
@@ -178,6 +208,9 @@
                         if(!isNaN(num)){
                         	$("#num"+type).html(num-1)
                         }
+                    }
+                    if(flag){
+                    	alert("保存成功");
                     }
                 } else {
                     alert(result.msg);
@@ -265,14 +298,55 @@
                                     <c:set var="hasType" value="false"></c:set>
                                     <c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,1) }">
                                         <c:if test="${typeNode.type==type.value }">
-                                            <c:set var="hasType" value="true"></c:set>
+                                            <span class="fl">${type.label }</span>
+                                            <!-- 添加对应的比赛申请 -->
+                                            <c:if test="${type.value==2 or type.value==4 or type.value==5}">
+	                                            <c:set var="peoples" value="${fns:peopleHasBaoming(typeNode.id,CURRENTACCOUNT.openid) }"></c:set>
+	                                            <c:set var="peopleLen" value="${fn:length(peoples) }"/>
+	                                            <c:choose>
+	                                            <c:when test="${peopleLen==1 }">
+	                                            	<c:set var="note1" value="${peoples[0] }"/>
+	                                            	<input type="hidden" id="noteid${typeNode.id}" value="${note1.id }"/>
+	                                            	<input type="text" id="notename0${typeNode.id}" placeholder="姓名" value="${CURRENTACCOUNT.wxname }" style="margin-top: 1rem;" readonly="readonly">
+                                                    <input type="text" id="notephone0${typeNode.id}" placeholder="手机号" value="${CURRENTACCOUNT.phone }" style="margin-top: 1rem;">
+                                                    <input type="text" id="notename1${typeNode.id}" placeholder="队友姓名" value="${note1.name }" style="margin-top: 1rem;">
+                                                    <input type="text" id="notephone1${typeNode.id}" placeholder="手机号" value="${note1.phone }" style="margin-top: 1rem;">
+	                                            </c:when>
+	                                            <c:otherwise>
+	                                            	<c:set var="note1" value="${peoples[0] }"/>
+	                                            	<input type="hidden" id="noteid${typeNode.id}" value="${note1.id }"/>
+	                                            	<input type="text" id="notename0${typeNode.id}" placeholder="姓名" value="${note1.name }" style="margin-top: 1.5rem;" <c:if test="${note1.name== CURRENTACCOUNT.wxname}"> readonly="readonly"</c:if>>
+                                                    <input type="text" id="notephone0${typeNode.id}" placeholder="手机号" value="${note1.phone }" style="margin-top: 3rem;">
+                                                    <c:set var="note2" value="${peoples[0] }"/>
+                                                    <input type="text" id="notename1${typeNode.id}" placeholder="队友姓名" value="${note2.name }" style="margin-top: 1.5rem;" <c:if test="${note1.name== CURRENTACCOUNT.wxname}"> readonly="readonly"</c:if>>
+                                                    <input type="text" id="notephone1${typeNode.id}" placeholder="手机号" value="${note2.phone }" style="margin-top: 3rem;">
+	                                            </c:otherwise>
+	                                            </c:choose>
+	                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${fn:length(peoples)==2}">display:none;</c:if>" onclick="addPeopleNote(${typeNode.id},true)" id="baomspan${typeNode.id }true">报名</span>
+	                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${fn:length(peoples)==1}">display:none;</c:if>" onclick="addPeopleNote(${typeNode.id},false)" id="baomspan${typeNode.id }false">取消报名</span>
+	                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${fn:length(peoples)==1}">display:none;</c:if>" onclick="addPeopleNote(${typeNode.id},true)" id="baomspan${typeNode.id }">修改</span>
+	                                        </c:if>
+	                                        <c:if test="${type.value==1 or type.value==3 }">
+	                                            <c:set var="note" value="${fns:checkHasBaoming(typeNode.id,CURRENTACCOUNT.openid) }"/>
+	                                            <c:choose>
+	                                            <c:when test="${empty note }">
+	                                            <input type="hidden" id="noteid${typeNode.id}"/>
+	                                            <input type="text" id="notename${typeNode.id}" placeholder="姓名" value="${CURRENTACCOUNT.wxname }" style="margin-top: 1.5rem;" readonly="readonly">
+	                                            <input type="text" id="notephone${typeNode.id}" placeholder="手机号" value="${CURRENTACCOUNT.phone }" style="margin-top: 3rem;">
+	                                            </c:when>
+	                                            <c:otherwise>
+	                                            <input type="hidden" id="noteid${typeNode.id}" value="${note.id }"/>
+	                                            <input type="text" id="notename${typeNode.id}" placeholder="姓名" value="${note.name }" style="margin-top: 1.5rem;" readonly="readonly">
+	                                            <input type="text" id="notephone${typeNode.id}" placeholder="手机号" value="${note.phone }" style="margin-top: 3rem;">
+	                                            </c:otherwise>
+	                                            </c:choose>
+	                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${not empty note }">display:none;</c:if>" onclick="baoming(${typeNode.id},true)" id="baomspan${typeNode.id }true">报名</span>
+	                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${empty note}">display:none;</c:if>" onclick="baoming(${typeNode.id},false)" id="baomspan${typeNode.id }false">取消报名</span>
+	                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${empty note}">display:none;</c:if>" onclick="baoming(${typeNode.id},true)" id="baomspan${typeNode.id }">修改</span>
+	                                        </c:if>
+                                            <!-- 添加对应的比赛申请 -->
                                         </c:if>
                                     </c:forEach>
-                                    <c:choose>
-                                        <c:when test='${hasType }'>
-                                            <span class="fl">${type.label }</span>
-                                        </c:when>
-                                    </c:choose>
                                 </div>
                             </c:forEach>
                         </div>
@@ -470,8 +544,6 @@
                     <div class="shut_button" onclick="shut_but()">关闭</div>
                 </div>
             </div>
-
-
         </c:when>
         <c:when test="${nowDate gt regendtime}">
             <div id="danxiang_bottom" class="activity_danxiang" style="display:none;">
@@ -480,8 +552,8 @@
                     <div class="shut_button" onclick="shut_but()">关闭</div>
                 </div>
             </div>
-            </c:when>
-        <c:otherwise>
+        </c:when>
+        <%-- <c:otherwise>
             <div id="danxiang_bottom" class="activity_danxiang" style="display:none;">
                 <div class="activity_content">
                     <c:forEach var="type" items="${fns:getDictList('MatchTypeNote_type')}">
@@ -502,8 +574,8 @@
                                                             }
                                                         </script>
                                                         <input type="hidden" id="noteid" value="${note.id }"/>
-                                                        <input type="text" id="notename" placeholder="队友姓名" value="${note.name }" class="baoming_input" style="margin-top: 1.5rem;">
-                                                        <input type="text" id="notephone" placeholder="手机号" value="${note.phone }" class="baoming_input" style="margin-top: 3rem;">
+                                                        <input type="text" id="notename" placeholder="队友姓名" value="${note.name }" style="margin-top: 1.5rem;">
+                                                        <input type="text" id="notephone" placeholder="手机号" value="${note.phone }" style="margin-top: 3rem;">
                                                     </c:when>
                                                 </c:choose>
                                             </c:forEach>
@@ -523,13 +595,13 @@
                     <div class="shut_button" onclick="shut_but()">关闭</div>
                 </div>
             </div>
-        </c:otherwise>
+        </c:otherwise> --%>
     </c:choose>
 </c:if>
-<script>
+<!-- <script>
     function shut_but() {
         document.getElementById("danxiang_bottom").style.display="none";
     }
-</script>
+</script> -->
 </body>
 </html>
