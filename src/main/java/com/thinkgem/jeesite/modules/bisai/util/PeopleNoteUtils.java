@@ -18,19 +18,14 @@ public class PeopleNoteUtils {
 	
 	private static PeopleNoteDao peopleNoteDao = SpringContextHolder.getBean(PeopleNoteDao.class);
 
-	public static final String CACHE_SETTING_MAP = "peopleNoteMap";
 	
 	@SuppressWarnings("unchecked")
     public static List<PeopleNote> getPeopleByType(String typeid){
-		List<PeopleNote> list = (List<PeopleNote>) CacheUtils.get(CACHE_SETTING_MAP+":type:"+typeid);
-		if(list==null){
-		    PeopleNote note = new PeopleNote();
-		    MatchTypeNote type = new MatchTypeNote();
-		    type.setId(typeid);
-		    note.setNote(type);
-		    list = peopleNoteDao.findList(note);
-		    CacheUtils.put(CACHE_SETTING_MAP+":type:"+typeid,list);
-		}
+	    PeopleNote note = new PeopleNote();
+	    MatchTypeNote type = new MatchTypeNote();
+	    type.setId(typeid);
+	    note.setNote(type);
+	    List<PeopleNote> list = peopleNoteDao.findList(note);
 		return list;
 	}
 	public static boolean checkHasBaoming(String typeid,String openid){
@@ -89,6 +84,5 @@ public class PeopleNoteUtils {
 		return list;
 	}
 	public static void clearCache(PeopleNote note){
-	    CacheUtils.remove(CACHE_SETTING_MAP+":type:"+note.getNote().getId());
 	}
 }

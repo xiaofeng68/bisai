@@ -398,14 +398,13 @@
                 <li class="clearfix">
                     <span class="namell fl v-m">比赛地点</span>
                     <span class="fl clearfix apply_address v-m">
-							<input class="textll" name="address" value="${match.address }" id="address" type="text"
-                                   placeholder="请选择" >
 							<span class="fr add_butt" onclick="toCenter()">重新选择</span>
 						</span>
 
                 </li>
                 <li>
-                    <span class="namell">详细地址</span>
+                    <input class="namell fl v-m" name="address" value="${match.address }" id="address" type="text" 
+                                   placeholder="点击重新选择" >
                     <input class="textll" type="text" name="detailAddress" value="${match.detailAddress }"
                            placeholder="XX街道">
                 </li>

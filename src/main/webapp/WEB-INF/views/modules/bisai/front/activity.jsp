@@ -339,13 +339,8 @@
             <li class="clearfix">
                 <span class="namell fl v-m">比赛地点</span>
                 <span class="fl clearfix apply_address v-m">
-							<span class="add_text fl" style="margin-top: 6px;">${match.address }</span>
-						</span>
-
-            </li>
-            <li>
-                <span class="namell">详细地址</span>
-                <span class="textll">${match.detailAddress }</span>
+							<span class="add_text fl" style="margin-top: 6px;">${match.address }${match.detailAddress }</span>
+				</span>
             </li>
             <li>
                 <span class="namell">联系人</span>
@@ -357,11 +352,11 @@
             </li>
             <li style="margin-top:0.3rem;">
                 <span class="namell v-t">比赛简介</span>
-                <textarea class="are" name="des" placeholder="请输入比赛简介" readonly="readonly">${match.des }</textarea>
+                <textarea class="are" name="des" placeholder="请输入比赛简介" readonly="readonly" rows="4" style="overflow-y: auto;">${match.des }</textarea>
             </li>
             <li style="margin-top:0.3rem;">
                 <span class="namell v-t">奖金奖品</span>
-                <textarea class="are" name="jiangpin" placeholder="请输入奖金奖品" readonly="readonly">${match.jiangpin }</textarea>
+                <textarea class="are" name="jiangpin" placeholder="请输入奖金奖品" readonly="readonly" rows="4" style="overflow-y: auto;">${match.jiangpin }</textarea>
             </li>
         </ul>
     </div>

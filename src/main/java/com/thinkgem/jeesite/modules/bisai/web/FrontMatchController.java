@@ -70,7 +70,7 @@ public class FrontMatchController extends BaseController {
 		Match match = matchService.get(id);
 		match.setState("-1");
 		matchService.updateMatchState(match);
-		return "redirect:../match.html";
+		return "redirect:../mymatch.html";
 	}
 
 	@RequestMapping(value = "matchBm${urlSuffix}")
@@ -567,7 +567,8 @@ public class FrontMatchController extends BaseController {
 			// 监测成绩是否都已经录入
 			Match match = matchService.get(id);
 			if ("3".equals(match.getState()) && peopleGroupService.checkMatchOver(id)) {
-				throw new RuntimeException();
+				json.setSuccess(true);
+				return json;
 			}
 			match.setState("3");
 			matchService.updateMatchState(match);

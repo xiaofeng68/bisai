@@ -100,7 +100,8 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 				for (int m = 0; m < jushu; m++) {
 					if(!notovered)
 						notovered = scores.get(m).getScore1()==null;
-					int score = scores.get(m).getScore1()!=null?scores.get(m).getScore1():21;
+					int defaultScore = m>1?0:21;
+					int score = scores.get(m).getScore1()!=null?scores.get(m).getScore1():defaultScore;
 					tableStr.append("<td>");
 					if(readOnly || !notovered){
 						tableStr.append(score);
