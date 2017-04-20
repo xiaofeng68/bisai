@@ -86,7 +86,7 @@ public class FrontMatchController extends BaseController {
 		List<PeopleGroup> list = peopleGroupService.findList(peopleGroup);
 		if (list != null && list.size() > 0) {
 			addMessage(redirectAttributes, "已分组完成");
-			return "redirect:../match.html";
+			return "redirect:../mymatch.html";
 		}
 		return "modules/bisai/front/baoming";
 	}
@@ -98,9 +98,9 @@ public class FrontMatchController extends BaseController {
 		model.addAttribute("match", match);
 		model.addAttribute("stype", stype);
 		if ("1".equals(stype)) {// 录
-			if (!"3".equals(match.getState()))// 比赛的成绩都录入完毕
+			if (!"3".equals(match.getState())){// 比赛的成绩都录入完毕
 				model.addAttribute("overButton", peopleGroupService.checkMatchOver(id));
-			else
+			}else
 				model.addAttribute("overButton", true);
 			return "modules/bisai/front/mark";
 		} else {// 查看
@@ -127,7 +127,7 @@ public class FrontMatchController extends BaseController {
 			type.setMatch(match);
 			matchTypeNoteService.save(type);
 		}
-		return "redirect:../match.html";
+		return "redirect:../mymatch.html";
 	}
 
 	@RequestMapping(value = "term-{matchid}-{type}${urlSuffix}")

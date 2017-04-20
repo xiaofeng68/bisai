@@ -74,9 +74,7 @@
 		var type = $("#typeSelect").val();
 		var lun = $("#groupnumSelect").val();
 		var xiaozu = $("#xiaozuSelect").val();
-		
 		$("#saveButton").hide();
-		$("#nextButton").hide();
 		if(type && lun && xiaozu){
 			$.post('${ctx }${frontPath}/match/initScoreTable', {
 				id : type,
@@ -84,11 +82,16 @@
 				groupnum:xiaozu
 			}, function(result) {
 				if (result.success) {
+					 $("#saveButton").show();
 					 $("#scoreTable").html(result.obj.tableHtml);
-					 if(result.obj.notovered){
-						 $("#saveButton").show();
-					 }else if(lunNum==lun){
+					 if(result.obj.notovered){//都输入完成
 						 $("#nextButton").show();
+					 }else{
+						 $("#nextButton").hide();
+					 }
+					 if(result.obj.isNexted){
+						 $("#saveButton").hide();
+						 $("#nextButton").hide();
 					 }
 				}else{
 					alert(result.msg);
@@ -184,15 +187,23 @@
 		<input type="hidden" name="id" value="${match.id }" id="id">
 		<input type="hidden" name="lun" id="lun">
 		<div class="sheet_submit">
-			<input type="button" value="保存" onclick="save()" id="saveButton" style="display:none;">
+			<a href="javascript:void(0)" onclick="save()" id="saveButton" style="display:none;">
+            <div class="acti_buttom">保存</div>
+       		 </a>
 			<c:choose>
 				<c:when test="${overButton }">
-					<input type="button" value="比赛结束" onclick="overMatch()" id="overButton">
+					<a href="javascript:void(0)" onclick="overMatch()" id="overButton">
+		            <div class="acti_buttom">比赛结束</div>
+		       		</a>
 				</c:when>
 				<c:otherwise>
-					<input type="button" value="下一轮" onclick="nextGroup()" id="nextButton" style="display:none;">
+					<a href="javascript:void(0)" onclick="nextGroup()" id="nextButton" style="display:none;">
+		            <div class="acti_buttom">下一轮</div>
+		       		</a>
 				</c:otherwise>
 			</c:choose>
+			
+			
 		</div>
 	</form>
 </body>

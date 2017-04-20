@@ -60,4 +60,6 @@ public interface PeopleGroupDao extends CrudDao<PeopleGroup> {
      */
     List<Integer> getMatchGroupnumList(String matchid);
     void deleteByMatch(String matchid);
+    int countLunResult(PeopleGroup peopleGroup);
+    Integer getMaxLun(String matchid);
 }
