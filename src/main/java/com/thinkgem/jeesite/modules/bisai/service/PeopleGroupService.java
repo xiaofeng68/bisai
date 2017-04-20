@@ -72,6 +72,13 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 	}
 
 	public Map<String, Object> initScoreTable(MatchTypeNote matchTypeNote, PeopleGroup peopleGroup) {
+		//是否进入
+		Integer maxLun = dao.getMaxLun(peopleGroup.getMatchid());
+		boolean isNexted = false;
+		if(maxLun!=null){
+			isNexted = maxLun>Integer.parseInt(peopleGroup.getLun());
+		}
+		
 		Map<String, Object> data = new HashMap<String, Object>();
 		StringBuffer tableStr = new StringBuffer();
 		tableStr.append("<table width='100%'>");
@@ -98,11 +105,12 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 				tableStr.append("<tr>");
 				tableStr.append("<td><p>" + people.getName() + "</p></td>");
 				for (int m = 0; m < jushu; m++) {
-					if(!notovered)
-						notovered = scores.get(m).getScore1()==null;
-					int score = scores.get(m).getScore1()!=null?scores.get(m).getScore1():21;
+					if(isNexted)
+						isNexted = scores.get(m).getScore1()!=null;
+					int defaultScore = m>1?0:21;
+					int score = scores.get(m).getScore1()!=null?scores.get(m).getScore1():defaultScore;
 					tableStr.append("<td>");
-					if(readOnly || !notovered){
+					if(readOnly||isNexted){// || !notovered
 						tableStr.append(score);
 					}else{
 						tableStr.append("<select id='people_"+scores.get(m).getId()+"' name='people_"+scores.get(m).getId()+"' class='textll'>");
@@ -118,7 +126,8 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 		}
 		tableStr.append("</table>");
 		data.put("tableHtml", tableStr);
-		data.put("notovered", notovered);
+		data.put("notovered", checkLunOver(peopleGroup.getMatchid(),peopleGroup.getLun()));
+		data.put("isNexted", isNexted);
 		return data;
 	}
 
@@ -273,5 +282,12 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 	public boolean checkMatchOver(String id){
 		List<Integer> list = dao.getMatchGroupnumList(id);
 		return dao.countMatchScoreIsNull(id)==0 && list.size()==1;
+	}
+	public boolean checkLunOver(String id,String lun){
+		PeopleGroup group = new PeopleGroup();
+		group.setMatchid(id);
+		group.setLun(lun);
+		int num = dao.countLunResult(group);
+		return num==0;
 	}
 }

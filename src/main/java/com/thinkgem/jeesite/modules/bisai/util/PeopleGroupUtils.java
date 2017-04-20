@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.modules.bisai.dao.MatchResultDao;
 import com.thinkgem.jeesite.modules.bisai.dao.PeopleGroupDao;
@@ -24,21 +23,14 @@ public class PeopleGroupUtils {
 
 	private static PeopleGroupDao peopleGroupDao = SpringContextHolder.getBean(PeopleGroupDao.class);
 	private static MatchResultDao matchResultDao = SpringContextHolder.getBean(MatchResultDao.class);
-	public static final String MatchResult_MAP = "matchResultMap";
+//	public static final String MatchResult_MAP = "matchResultMap";
 
-	@SuppressWarnings("unchecked")
 	public static List<MatchResult> getPeopleSort(String matchid, String btype, String type) {
 		MatchResult matchResult = new MatchResult();
 		matchResult.setMatchid(matchid);
 		matchResult.setBtype(btype);
 		matchResult.setType(type);
-		List<MatchResult> resultList = (List<MatchResult>) CacheUtils.get(MatchResult_MAP + ":" + matchid + btype + type);
-		if(resultList==null){
-			resultList = matchResultDao.findList(matchResult);
-			CacheUtils.put(MatchResult_MAP + ":" + matchid + btype + type, resultList);
-			return resultList;
-		}
-		// 存储比赛的排名
+		List<MatchResult> resultList = matchResultDao.findList(matchResult);
 		return resultList;
 	}
 	/**

@@ -293,7 +293,7 @@
   	<description>获取比赛类型记录标签</description>
     <name>checkHasBaoming</name>
     <function-class>com.thinkgem.jeesite.modules.bisai.util.PeopleNoteUtils</function-class>
-    <function-signature>java.lang.Boolean checkHasBaoming(java.lang.String,java.lang.String)</function-signature>
+    <function-signature>java.lang.Object checkHasBaoming(java.lang.String,java.lang.String)</function-signature>
     <example>${fns:checkHasBaoming(typeid,phone)}</example>  
   </function>
   <function>

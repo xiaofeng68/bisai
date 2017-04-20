@@ -31,7 +31,7 @@ $(function(){
 <body>
 	<header class="grouping_header clearfix">
 		<span class="fl">
-			<a href="${ctx }/${frontPath}match${urlSuffix}">
+			<a href="${ctx }/${frontPath}${fromURL}">
 				<img src="${ctxStaticFront }/images/r-arrow.png">
 			</a>
 		</span>

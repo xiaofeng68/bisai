@@ -183,4 +183,10 @@
 		where a.matchid=#{matchid} and a.btype=#{btype} and a.type=#{type}
 		order by a.lun,a.groupnum,a.chang,a.jushu
     </select>
+    <select id="countLunResult" resultType="int">
+    	select count(1) from bisai_people_group where matchid=#{matchid} and lun=#{lun} and score1 is null
+    </select>
+    <select id="getMaxLun" resultType="java.lang.Integer">
+    	select max(lun) from bisai_people_group where matchid=#{matchid}
+    </select>
 </mapper>

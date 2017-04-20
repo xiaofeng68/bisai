@@ -305,7 +305,7 @@ public class FrontController extends BaseController {
         Page<Match> page = matchService.findAllMatch(new Page<Match>(request, response),match); 
         model.addAttribute("page", page);
         model.addAttribute("smatch",match);
-        return "modules/bisai/front/match";
+        return "modules/bisai/front/allmatch";
     }
     @RequestMapping(value = "mymatch${urlSuffix}")
     public String myMatch(HttpServletRequest request,HttpServletResponse response,Model model) {
@@ -341,6 +341,7 @@ public class FrontController extends BaseController {
             Page<Match> page = matchService.findPage(new Page<Match>(request, response), match); 
             model.addAttribute("mypage", page);
         }
+        model.addAttribute("smatch",match);
         return "modules/bisai/front/mymatch";
     }
     @RequestMapping(value = "myapply${urlSuffix}")

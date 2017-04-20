@@ -157,7 +157,7 @@
 <body>
 <header class="grouping_header clearfix">
 		<span class="fl">
-			<a href="${ctx }/${frontPath}match${urlSuffix}">
+			<a href="${ctx }/${frontPath}mymatch${urlSuffix}">
 				<img src="${ctxStaticFront}/images/r-arrow.png">
 			</a>
 		</span>
@@ -333,6 +333,9 @@
         <div style="height:300px;">
         <a href="${ctx }${frontPath}/match/term-${match.id}-${type}${urlSuffix}">
             <div class="acti_buttom">分组抽签</div>
+        </a>
+        <a href="${ctx }/${frontPath}match/closeMatch${urlSuffix}?id=${match.id}"">
+            <div class="acti_buttom">关闭比赛</div>
         </a>
         </div>
     </div>
