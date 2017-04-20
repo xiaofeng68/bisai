@@ -299,6 +299,12 @@
                                     <c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,1) }">
                                         <c:if test="${typeNode.type==type.value }">
                                             <span class="fl">${type.label }</span>
+                                            <c:if test="${match.changci==0 and not empty CURRENTACCOUNT and CURRENTACCOUNT.id!=match.account.id}">
+										    <jsp:useBean id="now" class="java.util.Date"/>
+										    <fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="nowDate"/>
+										    <fmt:formatDate value="${match.regendtime}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="regendtime"/>
+										    <fmt:formatDate value="${match.regstarttime}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="regstarttime"/>
+										    <c:if test="${nowDate gt regstarttime and nowDate lt regendtime}">
                                             <!-- 添加对应的比赛申请 -->
                                             <c:if test="${type.value==2 or type.value==4 or type.value==5}">
 	                                            <c:set var="peoples" value="${fns:peopleHasBaoming(typeNode.id,CURRENTACCOUNT.openid) }"></c:set>
@@ -345,6 +351,7 @@
 	                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${empty note}">display:none;</c:if>" onclick="baoming(${typeNode.id},true)" id="baomspan${typeNode.id }">修改</span>
 	                                        </c:if>
                                             <!-- 添加对应的比赛申请 -->
+                                            </c:if>
                                         </c:if>
                                     </c:forEach>
                                 </div>
