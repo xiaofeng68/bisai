@@ -18,6 +18,7 @@ import com.thinkgem.jeesite.modules.bisai.dao.MatchResultDao;
 import com.thinkgem.jeesite.modules.bisai.dao.MatchTypeNoteDao;
 import com.thinkgem.jeesite.modules.bisai.dao.PeopleGroupDao;
 import com.thinkgem.jeesite.modules.bisai.dao.PeopleNoteDao;
+import com.thinkgem.jeesite.modules.bisai.entity.Account;
 import com.thinkgem.jeesite.modules.bisai.entity.Match;
 import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
 import com.thinkgem.jeesite.modules.bisai.util.MatchTypeNoteUtils;
@@ -54,6 +55,11 @@ public class MatchService extends CrudService<MatchDao, Match> {
 	public Page<Match> findPage(Page<Match> page, Match match) {
 		return super.findPage(page, match);
 	}
+	public Page<Match> findCanyuPage(Page<Match> page,Account tAccount) {
+        List<Match> list = dao.findSelfAllList(tAccount);
+	    return page.setList(list);
+	}
+	
 	public Page<Match> findAllMatch(Page<Match> page,Match match){
         match.setPage(page);
         page.setList(dao.findAllList(match));

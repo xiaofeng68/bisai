@@ -13,6 +13,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,10 +22,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.Json;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.bisai.entity.Match;
@@ -36,8 +39,13 @@ import com.thinkgem.jeesite.modules.bisai.service.MatchTypeNoteService;
 import com.thinkgem.jeesite.modules.bisai.service.PeopleGroupService;
 import com.thinkgem.jeesite.modules.bisai.service.PeopleNoteService;
 import com.thinkgem.jeesite.modules.bisai.util.GroupUtils;
+import com.thinkgem.jeesite.modules.bisai.util.MatchTypeNoteUtils;
+import com.thinkgem.jeesite.modules.bisai.util.PeopleGroupUtils;
 import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm.Principal;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  * 比赛信息Controller
@@ -55,6 +63,143 @@ public class MatchController extends BaseController {
 	private PeopleGroupService peopleGroupService;
 	@Autowired
 	private MatchTypeNoteService matchTypeNoteService;
+	@RequestMapping(value = "matchRecreate${urlSuffix}")
+	public String matchRecreate(String id, HttpServletRequest request, Model model) {
+		// 复制比赛信息
+		Match match = matchService.get(id);
+		match.setId(null);
+		match.setState("0");
+		match.setUser(null);
+		matchService.save(match);
+		/*String newId = match.getId();
+		// 复制类型
+		MatchTypeNote matchTypeNote = new MatchTypeNote();
+		match.setId(id);
+		Match omatch = new Match();
+		omatch.setId(id);
+		matchTypeNote.setMatch(omatch);
+		List<MatchTypeNote> list = matchTypeNoteService.findList(matchTypeNote);
+		match.setId(newId);
+		for (MatchTypeNote type : list) {
+			type.setId(null);
+			type.setMatch(match);
+			matchTypeNoteService.save(type);
+		}*/
+		return "redirect:"+Global.getAdminPath()+"/bisai/match/?repage";
+	}
+	/**
+	 * 比赛结束
+	 */
+	@RequestMapping(value = "overMatch")
+	@ResponseBody
+	public Json overMatch(String id, HttpServletRequest request) {
+		Json json = new Json();
+		try {
+			// 监测成绩是否都已经录入
+			Match match = matchService.get(id);
+			if ("3".equals(match.getState()) && peopleGroupService.checkMatchOver(id)) {
+				json.setSuccess(true);
+				return json;
+			}
+			match.setState("3");
+			matchService.updateMatchState(match);
+			List<MatchTypeNote> list = MatchTypeNoteUtils.getMatchTypes(id);
+			for (MatchTypeNote note : list) {
+				PeopleGroupUtils.savePeopleSort(id, note.getBtype(), note.getType());
+			}
+			json.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.setMsg("本赛事已结束！！");
+			json.setSuccess(false);
+		}
+		return json;
+	}
+	/**
+	 * 保存赛事成绩
+	 */
+	@RequestMapping(value = "saveScoreTable")
+	public String saveScoreTable(String scores, String id, String type, String stype, String lun, Model model,
+			HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		scores = StringEscapeUtils.unescapeHtml4(scores);
+		JSONArray array = JSONArray.fromObject(scores);
+		if (array.size() == 0) {// 下一轮分组
+			PeopleGroup peopleGroup = new PeopleGroup();
+			peopleGroup.setMatchid(id);
+			peopleGroup.setBtype(type);
+			peopleGroup.setType(stype);
+			peopleGroup.setLun(lun);
+			if (peopleGroupService.countScoreIsNull(peopleGroup) == 0) {// 判断是否都类型下是否都录入完成，//完成进行下一轮分组
+				// 根据出线人数进行分组
+				MatchTypeNote matchTypeNote = new MatchTypeNote();
+				Match match = new Match();
+				match.setId(id);
+				matchTypeNote.setMatch(match);
+				matchTypeNote.setBtype(type);
+				matchTypeNote.setType(stype);
+				List<MatchTypeNote> typeList = matchTypeNoteService.findList(matchTypeNote);
+				int nextLun = Integer.parseInt(lun) + 1;
+				if (typeList.size() == 1) {
+					matchTypeNote = typeList.get(0);
+					int chuxian = matchTypeNote.getZuchuxian();
+					if ("2".equals(matchTypeNote.getBtype())) {
+						PeopleNote peopleNote = new PeopleNote();
+						peopleNote.setNote(matchTypeNote);
+						peopleNote.setState("1");
+						List<PeopleNote> peopleList = peopleNoteService.findList(peopleNote);
+						Map<String, List<PeopleNote>> orgMap = new HashMap<String, List<PeopleNote>>();
+						for (PeopleNote pl : peopleList) {
+							String key = pl.getOrgname();
+							List<PeopleNote> cList = orgMap.get(key);
+							if (cList == null) {
+								cList = new ArrayList<PeopleNote>();
+							}
+							cList.add(pl);
+							orgMap.put(key, cList);
+						}
+
+						List<PeopleNote> peopleGroupList = peopleGroupService.getTuanNextGroupPeople(peopleGroup,matchTypeNote,true);// 取出获胜的部门
+						if (peopleGroupList.size() == 2) {// 如果是决赛
+							List<PeopleNote> peopleGroup34List = peopleGroupService.getTuanNextGroupPeople(peopleGroup,matchTypeNote,false);// 3/4比赛
+							initTuanNextGroup(id, type, stype, matchTypeNote, nextLun, peopleGroup34List, orgMap);
+							initTuanNextGroup(id, type, stype, matchTypeNote, nextLun + 1, peopleGroupList, orgMap);
+						} else if (peopleGroupList.size() > 2) {// 淘汰赛
+							initTuanNextGroup(id, type, stype, matchTypeNote, nextLun, peopleGroupList, orgMap);
+						} else {
+							addMessage(redirectAttributes, "该类型的比赛已结束，无法继续分组！");
+						}
+					} else {// 根据出线人数获取要分组的list
+						List<PeopleNote> peopleGroupList = peopleGroupService.getNextGroupPeople(peopleGroup, chuxian);// chuxian在16人内未1
+						if (peopleGroupList.size() == 2) {// 如果是决赛
+							List<PeopleNote> peopleGroup34List = peopleGroupService.get34GroupPeople(peopleGroup);// 3/4比赛
+							initNextGroup(id, type, stype, matchTypeNote, nextLun, peopleGroup34List);
+							initNextGroup(id, type, stype, matchTypeNote, nextLun + 1, peopleGroupList);
+						} else if (peopleGroupList.size() > 2) {// 淘汰赛
+							initNextGroup(id, type, stype, matchTypeNote, nextLun, peopleGroupList);
+						} else {
+							addMessage(redirectAttributes, "该类型的比赛已结束，无法继续分组！");
+						}
+					}
+				} else {
+					addMessage(redirectAttributes, "数据异常，请联系管理员！");
+				}
+			} else {// 否则给处提示
+				addMessage(redirectAttributes, "请先录完所有的小组成绩！");
+			}
+		} else {
+			List<PeopleGroup> list = new ArrayList<PeopleGroup>();
+			for (Object obj : array) {
+				JSONObject jsonObj = (JSONObject) obj;
+				PeopleGroup group = new PeopleGroup();
+				group.setId(jsonObj.getString("id"));
+				group.setScore1(jsonObj.getInt("score"));
+				list.add(group);
+			}
+			peopleGroupService.saveScores(list);
+			addMessage(redirectAttributes, "保存成功！");
+		}
+		return "redirect:matchScore.html?id=" + id + "&stype=" + stype;
+	}
 	/**
 	 * 成绩录入
 	 */
@@ -83,10 +228,15 @@ public class MatchController extends BaseController {
 	 */
 	@RequestMapping(value = "term-{matchid}-{type}${urlSuffix}")
 	public String tream(@PathVariable String matchid, @PathVariable String type, HttpServletRequest request,
-			Model model) {
+			Model model,RedirectAttributes redirectAttributes) {
 		Match match = matchService.get(matchid);
 		model.addAttribute("match", match);
 		model.addAttribute("type", type);
+		List<MatchTypeNote> list = MatchTypeNoteUtils.getMatchTypes(matchid);
+		if(list==null||list.size()==0){
+			addMessage(redirectAttributes, "比赛类型为空，无法分组！");
+			return "modules/bisai/matchPeopleEdit";
+		}
 		return "modules/bisai/term";
 	}
 	/**
@@ -334,9 +484,75 @@ public class MatchController extends BaseController {
     @RequestMapping(value = "grant")
     public String grant(Match match, RedirectAttributes redirectAttributes) {
 	    match.setUpdatetime(new Date());
+	    match.setUser(UserUtils.getUser());
         matchService.updateMatchState(match);
         addMessage(redirectAttributes, "比赛申请通过");
         return "redirect:"+Global.getAdminPath()+"/bisai/match/?repage";
     }
-	
+	private void initNextGroup(String id, String type, String stype, MatchTypeNote matchTypeNote, int nextLun,
+			List<PeopleNote> peopleGroup34List) {
+		for (int i = 0, zu = 1, j = peopleGroup34List.size(); i < j; zu++, i += 2) {// 进行淘汰赛
+			for (int jushu = 1, sum = matchTypeNote.getJushu(); jushu <= sum; jushu++) {
+				PeopleNote note1 = peopleGroup34List.get(i);
+				PeopleNote note2 = peopleGroup34List.get(i + 1);
+				// 保存人员分组记录
+				PeopleGroup people = new PeopleGroup();
+				people.setMatchid(id);
+				people.setBtype(type);
+				people.setType(stype);
+				people.setGroupnum(String.valueOf(zu));
+				people.setChang(String.valueOf(1));
+				people.setPeopleNote(note1);
+				people.setJushu(jushu + "");
+				people.setLun(nextLun + "");
+				peopleGroupService.save(people);
+				people = new PeopleGroup();
+				people.setMatchid(id);
+				people.setBtype(type);
+				people.setType(stype);
+				people.setGroupnum(String.valueOf(zu));
+				people.setChang(String.valueOf(1));
+				people.setPeopleNote(note2);
+				people.setJushu(jushu + "");
+				people.setLun(nextLun + "");
+				peopleGroupService.save(people);
+			}
+		}
+	}
+
+	private void initTuanNextGroup(String id, String type, String stype, MatchTypeNote matchTypeNote, int nextLun,
+			List<PeopleNote> orgList, Map<String, List<PeopleNote>> orgMap) {
+		for (int i = 0, zu = 1, j = orgList.size(); i < j; zu++, i += 2) {// 进行淘汰赛
+			List<PeopleNote> list0 = orgMap.get(orgList.get(i).getOrgname());
+			List<PeopleNote> list1 = orgMap.get(orgList.get(i+1).getOrgname());
+			for (int changci = 0; changci < matchTypeNote.getNum(); changci++) {// 根据场次获取pk人员
+				for (int jushu = 1, sum = matchTypeNote.getJushu(); jushu <= sum; jushu++) {
+					PeopleNote peoplec1 = list0.get(changci);
+					PeopleNote peoplec2 = list1.get(changci);
+					// 根据部门下的人进行场次组装分组
+					// 保存人员分组记录
+					PeopleGroup people = new PeopleGroup();
+					people.setMatchid(id);
+					people.setBtype(type);
+					people.setType(stype);
+					people.setGroupnum(String.valueOf(zu));
+					people.setChang(String.valueOf(1 + changci));
+					people.setPeopleNote(peoplec1);
+					people.setJushu(jushu + "");
+					people.setLun(String.valueOf(nextLun));
+					peopleGroupService.save(people);
+					people = new PeopleGroup();
+					people.setMatchid(id);
+					people.setBtype(type);
+					people.setType(stype);
+					people.setGroupnum(String.valueOf(zu));
+					people.setChang(String.valueOf(1 + changci));
+					people.setPeopleNote(peoplec2);
+					people.setJushu(jushu + "");
+					people.setLun(String.valueOf(nextLun));
+					peopleGroupService.save(people);
+				}
+			}
+		}
+	}	
 }

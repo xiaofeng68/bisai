@@ -59,7 +59,7 @@ public class FrontController extends BaseController {
 //    	if(StringUtils.isEmpty(openId)){
     		try{
 		    	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
-		    	String openId =(String) token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
+		    	String openId ="oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//(String) token.getString(WeixinHelp.OPENID);//
 		        session.setAttribute(WeixinHelp.OPENID,openId);
 		        //如果注册过或授权登陆过无需再次登陆
 		        Account tAccount = accountService.getAccountByOpenId(openId);
@@ -329,8 +329,11 @@ public class FrontController extends BaseController {
         
         Match match = new Match();
         match.setAccount(tAccount);
-        Page<Match> page = matchService.findPage(new Page<Match>(request, response), match); 
-        model.addAttribute("mypage", page);
+        Page<Match> mypage = matchService.findPage(new Page<Match>(request, response), match); 
+        model.addAttribute("mypage", mypage);
+        
+        Page<Match> page = matchService.findCanyuPage(new Page<Match>(request, response),tAccount); 
+        model.addAttribute("page", page);
         return "modules/bisai/front/mymatch";
     }
     @RequestMapping(value = "mymatchSearch${urlSuffix}")

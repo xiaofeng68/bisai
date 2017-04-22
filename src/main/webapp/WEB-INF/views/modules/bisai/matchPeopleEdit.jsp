@@ -152,6 +152,21 @@
         	$("#id"+typeid+"_"+1).val(id);
         	changeTab('dnandannum'+typeid,'1')
         }
+        function removeTypeNote(typeid){
+        	if(typeid){
+        		if(confirm("删除后无法恢复，是否继续？")){
+	    			$.post('${ctx }/bisai/matchTypeNote/delete', {
+	    				id : typeid,
+	    			}, function(result) {
+	    				if (result.success) {
+	    					window.location.href="${ctx}/bisai/match/peopleUpdate?id=${match.id}"; 
+	    				}else{
+	    					alert(result.msg);
+	    				}
+	    			}, 'JSON');
+        		}
+    		}
+        }
     </script>
 </head>
 <body>
@@ -159,6 +174,7 @@
 <li><a href="${ctx}/bisai/match/">比赛列表</a></li>
 <li class="active"><a href="${ctx}/bisai/match/peopleUpdate?id=${match.id}">参赛人员</a></li>
 </ul><br/>
+<bisai:message content="${message}"/>	
 <section>
     <div class="activity_first">
         <p>
@@ -241,6 +257,8 @@
                                       onclick="changeTab('dnandannum${typeNode.id}','1')">报名中</span>
                                 <span class="label_but dnandannumtab" id="dnandannum${typeNode.id}2"
                                       onclick="changeTab('dnandannum${typeNode.id}','2')">报名列表</span>
+                                <span class="label_but dnandannumtab" id="dnandannum${typeNode.id}3"
+                                      onclick="removeTypeNote(${typeNode.id})">删除</span>
                             </div>
                             <div class="tree-second fr dnandannum" id="dnandannum${typeNode.id}Div1" style="display:none;">
                                 <div class="label1 js-check clearfix">

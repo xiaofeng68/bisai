@@ -258,7 +258,7 @@
 			<label class="control-label">比赛地点：</label>
 			<div class="controls">
 				<form:input path="address" htmlEscape="false"  maxlength="100" class="input-xlarge "/>
-				<form:input path="detailAddress" htmlEscape="false"  maxlength="100" class="input-xlarge "/>
+				<form:input path="detailAddress" htmlEscape="false"  maxlength="100" class="input-xlarge " style="display:none;"/>
 			</div>
 		</div>
 		<div class="control-group">

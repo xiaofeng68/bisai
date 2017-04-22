@@ -80,7 +80,7 @@
     </section>
 </c:forEach>
 <div class="fenzu_submit">
-    <a href="${ctx }/${frontPath}match/matchScore${urlSuffix}?type=${type }&stype=1&id=${matchid}">
+    <a href="${ctx }/bisai/match/matchScore${urlSuffix}?type=${type }&stype=1&id=${matchid}">
         <div class="fenzu_a">
             开始录入分数
         </div>

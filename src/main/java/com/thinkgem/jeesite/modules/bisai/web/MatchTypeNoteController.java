@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.bisai.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,14 +15,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.utils.Json;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.bisai.entity.Match;
 import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
 import com.thinkgem.jeesite.modules.bisai.service.MatchTypeNoteService;
+import com.thinkgem.jeesite.modules.bisai.util.MatchTypeNoteUtils;
+import com.thinkgem.jeesite.modules.bisai.util.PeopleGroupUtils;
 
 /**
  * 比赛类型记录Controller
@@ -71,13 +78,20 @@ public class MatchTypeNoteController extends BaseController {
 		addMessage(redirectAttributes, "保存比赛类型记录成功");
 		return "redirect:"+Global.getAdminPath()+"/bisai/matchTypeNote/?repage";
 	}
-	
-	@RequiresPermissions("bisai:matchTypeNote:edit")
 	@RequestMapping(value = "delete")
-	public String delete(MatchTypeNote matchTypeNote, RedirectAttributes redirectAttributes) {
-		matchTypeNoteService.delete(matchTypeNote);
-		addMessage(redirectAttributes, "删除比赛类型记录成功");
-		return "redirect:"+Global.getAdminPath()+"/bisai/matchTypeNote/?repage";
+	@ResponseBody
+	public Json overMatch(MatchTypeNote matchTypeNote, HttpServletRequest request) {
+		Json json = new Json();
+		try {
+			matchTypeNoteService.delete(matchTypeNote);
+			json.setMsg("删除比赛类型记录成功");
+			json.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.setMsg("删除比赛类型记录失败！！");
+			json.setSuccess(false);
+		}
+		return json;
 	}
 
 }

@@ -5,13 +5,15 @@ package com.thinkgem.jeesite.modules.bisai.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
 import com.thinkgem.jeesite.modules.bisai.dao.MatchTypeNoteDao;
+import com.thinkgem.jeesite.modules.bisai.dao.PeopleNoteDao;
+import com.thinkgem.jeesite.modules.bisai.entity.MatchTypeNote;
 
 /**
  * 比赛类型记录Service
@@ -21,7 +23,8 @@ import com.thinkgem.jeesite.modules.bisai.dao.MatchTypeNoteDao;
 @Service
 @Transactional(readOnly = true)
 public class MatchTypeNoteService extends CrudService<MatchTypeNoteDao, MatchTypeNote> {
-
+	 @Autowired
+	 PeopleNoteDao peopleNoteDao;
 	public MatchTypeNote get(String id) {
 		return super.get(id);
 	}
@@ -41,6 +44,7 @@ public class MatchTypeNoteService extends CrudService<MatchTypeNoteDao, MatchTyp
 	
 	@Transactional(readOnly = false)
 	public void delete(MatchTypeNote matchTypeNote) {
+		peopleNoteDao.deleteByTypeNote(matchTypeNote.getId());
 		super.delete(matchTypeNote);
 	}
 	

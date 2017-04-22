@@ -104,6 +104,51 @@
                         </div>
                     </li>
                 </c:forEach>
+                <!-- 我参加的赛事 -->
+                <c:forEach items="${page.list}" var="match">
+                <c:if test="${match.state>0 }">
+                    <li>
+                        <div class="clearfix">
+                            <a href="${ctx }/${frontPath}activity${urlSuffix}?id=${match.id}&isall=1">
+                                <div class="fl clearfix suggestll">
+                                    <c:choose>
+                                        <c:when test="${not empty match.account and not empty match.account.img}">
+                                            <img class="img24 fl" src="${match.account.img }">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img class="img24 fl" src="${ctxStaticFront}/images/img11.png">
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <div class="fl suggestlx">
+                                        <p class="ellipsis">${match.name }</p>
+                                        <p class="ellipsis">${ fn:split(match.orgs, ',')[0] }</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="fr namell"><!-- 20km --></div>
+                        </div>
+                        <div>
+                            <span class="timell"><fmt:formatDate value="${match.starttime }" pattern="M月d日"/>-<fmt:formatDate value="${match.endtime }" pattern="M月d日"/></span>
+                        </div>
+                        <div class="suggestlx1"><label>${match.address }${match.detailAddress }</label></div>
+                        <div class="positionll">
+                            <c:choose>
+                                <c:when test="${match.state == 1}">
+                                    <a href="${ctx }/${frontPath}activity${urlSuffix}?id=${match.id}&isall=1&baoming=1">
+                                        <em class="em${match.state }"></em>
+                                    </a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="${ctx }/${frontPath}activity${urlSuffix}?id=${match.id}&isall=1">
+                                        <em class="em${match.state }"></em>
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
+                            <p>人数：${fns:getMatchPeople(match.id) }人</p>
+                        </div>
+                    </li>
+                </c:if>
+            </c:forEach>
             </ul>
         </div>
     </c:if>
