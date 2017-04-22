@@ -1,0 +1,217 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="telephone=no" name="format-detection">
+	<title>${siteTitle }</title>
+	<meta name="decorator" content="default"/>
+	<meta name="keywords" content="${siteKeywords }">
+	<meta name="description" content="${siteDescription }">
+	<link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/incstyle.css" media="all">
+	<link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/index.css" media="all">
+	<script type="text/javascript" src="${ctxStaticFront }/js/jquery.js"></script>
+	<script type="text/javascript" src="${ctxStaticFront }/js/divselect.js"></script>
+	<script type="text/javascript">
+	var isCheck = false;
+	var lunNum = 0;
+	$(function(){
+		$(".div_select").each(function(){
+			var selid = $(this).attr('div-select-val');
+			var divselectid = "#divselect" + selid;
+			var inputselectid = "#inputselect" + selid;
+			$.divselect(divselectid,inputselectid);
+		});
+		
+		$('#typeSelect').prop('selectedIndex', 1);
+        $('#typeSelect').change();
+	});
+	function initSelectList(e){
+		var id = $(e).val();
+		if(id){
+			$.post('${ctxf }${frontPath}/match/initZuSelectList', {
+				id : id,
+			}, function(result) {
+				if (result.success) {
+					var lunList = result.obj;
+					lunNum = lunList.length;
+					var optionstring = "";  
+		            for (var j = 0; j < lunList.length; j++) {  
+		                optionstring += "<option value=\"" + lunList[j] + "\" >第" + lunList[j] + "轮</option>";  
+		            }  
+		            $("#groupnumSelect").html("<option value=''>请选择</option> "+optionstring);
+		            $("#groupnumSelect").prop('selectedIndex', lunList.length);
+                    $("#groupnumSelect").change();
+				}else{
+					alert(result.msg);
+				}
+			}, 'JSON');
+		}else{
+	        $("#groupnumSelect").html("<option value='请选择'>请选择</option> ");
+		}
+	}
+	function changeXiaozu(e){
+		var lun = $(e).val();
+		if(lun){
+			$.post('${ctxf }${frontPath}/match/initSelectList', {
+				id : $("#typeSelect").val(),
+				saizhi:lun
+			}, function(result) {
+				if (result.success) {
+					var zuList = result.obj.list;
+					var optionstring = "";  
+		            for (var j = 0; j < zuList.length; j++) {  
+		                optionstring += "<option value=\"" + zuList[j] + "\" >第" + zuList[j] + "组</option>";  
+		            }  
+		            $("#xiaozuSelect").html("<option value=''>请选择</option> "+optionstring);
+		            if(result.obj.next)
+		            	$("#xiaozuSelect").prop('selectedIndex', result.obj.next);
+		            else
+		            	$("#xiaozuSelect").prop('selectedIndex', zuList.length);
+                    $("#xiaozuSelect").change();
+				}else{
+					 $("#xiaozuSelect").html("<option value='请选择'>请选择</option> ");
+				}
+			}, 'JSON');
+		}else{
+			$("#xiaozuSelect").html("<option value='请选择'>请选择</option> ");
+		}
+	}
+	function refrashTable(){
+		var type = $("#typeSelect").val();
+		var lun = $("#groupnumSelect").val();
+		var xiaozu = $("#xiaozuSelect").val();
+		$("#saveButton").hide();
+		if(type && lun && xiaozu){
+			$.post('${ctxf }${frontPath}/match/initScoreTable', {
+				id : type,
+				lun:lun,
+				groupnum:xiaozu
+			}, function(result) {
+				if (result.success) {
+					 $("#saveButton").show();
+					 $("#scoreTable").html(result.obj.tableHtml);
+					 if(result.obj.notovered){//都输入完成
+						 $("#nextButton").show();
+					 }else{
+						 $("#nextButton").hide();
+					 }
+					 if(result.obj.isNexted){
+						 $("#saveButton").hide();
+						 $("#nextButton").hide();
+					 }
+				}else{
+					alert(result.msg);
+				}
+			}, 'JSON');
+		}
+		if(lun){
+			$("#lun").val(lun);
+		}
+	}
+	function saveScore(){
+		if(!isCheck){
+			var arr = [];
+			$(".textll").each(function (i) {
+		        var id = $(this).attr('id').replace("people_","");
+		        var score = $(this).val()?$(this).val():0;
+		        if(isNaN(parseInt(score))){
+		        	alert('请输入数字得分！');
+		        	return false;
+		        }
+		        arr.push({id:id,score:score});
+		    });
+			$("#scores").val(JSON.stringify(arr));
+			if(arr.length<1){
+				alert('请录制分数！');
+				return false;
+			}
+		}
+		return true;
+	}
+	function save(){
+		isCheck = false;
+		$("#markForm").submit()
+	}
+	function nextGroup(){
+		isCheck = true;
+		$("#scores").val(JSON.stringify([]));
+		$("#markForm").submit()
+	}
+	function overMatch(){
+		$.post('${ctx }${frontPath}/match/overMatch', {
+			id : '${match.id}'
+		}, function(result) {
+			if (result.success) {
+				 $("#overButton").hide();
+				 window.location.href="${ctx }${frontPath}/activity.html?id=${match.id}"; 
+			}else{
+				alert(result.msg);
+			}
+		}, 'JSON');
+	}
+</script>
+</head>
+<body>
+	<bisai:message content="${message}"/>
+	<ul class="nav nav-tabs">
+	<li><a href="${ctx}/bisai/match/">比赛列表</a></li>
+	<li class="active"><a href="${ctx }/bisai/match/matchScore${urlSuffix}?stype=1&id=${match.id}">成绩录入</a></li>
+	</ul><br/>
+	<div>
+		<div class="sheet_table">
+			<div class="clearfix sheet_table_title" style="text-align: center;">
+				<select name="typeSelect" id="typeSelect" onchange="initSelectList(this)" class="select_font_size_2">
+					<option>请选择</option>
+					<c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
+						<c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
+							<c:if test="${typeNode.type==dic.value }">
+								<option value="${typeNode.id }">${dic.label }</option>
+							</c:if>
+						</c:forEach>
+					</c:forEach>
+				</select>
+				<!-- 根据前面选择的类型进行查询 -->
+				<select name="groupnumSelect" id="groupnumSelect" onchange="changeXiaozu(this)" class="select_font_size_2">
+					<option value="">请选择</option>
+				</select>
+				<select name="xiaozuSelect" id="xiaozuSelect" onchange="refrashTable()" class="select_font_size_2">
+					<option value="">请选择</option>
+				</select>
+			</div>
+			<div id="scoreTable">
+			</div>
+		</div>
+	</div>
+	<form id="markForm" action="${ctx }${frontPath}/match/saveScoreTable" method="post" onsubmit="return saveScore();">
+		<input type="hidden" name="scores" id="scores">
+		<input type="hidden" name="type" value="${type }" id="type">
+		<input type="hidden" name="stype" value="${stype }" id="stype">
+		<input type="hidden" name="id" value="${match.id }" id="id">
+		<input type="hidden" name="lun" id="lun">
+		<div class="sheet_submit">
+			<a href="javascript:void(0)" onclick="save()" id="saveButton" style="display:none;">
+            <div class="acti_buttom">保存</div>
+       		 </a>
+			<c:choose>
+				<c:when test="${overButton }">
+					<a href="javascript:void(0)" onclick="overMatch()" id="overButton">
+		            <div class="acti_buttom">比赛结束</div>
+		       		</a>
+				</c:when>
+				<c:otherwise>
+					<a href="javascript:void(0)" onclick="nextGroup()" id="nextButton" style="display:none;">
+		            <div class="acti_buttom">下一轮</div>
+		       		</a>
+				</c:otherwise>
+			</c:choose>
+			
+			
+		</div>
+	</form>
+</body>
+</html>

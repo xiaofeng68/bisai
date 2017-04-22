@@ -52,6 +52,49 @@
     			});
 			}
         }
+		function resetValue() {
+        	var name = $("#name").val();
+        	if(!name){
+        		alert("请输入比赛名称！");
+        		return false;
+        	}
+            var typeStr = "";
+            $(".typecheck").each(function () {
+                if ($(this).hasClass('checked'))
+                    typeStr += $(this).next().html() + ",";
+            });
+            if (typeStr)
+                typeStr = typeStr.substring(0, typeStr.length - 1);
+            var ttypeStr = "";
+            $(".ttypecheck").each(function () {
+                if ($(this).hasClass('checked')) {
+                    var cc = $(this).parent().find("select").val();//获取场次
+                    ttypeStr += $(this).next().html() + ":" + cc + ",";
+                }
+            });
+            if (ttypeStr)
+                ttypeStr = ttypeStr.substring(0, ttypeStr.length - 1);            
+            $("#type").val(typeStr + ";" + ttypeStr);
+            
+            var regstart = new Date($('#regstarttime').val().replace(/-/g,'/'));
+            var regend = new Date($('#regendtime').val().replace(/-/g,'/'));
+            if(regstart>regend){
+        		alert("报名开始时间必须早于结束时间！");
+        		return false;
+        	}
+        	var start = new Date($('#starttime').val().replace(/-/g,'/'));
+        	var end = new Date($('#endtime').val().replace(/-/g,'/'));
+        	if(regend>start){
+        		alert("比赛时间晚于报名时间！");
+        		return false;
+        	}
+        	if(start>end){
+        		alert("比赛开始时间必须早于结束时间！");
+        		return false;
+        	}
+            
+            return true;
+        }
 	</script>
 	<style type="text/css">
 		.label .checked,.label .unchecked{
@@ -78,7 +121,7 @@
 		<li><a href="${ctx}/bisai/match/">比赛列表</a></li>
 		<li class="active"><a href="${ctx}/bisai/match/form?id=${match.id}">比赛<shiro:hasPermission name="bisai:match:edit">${not empty match.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="bisai:match:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="match" action="${ctx}/bisai/match/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="match" action="${ctx}/bisai/match/save" method="post" class="form-horizontal" onsubmit="return resetValue();">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
