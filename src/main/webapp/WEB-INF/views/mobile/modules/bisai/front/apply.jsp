@@ -405,7 +405,7 @@
                 <li>
                     <input class="namell fl v-m" name="address" value="${match.address }" id="address" type="text" 
                                    placeholder="点击重新选择" >
-                    <input class="textll" type="text" name="detailAddress" value="${match.detailAddress }"
+                    <input class="textll" type="text" name="detailAddress" value="${match.detailAddress }" style="display:none;"
                            placeholder="XX街道">
                 </li>
                 <li>

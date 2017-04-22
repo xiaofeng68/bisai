@@ -143,12 +143,12 @@
 		$("#markForm").submit()
 	}
 	function overMatch(){
-		$.post('${ctx }${frontPath}/match/overMatch', {
+		$.post('${ctx }/bisai/match/overMatch', {
 			id : '${match.id}'
 		}, function(result) {
 			if (result.success) {
 				 $("#overButton").hide();
-				 window.location.href="${ctx }${frontPath}/activity.html?id=${match.id}"; 
+				 window.location.href="${ctx}/bisai/match/"; 
 			}else{
 				alert(result.msg);
 			}
@@ -187,7 +187,7 @@
 			</div>
 		</div>
 	</div>
-	<form id="markForm" action="${ctx }${frontPath}/match/saveScoreTable" method="post" onsubmit="return saveScore();">
+	<form id="markForm" action="${ctx }${frontPath}/bisai/match/saveScoreTable" method="post" onsubmit="return saveScore();">
 		<input type="hidden" name="scores" id="scores">
 		<input type="hidden" name="type" value="${type }" id="type">
 		<input type="hidden" name="stype" value="${stype }" id="stype">

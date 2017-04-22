@@ -49,6 +49,8 @@
 				<th>主办者</th>
 				<th>承办者</th>
 				<th>赞助商</th>
+				<th>发起人</th>
+				<th>审批人</th>
 				<th>报名时间</th>
 				<th>比赛时间</th>
 				<th>状态</th>
@@ -71,6 +73,12 @@
 					${match.sponsors}
 				</td>
 				<td>
+					${match.account.wxname}
+				</td>
+				<td>
+					${match.user.name}
+				</td>
+				<td>
 					<fmt:formatDate value="${match.regstarttime}" pattern="yyyy-MM-dd"/>至<fmt:formatDate value="${match.regendtime}" pattern="yyyy-MM-dd"/>
 				</td>
 				<td>
@@ -86,6 +94,9 @@
 					</c:when>
 					<c:when test="${match.state==2}">
 						进行中
+					</c:when>
+					<c:when test="${match.state==3}">
+						比赛结束
 					</c:when>
 					<c:otherwise>
 						关闭
@@ -103,7 +114,7 @@
 						<c:when test="${match.state==2 }">
 							<a href="${ctx }/bisai/match/matchScore${urlSuffix}?stype=1&id=${match.id}">成绩录入</a>
 						</c:when>
-						<c:when test="${match.state==-1 }">
+						<c:when test="${match.state==-1 or match.state==3}">
 							<a href="${ctx }/bisai/match/matchRecreate${urlSuffix}?id=${match.id}"">再次发起</a>
 						</c:when>
 					</c:choose>

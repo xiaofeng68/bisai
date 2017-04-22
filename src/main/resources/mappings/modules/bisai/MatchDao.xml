@@ -26,6 +26,7 @@
 		a.counts AS "counts",
 		a.accountid AS "account.id",
 		u1.phone AS "account.phone",
+		u1.wxname AS "account.wxname",
 		a.userid AS "user.id",
 		a.jiangpin as "jiangpin",
 		a.changci as "changci",
