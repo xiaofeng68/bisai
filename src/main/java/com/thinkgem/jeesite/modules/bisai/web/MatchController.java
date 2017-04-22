@@ -71,18 +71,20 @@ public class MatchController extends BaseController {
 		match.setState("0");
 		match.setUser(null);
 		matchService.save(match);
-		String newId = match.getId();
+		/*String newId = match.getId();
 		// 复制类型
 		MatchTypeNote matchTypeNote = new MatchTypeNote();
 		match.setId(id);
-		matchTypeNote.setMatch(match);
+		Match omatch = new Match();
+		omatch.setId(id);
+		matchTypeNote.setMatch(omatch);
 		List<MatchTypeNote> list = matchTypeNoteService.findList(matchTypeNote);
 		match.setId(newId);
 		for (MatchTypeNote type : list) {
 			type.setId(null);
 			type.setMatch(match);
 			matchTypeNoteService.save(type);
-		}
+		}*/
 		return "redirect:"+Global.getAdminPath()+"/bisai/match/?repage";
 	}
 	/**
@@ -226,10 +228,15 @@ public class MatchController extends BaseController {
 	 */
 	@RequestMapping(value = "term-{matchid}-{type}${urlSuffix}")
 	public String tream(@PathVariable String matchid, @PathVariable String type, HttpServletRequest request,
-			Model model) {
+			Model model,RedirectAttributes redirectAttributes) {
 		Match match = matchService.get(matchid);
 		model.addAttribute("match", match);
 		model.addAttribute("type", type);
+		List<MatchTypeNote> list = MatchTypeNoteUtils.getMatchTypes(matchid);
+		if(list==null||list.size()==0){
+			addMessage(redirectAttributes, "比赛类型为空，无法分组！");
+			return "modules/bisai/matchPeopleEdit";
+		}
 		return "modules/bisai/term";
 	}
 	/**

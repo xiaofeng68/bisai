@@ -132,10 +132,15 @@ public class FrontMatchController extends BaseController {
 
 	@RequestMapping(value = "term-{matchid}-{type}${urlSuffix}")
 	public String tream(@PathVariable String matchid, @PathVariable String type, HttpServletRequest request,
-			Model model) {
+			Model model, RedirectAttributes redirectAttributes) {
 		Match match = matchService.get(matchid);
 		model.addAttribute("match", match);
 		model.addAttribute("type", type);
+		List<MatchTypeNote> list = MatchTypeNoteUtils.getMatchTypes(matchid);
+		if(list==null||list.size()==0){
+			addMessage(redirectAttributes, "比赛类型为空，无法分组！");
+			return "modules/bisai/front/baoming";
+		}
 		return "modules/bisai/front/term";
 	}
 
