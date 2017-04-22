@@ -222,13 +222,13 @@
 	<update id="updateMatchState">
 		update bisai_match set state=#{state} where id = #{id}
 	</update>
-	<select id="findSelfAllList">
+	<select id="findSelfAllList" resultType="Match">
 		SELECT 
 			<include refid="matchColumns"/>
 		FROM bisai_match a
 		<include refid="matchJoins"/>
 		<where>
-		a.userid!=#{id} and a.id in(
+		(a.accountid !=#{id} or a.accountid is null) and a.id in(
 		select t.matchid from bisai_match_type_note t join  bisai_people_note p on t.id=p.noteid where p.openid = #{openid}
 		)
 		</where>

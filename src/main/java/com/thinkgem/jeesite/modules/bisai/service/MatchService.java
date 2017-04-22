@@ -56,8 +56,8 @@ public class MatchService extends CrudService<MatchDao, Match> {
 		return super.findPage(page, match);
 	}
 	public Page<Match> findCanyuPage(Page<Match> page,Account tAccount) {
-        page.setList(dao.findSelfAllList(tAccount));
-	    return page;
+        List<Match> list = dao.findSelfAllList(tAccount);
+	    return page.setList(list);
 	}
 	
 	public Page<Match> findAllMatch(Page<Match> page,Match match){
