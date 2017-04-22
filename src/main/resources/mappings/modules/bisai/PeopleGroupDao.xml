@@ -131,6 +131,9 @@
 	<select id="getGroupSelectList" resultType="java.lang.String">
 		select groupnum from bisai_people_group where matchid=#{match.id} and btype=#{btype} and type=#{type} and lun=#{saizhi} group by groupnum 
 	</select>
+	<select id="getLastZu" resultType="java.lang.Integer">
+		select distinct min(groupnum) from bisai_people_group where matchid=#{match.id} and btype=#{btype} and type=#{type} and lun=#{saizhi} and score1 is null 
+	</select>
 	<select id="getLunSelectList" resultType="java.lang.String">
 		select lun from bisai_people_group where matchid=#{match.id} and btype=#{btype} and type=#{type} group by lun 
 	</select>

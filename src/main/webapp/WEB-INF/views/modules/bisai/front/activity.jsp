@@ -31,6 +31,9 @@
             if (changci) {
                 bisai_change(2);
             }
+
+            $('#typeSelect').prop('selectedIndex', 1);
+            $('#typeSelect').change();
         });
         function initSelectList(e) {
             var id = $(e).val();
@@ -43,9 +46,15 @@
                         lunNum = lunList.length;
                         var optionstring = "";
                         for (var j = 0; j < lunList.length; j++) {
-                            optionstring += "<option value=\"" + lunList[j] + "\" >第" + lunList[j] + "轮</option>";
+                        	if(j==lunList.length-1){
+                        		optionstring += "<option value=\"" + lunList[j] + "\" >第" + lunList[j] + "轮</option>";
+                        	}else{
+                        		optionstring += "<option value=\"" + lunList[j] + "\" >第" + lunList[j] + "轮</option>";                        		
+                        	}
                         }
                         $("#groupnumSelect").html("<option value=''>请选择</option> " + optionstring);
+                        $("#groupnumSelect").prop('selectedIndex', lunList.length);
+                        $("#groupnumSelect").change();
                     } else {
                         alert(result.msg);
                     }
@@ -62,12 +71,18 @@
                     saizhi: lun
                 }, function (result) {
                     if (result.success) {
-                        var zuList = result.obj;
+                        var zuList = result.obj.list;
                         var optionstring = "";
                         for (var j = 0; j < zuList.length; j++) {
-                            optionstring += "<option value=\"" + zuList[j] + "\" >第" + zuList[j] + "组</option>";
+                        	if(j==zuList.length-1){
+                        		optionstring += "<option value=\"" + zuList[j] + "\" >第" + zuList[j] + "组</option>";
+                        	}else{
+                        		optionstring += "<option value=\"" + zuList[j] + "\" >第" + zuList[j] + "组</option>";                        		
+                        	}
                         }
                         $("#xiaozuSelect").html("<option value=''>请选择</option> " + optionstring);
+                        $("#xiaozuSelect").prop('selectedIndex', zuList.length);
+                        $("#xiaozuSelect").change();
                     } else {
                         $("#xiaozuSelect").html("<option value='请选择'>请选择</option> ");
                     }
@@ -304,7 +319,7 @@
 										    <fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="nowDate"/>
 										    <fmt:formatDate value="${match.regendtime}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="regendtime"/>
 										    <fmt:formatDate value="${match.regstarttime}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="regstarttime"/>
-										    <c:if test="${nowDate gt regstarttime and nowDate lt regendtime}">
+										    <c:if test="${nowDate ge regstarttime and nowDate le regendtime}">
                                             <!-- 添加对应的比赛申请 -->
                                             <c:if test="${type.value==2 or type.value==4 or type.value==5}">
 	                                            <c:set var="peoples" value="${fns:peopleHasBaoming(typeNode.id,CURRENTACCOUNT.openid) }"></c:set>
@@ -351,6 +366,7 @@
 	                                            <span class="fl label_but" style="text-align:center;color:#FFF;background-color:#44bb95;margin-right:1rem;float:right;<c:if test="${empty note}">display:none;</c:if>" onclick="baoming(${typeNode.id},true)" id="baomspan${typeNode.id }">修改</span>
 	                                        </c:if>
                                             <!-- 添加对应的比赛申请 -->
+                                            </c:if>
                                             </c:if>
                                         </c:if>
                                     </c:forEach>
@@ -508,10 +524,10 @@
         <div class="clearfix sheet_table_title" style="text-align: center;">
             <select name="typeSelect" id="typeSelect" onchange="initSelectList(this)" class="select_font_size_2">
                 <option>请选择</option>
-                <c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }">
+                <c:forEach var="typeNode" items="${fns:getMatchTypeNote(match.id,type) }" varStatus="num">
                     <c:forEach var="dic" items="${fns:getDictList('MatchTypeNote_type')}">
                         <c:if test="${typeNode.type==dic.value }">
-                            <option value="${typeNode.id }">${dic.label }</option>
+                            <option value="${typeNode.id }" >${dic.label }</option>
                         </c:if>
                     </c:forEach>
                 </c:forEach>
@@ -539,7 +555,6 @@
 </script>
 <!-- 单项赛才允许再报名时间段内报名 -->
 <c:if test="${match.changci==0 and not empty CURRENTACCOUNT and CURRENTACCOUNT.id!=match.account.id}">
-    <jsp:useBean id="now" class="java.util.Date"/>
     <fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="nowDate"/>
     <fmt:formatDate value="${match.regendtime}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="regendtime"/>
     <fmt:formatDate value="${match.regstarttime}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="regstarttime"/>

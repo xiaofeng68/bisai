@@ -22,6 +22,7 @@ public interface PeopleGroupDao extends CrudDao<PeopleGroup> {
      * @return
      */
     List<String> getGroupSelectList(MatchTypeNote matchTypeNote);
+    Integer getLastZu(MatchTypeNote matchTypeNote);
     /**
      * 获取typeNode下的轮列表
      * @param matchTypeNote

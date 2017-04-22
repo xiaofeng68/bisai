@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ include file="/WEB-INF/views/mobile/modules/bisai/front/include/taglib.jsp"%>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +9,7 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta content="telephone=no" name="format-detection">
 	<title>${siteTitle }</title>
+	<meta name="decorator" content="default"/>
 	<meta name="keywords" content="${siteKeywords }">
 	<meta name="description" content="${siteDescription }">
 	<link rel="stylesheet" type="text/css" href="${ctxStaticFront }/css/incstyle.css" media="all">
@@ -32,7 +33,7 @@
 	function initSelectList(e){
 		var id = $(e).val();
 		if(id){
-			$.post('${ctx }${frontPath}/match/initZuSelectList', {
+			$.post('${ctxf }${frontPath}/match/initZuSelectList', {
 				id : id,
 			}, function(result) {
 				if (result.success) {
@@ -56,7 +57,7 @@
 	function changeXiaozu(e){
 		var lun = $(e).val();
 		if(lun){
-			$.post('${ctx }${frontPath}/match/initSelectList', {
+			$.post('${ctxf }${frontPath}/match/initSelectList', {
 				id : $("#typeSelect").val(),
 				saizhi:lun
 			}, function(result) {
@@ -86,7 +87,7 @@
 		var xiaozu = $("#xiaozuSelect").val();
 		$("#saveButton").hide();
 		if(type && lun && xiaozu){
-			$.post('${ctx }${frontPath}/match/initScoreTable', {
+			$.post('${ctxf }${frontPath}/match/initScoreTable', {
 				id : type,
 				lun:lun,
 				groupnum:xiaozu
@@ -157,15 +158,11 @@
 </head>
 <body>
 	<bisai:message content="${message}"/>
-	<header class="grouping_header clearfix">
-		<span class="fl" style="line-height: 120%;">
-			<a href="${ctx }/${frontPath}${fromURL}">
-				<img src="${ctxStaticFront}/images/r-arrow.png">
-			</a>
-		</span>
-		<span>${match.name }</span>
-	</header>
-	<section>
+	<ul class="nav nav-tabs">
+	<li><a href="${ctx}/bisai/match/">比赛列表</a></li>
+	<li class="active"><a href="${ctx }/bisai/match/matchScore${urlSuffix}?stype=1&id=${match.id}">成绩录入</a></li>
+	</ul><br/>
+	<div>
 		<div class="sheet_table">
 			<div class="clearfix sheet_table_title" style="text-align: center;">
 				<select name="typeSelect" id="typeSelect" onchange="initSelectList(this)" class="select_font_size_2">
@@ -189,7 +186,7 @@
 			<div id="scoreTable">
 			</div>
 		</div>
-	</section>
+	</div>
 	<form id="markForm" action="${ctx }${frontPath}/match/saveScoreTable" method="post" onsubmit="return saveScore();">
 		<input type="hidden" name="scores" id="scores">
 		<input type="hidden" name="type" value="${type }" id="type">
