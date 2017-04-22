@@ -25,6 +25,9 @@
 			var inputselectid = "#inputselect" + selid;
 			$.divselect(divselectid,inputselectid);
 		});
+		
+		$('#typeSelect').prop('selectedIndex', 1);
+        $('#typeSelect').change();
 	});
 	function initSelectList(e){
 		var id = $(e).val();
@@ -40,6 +43,8 @@
 		                optionstring += "<option value=\"" + lunList[j] + "\" >第" + lunList[j] + "轮</option>";  
 		            }  
 		            $("#groupnumSelect").html("<option value=''>请选择</option> "+optionstring);
+		            $("#groupnumSelect").prop('selectedIndex', lunList.length);
+                    $("#groupnumSelect").change();
 				}else{
 					alert(result.msg);
 				}
@@ -56,12 +61,17 @@
 				saizhi:lun
 			}, function(result) {
 				if (result.success) {
-					var zuList = result.obj;
+					var zuList = result.obj.list;
 					var optionstring = "";  
 		            for (var j = 0; j < zuList.length; j++) {  
 		                optionstring += "<option value=\"" + zuList[j] + "\" >第" + zuList[j] + "组</option>";  
 		            }  
 		            $("#xiaozuSelect").html("<option value=''>请选择</option> "+optionstring);
+		            if(result.obj.next)
+		            	$("#xiaozuSelect").prop('selectedIndex', result.obj.next);
+		            else
+		            	$("#xiaozuSelect").prop('selectedIndex', zuList.length);
+                    $("#xiaozuSelect").change();
 				}else{
 					 $("#xiaozuSelect").html("<option value='请选择'>请选择</option> ");
 				}

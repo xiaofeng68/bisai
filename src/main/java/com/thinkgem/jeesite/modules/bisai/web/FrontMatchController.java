@@ -387,7 +387,10 @@ public class FrontMatchController extends BaseController {
 			Integer lun = matchTypeNote.getSaizhi();
 			matchTypeNote = matchTypeNoteService.get(matchTypeNote);
 			matchTypeNote.setSaizhi(lun);
-			json.setObj(peopleGroupService.getInitSelectList(matchTypeNote));
+			Map<String,Object> map = new HashMap<String, Object>();
+			map.put("list", peopleGroupService.getInitSelectList(matchTypeNote));
+			map.put("next", peopleGroupService.getLastZu(matchTypeNote));
+			json.setObj(map);
 			json.setSuccess(true);
 		} catch (Exception e) {
 			e.printStackTrace();

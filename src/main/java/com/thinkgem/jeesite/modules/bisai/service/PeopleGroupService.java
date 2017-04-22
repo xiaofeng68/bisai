@@ -67,6 +67,13 @@ public class PeopleGroupService extends CrudService<PeopleGroupDao, PeopleGroup>
 	public List<String> getInitSelectList(MatchTypeNote matchTypeNote) {
 		return dao.getGroupSelectList(matchTypeNote);
 	}
+	public int getLastZu(MatchTypeNote matchTypeNote){
+		Integer lastZu = dao.getLastZu(matchTypeNote);
+		if(lastZu==null){
+			return 0;
+		}
+		return lastZu;
+	}
 	public List<String> getInitZuSelectList(MatchTypeNote matchTypeNote) {
 		return dao.getLunSelectList(matchTypeNote);
 	}
