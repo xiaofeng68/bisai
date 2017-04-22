@@ -59,7 +59,7 @@ public class FrontController extends BaseController {
 //    	if(StringUtils.isEmpty(openId)){
     		try{
 		    	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
-		    	String openId ="oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//(String) token.getString(WeixinHelp.OPENID);//
+		    	String openId =(String) token.getString(WeixinHelp.OPENID);//"oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//
 		        session.setAttribute(WeixinHelp.OPENID,openId);
 		        //如果注册过或授权登陆过无需再次登陆
 		        Account tAccount = accountService.getAccountByOpenId(openId);
