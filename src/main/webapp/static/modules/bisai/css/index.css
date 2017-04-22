@@ -789,7 +789,7 @@
     font-size: 0.75rem;
     color: #000;
     margin-top: 0.3rem;
-    width: 12rem;
+    width: 11rem;
     height: 1rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -817,6 +817,7 @@
     font-size: 0.6rem;
     color: #b2b2b2;
     margin-top: 0.2rem;
+    width: 3.5rem;
 }
 
 .positionll .em1 {
@@ -825,6 +826,7 @@
     display: block;
     width: 2.675rem;
     height: 2.675rem;
+    margin: 0 auto;
 }
 
 .positionll .em2 {
@@ -1400,25 +1402,37 @@
 
 .apply_form ul li textarea {
     width: 80%;
-    color: #c8c8c8;
+    /*color: #c8c8c8;*/
     font-size: 0.7rem;
     padding-left: 0.3rem;
+    background-color: #EDEFEE;
+    height: 300px;
+}
+
+.apply_form ul li textarea .textarea_color{
+    background-color: #ffffff;
 }
 
 .apply_form ul li .textll {
     width: 80%;
     text-align: left;
-    color: #c8c8c8;
+    /*color: #c8c8c8;*/
     font-size: 0.7rem;
     padding-left: 0.3rem;
+    background-color: #EDEFEE;
+}
+
+.apply_form ul li .textll_color {
+    background-color: #ffffff;
 }
 
 .apply_form ul li .textll1 {
     width: 60%;
     text-align: left;
-    color: #c8c8c8;
+    /*color: #c8c8c8;*/
     font-size: 0.7rem;
     padding-left: 0.3rem;
+    background-color: #EDEFEE;
 }
 
 .label .checked, .label .unchecked {
@@ -1753,6 +1767,21 @@
     color: #fff;
 }
 
+.label .label_but_button {
+    position: absolute;
+    text-align:center;
+    color:#FFF;
+    background-color:#44bb95;
+    margin-right:1rem;
+    float:right;
+}
+
+.label input{
+    width: 3rem;
+    font-size: 0.7rem;
+    display: block;
+}
+
 .acti_buttom, .acti_buttom1 {
     width: 95%;
     margin: 0 auto;
@@ -1799,13 +1828,14 @@
 }
 
 .apply_border .apply_borderll {
-    border: 1px solid #44bb95;
-    border-radius: 4px;
+    /*border: 1px solid #44bb95;*/
+    /*border-radius: 4px;*/
     display: inline-block;
     margin-top: 0.4rem;
     padding: 0.05rem 0.225rem;
     position: relative;
     margin-right: 0.5rem;
+    font-size: 0.7rem;
 }
 
 .apply_border .apply_borderll em {
@@ -1860,10 +1890,15 @@
 }
 
 .apply_input1 {
-    color: #c8c8c8;
+    /*color: #c8c8c8;*/
     font-size: 0.7rem;
     width: 30%;
     padding-left: 0.3rem;
+    background-color: #EDEFEE;
+}
+
+.apply_input1_color {
+    background-color: #ffffff;
 }
 
 iframe {
@@ -1882,7 +1917,7 @@ iframe {
 }
 
 .select_font_size_3 {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     width: 5.2rem;
     color: #b4b3b3;
 }
