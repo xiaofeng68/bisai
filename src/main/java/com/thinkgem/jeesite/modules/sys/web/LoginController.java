@@ -3,10 +3,13 @@
  */
 package com.thinkgem.jeesite.modules.sys.web;
 
+import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.kidinfor.util.WeixinHelp;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.security.shiro.session.SessionDAO;
 import com.thinkgem.jeesite.common.servlet.ValidateCodeServlet;
@@ -27,9 +32,16 @@ import com.thinkgem.jeesite.common.utils.CookieUtils;
 import com.thinkgem.jeesite.common.utils.IdGen;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
 import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm.Principal;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wx.util.WeixinUtil;
+
+import net.sf.json.JSONObject;
 
 /**
  * 登录Controller
@@ -38,10 +50,52 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
  */
 @Controller
 public class LoginController extends BaseController{
-	
+	@Autowired
+	private SystemService systemService;
 	@Autowired
 	private SessionDAO sessionDAO;
-	
+	public static void main(String[] args) throws Exception{
+		String url =        URLEncoder.encode("http://www.sportslm.com/a","UTF-8");
+        String state = Math.random()+"";
+        url = "https://open.weixin.qq.com/connect/qrconnect?appid=wxdd7dda6d8a13b2a0&redirect_uri="+url+"&response_type=code&scope=snsapi_login&state="+state+"#wechat_redirect";
+        System.out.println(url);
+        //     https://open.weixin.qq.com/connect/qrconnect?appid=wxdd7dda6d8a13b2a0&redirect_uri=http://www.sportslm.com/a&response_type=code&scope=snsapi_login
+	}
+	/**
+     * 网站首页
+     */
+	@RequestMapping(value = "${adminPath}/wxlogin", method = RequestMethod.GET)
+    public String index(HttpServletRequest request,Model model) {
+    	HttpSession session = request.getSession();
+		try{
+	    	JSONObject token = WeixinUtil.getUserToken(request.getParameter("code"));
+	    	String openId ="oRbfiwvoOYpH-3bPn1_8GmRbUqJY";//(String) token.getString(WeixinHelp.OPENID);//
+	        session.setAttribute(WeixinHelp.OPENID,openId);
+	        //如果注册过或授权登陆过无需再次登陆
+	        //根据openid获取现有用户，是否存在存在直接登陆，没有创建用户并授权
+	        User user = new User();
+	        
+			// 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
+			user.setCompany(new Office(request.getParameter("company.id")));
+			user.setOffice(new Office(request.getParameter("office.id")));
+			// 如果新密码为空，则不更换密码
+			if (StringUtils.isNotBlank(user.getNewPassword())) {
+				user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
+			}
+			
+			// 角色数据有效性验证，过滤不在授权内的角色
+			List<Role> roleList = Lists.newArrayList();
+			
+			user.setRoleList(roleList);
+			// 保存用户信息
+			systemService.saveUser(user);
+			
+	        
+		}catch(Exception e){//没授权先授权登陆
+			return "modules/sys/sysLogin";
+		}
+		return "modules/sys/sysLogin";
+    }
 	/**
 	 * 管理登录
 	 */
@@ -68,12 +122,6 @@ public class LoginController extends BaseController{
 		if(principal != null && !principal.isMobileLogin()){
 			return "redirect:" + adminPath;
 		}
-//		String view;
-//		view = "/WEB-INF/views/modules/sys/sysLogin.jsp";
-//		view = "classpath:";
-//		view += "jar:file:/D:/GitHub/jeesite/src/main/webapp/WEB-INF/lib/jeesite.jar!";
-//		view += "/"+getClass().getName().replaceAll("\\.", "/").replace(getClass().getSimpleName(), "")+"view/sysLogin";
-//		view += ".jsp";
 		return "modules/sys/sysLogin";
 	}
 

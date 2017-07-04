@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -91,8 +92,8 @@ public class FastweixinTest {
         String appid = "wxdd7dda6d8a13b2a0";//"wx8c33ff895df5d0d9";
         String secret = "10daec969800177c94a81d378faa7242";//"0705aafac0bef944de4c485d71fce900";
         ApiConfig config = new ApiConfig(appid, secret);
-        TestConfigChangeHandle configChangeHandle = new TestConfigChangeHandle();
-        config.addHandle(configChangeHandle);
+//        TestConfigChangeHandle configChangeHandle = new TestConfigChangeHandle();
+//        config.addHandle(configChangeHandle);
         createMenu(config);
         //getUserList(config);
 //        uploadMedia(config);
@@ -100,7 +101,7 @@ public class FastweixinTest {
 //        getUserInfo(config);
 //        getMenu(config);
 //        addCustomAccount(config);
-//          getOauthPageUrl(config);
+          //getOauthPageUrl(config);
 //          getToken(config);
 //          oauthGetUserInfo(config);
         //ApiConfig config = new ApiConfig(appid, secret, true);
@@ -230,8 +231,8 @@ public class FastweixinTest {
 
         List<MenuButton> mainList = new ArrayList<MenuButton>();
         mainList.add(main1);
-        mainList.add(main2);
-        mainList.add(main3);
+//        mainList.add(main2);
+//        mainList.add(main3);
         
         //将主菜单加入请求对象
         request.setButton(mainList);
@@ -239,6 +240,8 @@ public class FastweixinTest {
         //创建菜单
         ResultType resultType = menuAPI.createMenu(request);
         LOG.debug(resultType.toString());
+        
+       
     }
 
     /**
@@ -305,7 +308,7 @@ public class FastweixinTest {
 
     public void getOauthPageUrl(ApiConfig config) {
         OauthAPI oauthAPI = new OauthAPI(config);
-        String pageUrl = oauthAPI.getOauthPageUrl("http://121.40.140.41/erhuluanzi/app/testGet", OauthScope.SNSAPI_BASE, "123");
+        String pageUrl = oauthAPI.getOauthPageUrl("http://www.sportslm.com/a/login", OauthScope.SNSAPI_BASE, "123");
         LOG.debug("pageUrl:{}", pageUrl);
     }
 

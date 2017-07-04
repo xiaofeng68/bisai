@@ -18,6 +18,7 @@ import com.kidinfor.fastweixin.util.CollectionUtil;
 import com.kidinfor.fastweixin.util.JSONUtil;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,10 +35,10 @@ public class QYFastweixinTest {
 
     private QYAPIConfig config;
 
-//    @Before
+    @Before
     public void initConfig(){
-        String corpId = "";
-        String corpSecret = "";
+        String corpId = "wx927b678d5dd1616e";
+        String corpSecret = "IP2BwR260wSszwmbbr3MGf3RzTjEDyRcsvUrOgQsyQ7MoFKjju4f2_QfZaAHM8rP";
         config = new QYAPIConfig(corpId, corpSecret);
     }
 
@@ -206,30 +207,66 @@ public class QYFastweixinTest {
         Assert.assertEquals(Integer.valueOf(0), Integer.valueOf(response.getErrcode()));
     }
 
-//    @Test
+    @Test
     public void createMenu(){
         QYMenu menu = new QYMenu();
-        QYMenuButton button = new QYMenuButton();
-        button.setType(QYMenuType.VIEW);
-        button.setName("邦成");
-        button.setUrl("http://www.epansun.com");
-        menu.addButton(button);
+        //
+        QYMenuButton mbutton1 = new QYMenuButton();
+        mbutton1.setType(QYMenuType.CLICK);
+        mbutton1.setName("考试系统");
+        List<QYMenuButton> subButtons1 = new ArrayList<QYMenuButton>();
+        QYMenuButton sbutton11 = new QYMenuButton();
+        sbutton11.setType(QYMenuType.VIEW);
+        sbutton11.setName("考试系统");
+        sbutton11.setUrl("http://120.24.47.142/phpems/index.php?content-phone");
+        subButtons1.add(sbutton11);
+        QYMenuButton sbutton12 = new QYMenuButton();
+        sbutton12.setType(QYMenuType.VIEW);
+        sbutton12.setName("注册");
+        sbutton12.setUrl("http://120.24.47.142/WeChat/bind.html");
+        subButtons1.add(sbutton12);
+        QYMenuButton sbutton13 = new QYMenuButton();
+        sbutton13.setType(QYMenuType.VIEW);
+        sbutton13.setName("在线考试");
+        sbutton13.setUrl("http://120.24.47.142/finance/phone/apple/login.jsp");
+        subButtons1.add(sbutton13);
+        mbutton1.setSubButton(subButtons1);
+        menu.addButton(mbutton1);
+        //
+        QYMenuButton mbutton2 = new QYMenuButton();
+        mbutton2.setType(QYMenuType.CLICK);
+        mbutton2.setName("课程学习");
+        List<QYMenuButton> subButtons2 = new ArrayList<QYMenuButton>();
+        QYMenuButton sbutton21 = new QYMenuButton();
+        sbutton21.setType(QYMenuType.VIEW);
+        sbutton21.setName("测试");
+        sbutton21.setUrl("http://120.24.47.142/wap");
+        subButtons2.add(sbutton21);
+        QYMenuButton sbutton22 = new QYMenuButton();
+        sbutton22.setType(QYMenuType.VIEW);
+        sbutton22.setName("课程资源");
+        sbutton22.setUrl("http://120.24.47.142");
+        subButtons2.add(sbutton22);
+        mbutton2.setSubButton(subButtons2);
+        menu.addButton(mbutton2);
+        
         QYMenuAPI menuAPI = new QYMenuAPI(config);
-        QYResultType resultType = menuAPI.create(menu, "1");
+        menuAPI.delete("4");
+        QYResultType resultType = menuAPI.create(menu, "4");
         Assert.assertEquals(Integer.valueOf(0), resultType.getCode());
     }
 
-//    @Test
+    @Test
     public void listMenu(){
         QYMenuAPI menuAPI = new QYMenuAPI(config);
-        GetQYMenuResponse response = menuAPI.list("1");
+        GetQYMenuResponse response = menuAPI.list("0");
         Assert.assertNotEquals(Integer.valueOf(0), Integer.valueOf(response.getMenu().getButton().size()));
     }
 
 //    @Test
     public void deleteMenu(){
         QYMenuAPI menuAPI = new QYMenuAPI(config);
-        QYResultType resultType = menuAPI.delete("1");
+        QYResultType resultType = menuAPI.delete("0");
         Assert.assertEquals(Integer.valueOf(0), resultType.getCode());
     }
 
